@@ -13,7 +13,7 @@ class ProductRepository implements ProductInterface
     public function getAll()
     {
         return Products::with('categories')
-            ->with('color')
+            ->with('colors')
             ->with('images')
             ->orderBy('name', 'ASC')
             ->get();
@@ -79,7 +79,7 @@ class ProductRepository implements ProductInterface
     public function getById($id)
     {
         return Products::with('categories')
-            ->with('images')
+            ->with('images','colors')
             ->where('id', $id)
             ->firstOrFail();
     }
@@ -111,7 +111,7 @@ class ProductRepository implements ProductInterface
         //     ->orderBy('name', 'ASC')
         //     ->firstOrFail();
 
-        $product_name = Products::with(['categories', 'subCategories', 'images'])
+        $product_name = Products::with(['categories', 'subCategories', 'images','colors'])
             ->where('name', 'like', '%' . $name . '%')
             ->orderBy('name', 'ASC')
             ->firstOrFail();

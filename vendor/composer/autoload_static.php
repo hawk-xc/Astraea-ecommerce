@@ -409,8 +409,8 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -639,6 +639,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Http\\Controllers\\Bo\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Auth/LoginController.php',
         'App\\Http\\Controllers\\Bo\\Categories\\CategoriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Categories/CategoriesController.php',
         'App\\Http\\Controllers\\Bo\\Categories\\ColorCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Categories/ColorCategoryController.php',
+        'App\\Http\\Controllers\\Bo\\Categories\\SkuController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Categories/SkuController.php',
         'App\\Http\\Controllers\\Bo\\Categories\\SubCategoriesController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Categories/SubCategoriesController.php',
         'App\\Http\\Controllers\\Bo\\Comprof\\CProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Comprof/CProfileController.php',
         'App\\Http\\Controllers\\Bo\\Comprof\\CertificateController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Comprof/CertificateController.php',
@@ -720,6 +721,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Interfaces\\RolesInterface' => __DIR__ . '/../..' . '/app/Interfaces/RolesInterface.php',
         'App\\Interfaces\\ServiceInterface' => __DIR__ . '/../..' . '/app/Interfaces/ServiceInterface.php',
         'App\\Interfaces\\ShippingInterface' => __DIR__ . '/../..' . '/app/Interfaces/ShippingInterface.php',
+        'App\\Interfaces\\SkuInterface' => __DIR__ . '/../..' . '/app/Interfaces/SkuInterface.php',
         'App\\Interfaces\\SubCategoriesInterface' => __DIR__ . '/../..' . '/app/Interfaces/SubCategoriesInterface.php',
         'App\\Interfaces\\TestimoniInterface' => __DIR__ . '/../..' . '/app/Interfaces/TestimoniInterface.php',
         'App\\Interfaces\\UlasanInterface' => __DIR__ . '/../..' . '/app/Interfaces/UlasanInterface.php',
@@ -756,6 +758,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Models\\Products' => __DIR__ . '/../..' . '/app/Models/Products.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\Service' => __DIR__ . '/../..' . '/app/Models/Service.php',
+        'App\\Models\\Sku' => __DIR__ . '/../..' . '/app/Models/Sku.php',
         'App\\Models\\SubCategories' => __DIR__ . '/../..' . '/app/Models/SubCategories.php',
         'App\\Models\\Testimoni' => __DIR__ . '/../..' . '/app/Models/Testimoni.php',
         'App\\Models\\Ulasan' => __DIR__ . '/../..' . '/app/Models/Ulasan.php',
@@ -797,6 +800,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Repositories\\RolesRepository' => __DIR__ . '/../..' . '/app/Repositories/RolesRepository.php',
         'App\\Repositories\\ServiceRepository' => __DIR__ . '/../..' . '/app/Repositories/ServiceRepository.php',
         'App\\Repositories\\ShippingRepository' => __DIR__ . '/../..' . '/app/Repositories/ShippingRepository.php',
+        'App\\Repositories\\SkuRepository' => __DIR__ . '/../..' . '/app/Repositories/SkuRepository.php',
         'App\\Repositories\\SubCategoriesRepository' => __DIR__ . '/../..' . '/app/Repositories/SubCategoriesRepository.php',
         'App\\Repositories\\TestimoniRepository' => __DIR__ . '/../..' . '/app/Repositories/TestimoniRepository.php',
         'App\\Repositories\\UlasanRepository' => __DIR__ . '/../..' . '/app/Repositories/UlasanRepository.php',

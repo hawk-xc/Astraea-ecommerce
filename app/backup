@@ -1,0 +1,6 @@
+//color js
+
+// var categorySelector = '.color-data';
+// var categoryUrl = "{{ route('color.sDatas') }}";
+// var selectedCategoryIds = ['{{ old('color', isset($data) ? $data['color'] : '') }}', ];
+// populateSelect2(categorySelector, categoryUrl, selectedCategoryIds, "Pilih Warna");

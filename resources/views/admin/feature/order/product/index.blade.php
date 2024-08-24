@@ -60,8 +60,8 @@
                         name: 'order_date'
                     },
                     {
-                        data: 'customer_data.name',
-                        name: 'customer_data.name'
+                        data: 'customer_data',
+                        name: 'customer_data'
                     },
                     {
                         data: 'status',

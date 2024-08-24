@@ -12,7 +12,7 @@ class OrderDetailRepository implements OrderDetailInterface
     {
         return PesananDetail::where('order_id', $idOrder)
                 ->orderBy('updated_at', 'asc')
-                ->with('productData.colorAtr')
+                ->with('productData.colorAtr','color')
                 ->get();
     }
 
@@ -35,9 +35,9 @@ class OrderDetailRepository implements OrderDetailInterface
         return PesananDetail::create($data);
     }
 
-    public function getByIdProduct($id, $order)
+    public function getByIdProduct($id, $color, $order)
     {
-        return PesananDetail::where('product_id', $id)->where('order_id', $order)
+        return PesananDetail::where('product_id', $id)->where('color', $color)->where('order_id', $order)
                 ->first();
     }
 
@@ -73,7 +73,7 @@ class OrderDetailRepository implements OrderDetailInterface
     public function orderList($idOrder)
     {
         return PesananDetail::where('order_id', $idOrder)
-                ->with(['productData', 'productData.images'])
+                ->with(['productData','color', 'productData.images'])
                 ->get()->toArray();
     }
     

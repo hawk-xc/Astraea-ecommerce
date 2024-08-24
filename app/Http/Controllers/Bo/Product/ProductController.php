@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\Color;
+use App\Models\ProductColor;
+use App\Models\Products;
 use App\Models\Sku;
 use Illuminate\Support\Facades\Crypt;
 
@@ -37,6 +40,7 @@ class ProductController extends Controller
     public function index()
     {
         $ref = $this->data;
+
         return view($this->data['view_directory'] . '.index', compact('ref'));
     }
 
@@ -66,6 +70,14 @@ class ProductController extends Controller
                     "stock",
                     function ($inquiry) {
                         return $inquiry["stock"] . " Pcs";
+                    }
+                )
+                ->editColumn(
+                    "color",
+                    function ($inquiry) {
+
+                        
+                        return $inquiry->colors->pluck('name')->implode(', ');
                     }
                 )
                 ->addColumn('action', function ($row) {
@@ -114,8 +126,20 @@ class ProductController extends Controller
     public function create()
     {
         $ref = $this->data;
+
+        $colorList = Color::orderBy('name')->get();
+
+       
+
+        if(old('color')){
+            $array_color = array_flip(old('color'));
+
+        }else{
+            $array_color = [];
+        }
+
         $ref["url"] = route("product.store");
-        return view($this->data['view_directory'] . '.form', compact('ref'));
+        return view($this->data['view_directory'] . '.form', compact('ref','colorList','array_color'));
     }
 
     /**
@@ -126,6 +150,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
+
         $data = $request->validate([
             "name" => ['required', 'string', 'max:100'],
             "price" => ['required', 'string', 'max:25'],
@@ -135,7 +161,7 @@ class ProductController extends Controller
             "stock" => ['required', 'string', 'max:4'],
             "weight" => ['required', 'string', 'max:6'],
             "category_id" => ['required', 'string', 'max:250'],
-            "color" => ['required', 'string', 'max:250'],
+            "color" => ['required', 'max:250'],
             "sku_id" => ['required', 'string', 'max:250'],
             "subcategory_id" => ['required', 'string', 'max:250'],
             "description" => ['required', 'string'],
@@ -180,7 +206,35 @@ class ProductController extends Controller
             $data['created_by'] = auth()->user()->id;
             $data['updated_by'] = auth()->user()->id;
             $data['slug'] = $this->repository->sluggable($data['name']);
-            $this->repository->store($data);
+            // $this->repository->store($data)
+
+            $produk = new Products();
+
+            $produk->id = 'PDT-' . Helper::table_id();
+            $produk->name = $request->name;
+            $produk->slug = $this->repository->sluggable($data['name']);
+            $produk->description = $request->description;
+            $produk->category_id = $request->category_id;
+            $produk->subcategory_id = $request->subcategory_id;
+            $produk->weight = $request->weight;
+            $produk->price = $request->price;
+            $produk->color = '';
+            $produk->stock = $request->stock;
+            $produk->hpp = $request->hpp;
+            $produk->margin = $request->margin;
+            $produk->b_layanan = $request->b_layanan;
+            $produk->created_by = auth()->user()->id;
+            $produk->updated_by = auth()->user()->id;
+            $produk->sku_id = $request->sku_id;
+
+            $produk->save();
+
+            $produk->colors()->attach($request->color);
+
+         
+           
+
+
             foreach ($request->file() as $key => $img) {
                     $image_path = $request->file($key)->store('images', 'public');
                     //save image
@@ -193,6 +247,9 @@ class ProductController extends Controller
                     //proses save
                     $this->images_repository->store($image_record);
             }
+
+
+           
              return redirect()->route('product.index')->with('success', 'Berhasil menambah produk ' . $data["name"]);
         }
         catch (Exception $e)
@@ -230,7 +287,39 @@ class ProductController extends Controller
         $data_gambar = $this->images_repository->getByIdProduct($id);
         $id = Crypt::encryptString($id);
         $ref["url"] = route("product.update", $id);
-        return view($this->data['view_directory'] . '.form', compact('ref', "data", 'data_gambar'));
+
+        $colorList = Color::orderBy('name')->get();
+
+      
+
+        if(old('color')){
+
+            if(old('color')){
+                $array_color = array_flip(old('color'));
+    
+            }else{
+                $array_color = [];
+            }
+
+            
+
+        }else{
+
+            if($data['colors']){
+                $array_color = $data['colors']->pluck('name','id')->toArray();
+    
+            }else{
+                $array_color = [];
+            }
+
+           
+
+        }
+
+       
+
+
+        return view($this->data['view_directory'] . '.form', compact('ref', "data", 'data_gambar','colorList','array_color'));
     }
 
     /**
@@ -242,13 +331,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request);
+
         $id = Crypt::decryptString($id);
          $data = $request->validate([
                 "name" => ['required', 'string', 'max:100'],
                 "price" => ['required', 'string', 'max:25'],
                 "stock" => ['required', 'string', 'max:4'],
                 "weight" => ['required', 'string', 'max:6'],
-                "color" => ['required', 'string', 'max:250'],
+                "color" => ['required', 'max:250'],
                 "sku_id" => ['required', 'string', 'max:250'],
                 "hpp" => ['required', 'string', 'max:25'],
                 "margin" => ['required', 'string', 'max:3'],
@@ -328,6 +419,29 @@ class ProductController extends Controller
                 }
                 // dd($data);
                 $this->repository->edit($id, $data);
+
+                $produk = Products::find($id);
+
+                $produk->name = $request->name;
+                $produk->slug = $this->repository->sluggable($data['name']);
+                $produk->description = $request->description;
+                $produk->category_id = $request->category_id;
+                $produk->subcategory_id = $request->subcategory_id;
+                $produk->weight = $request->weight;
+                $produk->price = $request->price;
+                $produk->color = '';
+                $produk->stock = $request->stock;
+                $produk->hpp = $request->hpp;
+                $produk->margin = $request->margin;
+                $produk->b_layanan = $request->b_layanan;
+                $produk->created_by = auth()->user()->id;
+                $produk->updated_by = auth()->user()->id;
+                $produk->sku_id = $request->sku_id;
+
+                $produk->save();
+
+                $produk->colors()->sync($request->color);
+
                 return redirect()->route('product.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
             }
             catch (Exception $e)

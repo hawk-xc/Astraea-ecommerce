@@ -7,6 +7,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Helper;
+use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 
 class Products extends Model
 {
@@ -32,6 +33,8 @@ class Products extends Model
         'updated_by',
     ];
 
+    public $incrementing = false;
+
     public function sluggable(): array
     {
         return [
@@ -51,10 +54,16 @@ class Products extends Model
         return $this->belongsTo(SubCategories::class,'subcategory_id','id');
     }
 
-    public function color()
+    public function colors()
     {
-        return $this->belongsTo(Color::class,'color','id');
+        return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id');
+
     }
+
+    // public function color()
+    // {
+    //     return $this->belongsToMany(Color::class,'color_product','product_id','color_id');
+    // }
 
     public function colorAtr()
     {
@@ -75,4 +84,6 @@ class Products extends Model
     {
         return Helper::to_rupiah($this->price);
     }
+
+   
 }

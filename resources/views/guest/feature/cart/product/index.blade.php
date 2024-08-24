@@ -32,6 +32,7 @@
                                     <th class="">Name</th>
                                     <th class="">Price</th>
                                     <th class="">Quantity</th>
+                                    <th class="">Color</th>
                                     <th class="">Total</th>
                                 </tr>
                             </thead>
@@ -63,6 +64,12 @@
                                                     onclick="updateQuantity('{{ $order['id'] }}', 1, {{ $order['product_data']['stock'] }})"> + </a>
                                             </div>
                                         </form>
+                                        </td>
+                                        <td class="product-color">
+                                            
+                                            @isset($order['color'])
+                                                {{ $order['color']['name'] }}
+                                            @endisset
                                         </td>
                                         <td class="product-total" id="price_sub_total_product_{{ $order['id'] }}">Rp.
                                             {{ number_format($order['sub_total_price'], 0, ',', '.') }}</td>

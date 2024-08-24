@@ -65,8 +65,8 @@
                         name: 'categories.name'
                     },
                     {
-                        data: 'color.name',
-                        name: 'color.name'
+                        data: 'color',
+                        name: 'color'
                     },
                     {
                         data: 'price',
