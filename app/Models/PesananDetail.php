@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class PesananDetail extends Model
 {
@@ -14,6 +15,7 @@ class PesananDetail extends Model
         'order_id',
         'product_id',
         'quantity',
+        'color',
         'price',
         'sub_total_price',
         'created_by',
@@ -28,5 +30,12 @@ class PesananDetail extends Model
     public function orderData()
     {
         return $this->belongsTo(Pesanan::class, 'order_id', 'id');
+    }
+
+    public function color(): HasOne
+    {
+        return $this->hasOne(Color::class, 'id', 'color');
+
+
     }
 }

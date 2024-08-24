@@ -53,6 +53,8 @@ class CartProductController extends Controller
         $data['order'] = $this->repository->searchId($cart);
         $data['orders'] = $this->detail_repository->orderList($cart);
 
+        // dd($data);
+
         //lempar ke shop karena belum terisi
         if(!isset($data['order']['no_nota']))
         {
@@ -104,8 +106,10 @@ class CartProductController extends Controller
     {
         $record = $request->validate([
             "quantity" => ['nullable', 'numeric'],
+            "color" => ['required'],
         ], [], [
             "quantity" => "Quantity",
+            "color" => "Color"
         ]);
 
         // dd($request->all());
@@ -118,7 +122,7 @@ class CartProductController extends Controller
         // dd();
         $data['product'] = $this->productRepository->getById(app('encrypter')->decrypt($id, false));
 
-        $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'], $cart);
+        $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'],$request->color, $cart);
 
         // dd($dtl_product);
 
@@ -143,8 +147,10 @@ class CartProductController extends Controller
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
                         'quantity'        => $quantity_product,
+                        'color'           => $request->color,
                         'price'           => $data['product']['price'],
                         'sub_total_price' => $add_price,
+                       
                         ];
                     $this->detail_repository->updateDetailCart($dtl_product['id'], $update_dtl);
                 }
@@ -157,9 +163,11 @@ class CartProductController extends Controller
                         'order_id'  => $cart,
                         'product_id'=> $data['product']['id'],
                         'quantity'  => $quantity_product,
+                        'color'     => $request->color,
                         'price'     => $add_price,
                         'sub_total_price' => $data['product']['price'],
                         'created_by' => 'pelanggan',
+                        
                      ];
                      $this->detail_repository->store($order_detail);
                 }

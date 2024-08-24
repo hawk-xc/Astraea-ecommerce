@@ -53,8 +53,8 @@
                                         value="1" required>
                                     <select name="color" id="color" class="mr-3 color-selectore">
                                         <option value="" disabled>Pilih warna</option>
-                                        @foreach ($data['product']['cdt'] as $color)
-                                            <option value="{{ $color->color }}">{{ $color->colorFo[0]->name }}</option>
+                                        @foreach ($data['product']['colors'] as $color)
+                                            <option value="{{ $color->id }}">{{ $color->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -323,7 +323,15 @@
     <?php
     function displayStars($rating)
     {
-        $rating = max(0, min($rating, 5));
+
+        if($rating){
+            $rt = $rating; 
+        }else{
+            $rt = 0;
+        }
+      
+
+        $rating = max(0, min($rt, 5));
 
         $fullStars = floor($rating);
         $emptyStars = 5 - $fullStars;

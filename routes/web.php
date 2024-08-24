@@ -50,7 +50,8 @@ use App\Http\Controllers\Fo\shipping\ShippingProductController;
 use App\Http\Controllers\Fo\shipping\ShippingHampersController;
 use App\Http\Controllers\Fo\discount\DiscountEventApplyController;
 use App\Http\Controllers\Fo\discount\DiscountEventApplyHController;
-
+use App\Models\Customer;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,16 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+    // Route::get('/up', function(){
+    //     $c = Customer::find('CST-20240824100602455340');
+
+    //     $c->password = Hash::make('12345678');
+
+    //     $c->save();
+    // })->name('fo.home');
+  
+
     // fo
     Route::get('/', [BerandaController::class, 'index'])->name('fo.home');
 

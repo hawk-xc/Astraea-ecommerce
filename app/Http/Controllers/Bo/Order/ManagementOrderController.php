@@ -57,6 +57,12 @@ class ManagementOrderController extends Controller
                         return $inquiry->fTPrice();
                     }
                 )
+                ->editColumn(
+                    "customer_data",
+                    function ($inquiry) {
+                        return "-";
+                    }
+                )
                 ->addColumn('action', function ($row) {
                     $row["id"] = Crypt::encryptString($row["id"]);
                     $btn = '<a href="'. route("order_product.show", $row["id"]) .'" class ="btn bg-gradient-primary btn-tooltip mx-1">

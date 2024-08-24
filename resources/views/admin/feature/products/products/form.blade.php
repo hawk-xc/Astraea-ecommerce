@@ -62,10 +62,35 @@
 
                                         <div class="mb-3-select" id="role">
                                             <label class="form-label">Warna</label>
-                                            <div class="input-group">
-                                                <select name="color" id="color_id" class="form-control color-data">
-                                                </select>
+
+                                            <div class="">
+
+                                                <div class="row">
+
+                                                    @foreach ($colorList as $item)
+
+                                                    <div class="col-12 col-md-4">
+                                                        <div class="form-check mb-3">
+                                                            <input {{array_key_exists($item->id,$array_color) ? 'checked' : ''}} class="form-check-input" type="checkbox" value="{{$item->id}}" name="color[]" id="customRadio{{$item->id}}">
+                                                            <label class="custom-control-label" for="customRadio{{$item->id}}">{{$item->name}}</label>
+                                                        </div>
+
+                                                    </div>
+                                                        
+                                                    @endforeach
+
+                                                  
+
+                                                    
+
+                                                </div>
+
                                             </div>
+
+                                            {{-- <div class="input-group">
+                                                <select name="color[]"  multiple="multiple" id="color_id" class="form-control color-data">
+                                                </select>
+                                            </div> --}}
                                         </div>
 
                                         <div class="mb-3">
@@ -406,6 +431,9 @@
     <script>
         $(document).ready(function() {
             function populateSelect2(selector, url, selectedIds, placeholder) {
+
+               
+                
                 $(selector).select2({
                     placeholder: placeholder,
                     ajax: {
@@ -414,9 +442,15 @@
                         delay: 250,
                         cache: true
                     },
-                    templateResult: function(data) {
-                        return $('<span>' + data.text + '</span>');
-                    }
+                    processResults: data => {
+                        return {
+                            results: data.map((row) => {
+                                return { text: row.text, id: row.id };
+                            }),
+                            
+                        };
+                    },
+                   
                 });
 
                 $.ajax({
@@ -437,6 +471,8 @@
                         });
                     }
                 });
+
+            
             }
 
             // Populate category select2
@@ -448,13 +484,10 @@
             // populate sku
             var categorySelector = '.sku';
             var categoryUrl = "{{ route('sku.sDatas') }}";
-            var selectedCategoryIds = ['{{ old('sku_id', isset($data) ? $data['sku_id'] : '') }}', ];
+            var selectedCategoryIds = ['{{ (old('sku_id', isset($data)) ? $data['sku_id'] : '') }}', ];
             populateSelect2(categorySelector, categoryUrl, selectedCategoryIds, "Pilih Seri");
 
-            var categorySelector = '.color-data';
-            var categoryUrl = "{{ route('color.sDatas') }}";
-            var selectedCategoryIds = ['{{ old('color', isset($data) ? $data['color'] : '') }}', ];
-            populateSelect2(categorySelector, categoryUrl, selectedCategoryIds, "Pilih Warna");
+            // colorjs
 
 
 

@@ -63,6 +63,7 @@ class ShopProductController extends Controller
         $data['categories'] = $this->categoriesRepository->getAllFo();
         $data['products'] = $this->productRepository->getAllFo();
         // dd($data['products']->toArray());
+        
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -110,7 +111,7 @@ class ShopProductController extends Controller
         $data['avgrat'] = $this->ulasanRepository->getAvgRat($data['product']['id']);
         $data['product']['id'] = Crypt::encryptString($data['product']['id']);
 
-        // dd($data["product"]->id);
+        // dd($data["product"]);
         return view($this->data['view_directory'] . '.detail', compact('ref', 'data'));
     }
 }

@@ -81,6 +81,7 @@
                                                             <th>Nama Barang</th>
                                                             <th>Harga Barang</th>
                                                             <th>Jumlah</th>
+                                                            <th>Warna</th>
                                                             <th>Sub Total</th>
                                                         </tr>
                                                     </thead>
@@ -194,6 +195,10 @@
                     {
                         data: 'quantity',
                         name: 'quantity'
+                    },
+                    {
+                        data: 'color.name',
+                        name: 'color.name'
                     },
                     {
                         data: 'sub_total_price',
