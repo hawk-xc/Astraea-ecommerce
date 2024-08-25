@@ -52,7 +52,7 @@
                 @foreach ($data['products'] as $product)
                     <div class="col-lg-4 col-md-6 text-center {{ $product['subcategory_id'] }}">
                         <div class="single-product-item">
-                            <a href="{{ route('shop-product.show', $product['name']) }}">
+                            <a href="{{ route('shop-product.show', $product['slug']) }}">
                                 <div class="product-image">
                                     @if (isset($product['images'][0]['name']))
                                         <img src="{{ asset('storage/' . $product['images'][0]['name']) }}"
@@ -66,7 +66,7 @@
                                 <p class="p-4">{{ $product->description }}</p>
                                 <p class="product-price">{{ $product->fPrice() }}</p>
                             </a>
-                            <a class="boxed-btn" href="{{ route('shop-product.show', $product['name']) }}">Beli sekarang</a>
+                            <a class="boxed-btn" href="{{ route('shop-product.show', $product['slug']) }}">Beli sekarang</a>
                             {{-- <form action="{{ route('fo.cart-product.update', $product['name']) }}" method="post">
 								@csrf
 								@method('PUT')

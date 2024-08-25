@@ -27,7 +27,7 @@ class ProductRepository implements ProductInterface
         //     ->groupBy('p.name', 'p.price', 'p.weight', 'p.b_layanan')
         //     ->get();
         return Products::with('categories', 'images')
-            ->select('id', 'name', 'price', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+            ->select('id', 'name','slug', 'price', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
             ->groupBy('id', 'name', 'price', 'weight', 'b_layanan', 'description')
             ->orderBy('created_at', 'DESC')
             ->orderBy('name', 'ASC')
@@ -112,7 +112,7 @@ class ProductRepository implements ProductInterface
         //     ->firstOrFail();
 
         $product_name = Products::with(['categories', 'subCategories', 'images','colors'])
-            ->where('name', 'like', '%' . $name . '%')
+            ->where('slug',  $name)
             ->orderBy('name', 'ASC')
             ->firstOrFail();
         // Color
