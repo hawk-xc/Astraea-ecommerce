@@ -52,7 +52,7 @@
                                     <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
                                         value="1" required>
                                     <select name="color" id="color" class="mr-3 color-selectore">
-                                        <option value="" disabled>Pilih warna</option>
+                                        <option value="" >Pilih warna</option>
                                         @foreach ($data['product']['colors'] as $color)
                                             <option value="{{ $color->id }}">{{ $color->name}}</option>
                                         @endforeach

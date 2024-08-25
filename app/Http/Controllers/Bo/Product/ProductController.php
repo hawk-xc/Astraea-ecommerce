@@ -356,7 +356,7 @@ class ProductController extends Controller
                 "price" => "Harga produk",
                 "stock" => "Jumlah barang",
                 "color" => "Warna barang",
-                "sku_id" => "Warna barang",
+                "sku_id" => "Seri barang",
                 "weight" => "Berat barang",
                 "margin" => "Margin barang",
                 "b_layanan" => "Biaya layanan barang",
