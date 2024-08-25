@@ -180,6 +180,7 @@ class PaymentOrderController extends Controller
                 'amount' => $total_price,
                 'payer_email' => auth()->guard('customer')->user()->email,
                 'description' => $reccord['description'],
+                'success_redirect_url'=> route('fo.home'),
             ]);
 
             //apply discount
