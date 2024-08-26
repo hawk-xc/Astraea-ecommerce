@@ -163,7 +163,7 @@
 					<div class="coupon-section">
 						<h3>Checkout</h3>
 						<div class="coupon-form-wrap">
-							<form action="{{ route('hampers-payment.create', $data['id_nota']) }}" method="post" target="_blank">
+							<form action="{{ route('hampers-payment.create', $data['id_nota']) }}" method="post">
 				        		@csrf
 					        	<p>
 					        		<input type="text" placeholder="Catatan (optional)" name="description" id="description">
