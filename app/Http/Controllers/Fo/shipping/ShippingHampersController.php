@@ -88,7 +88,7 @@ class ShippingHampersController extends Controller
 
          $record = $request->validate([
             'district_id' => 'required|exists:districts,id', // Asumsikan ada tabel districts
-            'expedisi' => 'required|in:jne,pos,tiki',
+            'expedisi' => 'required|in:jne,pos,tiki,jnt',
             'address' => 'required|string|max:255',
         ]);
 
@@ -140,10 +140,12 @@ class ShippingHampersController extends Controller
         $weight = $data_layanan['weight'];
         $courier = $data_layanan['name']; 
 
-        $response = Http::asForm()->post('https://api.rajaongkir.com/starter/cost', [
+        $response = Http::asForm()->post('https://pro.rajaongkir.com/api/cost', [
             'key' => $apiKey,
             'origin' => $origin,
+            'originType' => 'city',
             'destination' => $destination,
+            'destinationType' => 'subdistrict',
             'weight' => $weight,
             'courier' => $courier,
         ]);
@@ -171,10 +173,12 @@ class ShippingHampersController extends Controller
             $destination = $data_layanan['destination'];
             $weight = $data_layanan['weight'];
             $courier = $data_layanan['name']; 
-            $response = Http::asForm()->post('https://api.rajaongkir.com/starter/cost', [
+            $response = Http::asForm()->post('https://pro.rajaongkir.com/api/cost', [
                 'key' => $apiKey,
                 'origin' => $origin,
+                'originType' => 'city',
                 'destination' => $destination,
+                'destinationType' => 'subdistrict',
                 'weight' => $weight,
                 'courier' => $courier,
             ]);

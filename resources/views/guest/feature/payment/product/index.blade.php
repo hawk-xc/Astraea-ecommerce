@@ -83,6 +83,7 @@
 				                    		<option value="jne" {{ $shippingName == 'jne' ? 'selected' : '' }}>JNE</option>
 										    <option value="pos" {{ $shippingName == 'pos' ? 'selected' : '' }}>POS</option>
 										    <option value="tiki" {{ $shippingName == 'tiki' ? 'selected' : '' }}>TIKI</option>
+											<option value="jnt" {{ $shippingName == 'jnt' ? 'selected' : '' }}>JNT</option>
 				                    	</select>	
 				                    </p>
 					        		<p>
