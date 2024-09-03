@@ -174,14 +174,27 @@ class PaymentOrderController extends Controller
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode(env('XENDIT_SECRET_KEY') . ':'),
-            ])
-            ->post('https://api.xendit.co/v2/invoices', [
+            ])->post('https://api.xendit.co/v2/invoices', [
                 'external_id' => $no_nota,
                 'amount' => $total_price,
                 'payer_email' => auth()->guard('customer')->user()->email,
                 'description' => $reccord['description'],
-                'success_redirect_url'=> route('fo.home'),
+                'success_redirect_url' => route('fo.home'),
             ]);
+            
+            if ($response->failed()) {
+                // Log seluruh respons dari API untuk melihat error detail
+                \Log::error('Xendit API error response:', $response->json());
+            
+                // Opsional: Menampilkan pesan error yang lebih spesifik
+                $errorMessage = $response->json()['message'] ?? 'Failed to create invoice, please check your production setup.';
+                return redirect()->back()->with('toast_warning', $errorMessage);
+            }
+            
+            if (!isset($response->json()['invoice_url'])) {
+                \Log::error('Missing invoice_url in response:', $response->json());
+                return redirect()->back()->with('toast_warning', 'Invoice creation failed, please try again.');
+            }
 
             //apply discount
             if(isset($coupon['discountData']['is_active']))
