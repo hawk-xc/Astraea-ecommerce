@@ -9,12 +9,12 @@
 
 ## Task Lists
 
-controller resource bagian create (image, ✅color)
-tambah data color/warna pada fitur tambah product
-Slider pada gambar barang didetail product
-Slider Content Automation
-product detail sesuai format inputan
-✅ membuat text description barang sesuai format inputan
-✅ Tombol link dibanner (Halaman utama)
-✅ gambar image us pada halaman utama tidak bisa diakses/ditampilkan
-✅ hilangkan isian awal username & password pada login admin
+- controller resource bagian create (image, ✅color)
+- tambah data color/warna pada fitur tambah product
+- Slider pada gambar barang didetail product
+- Slider Content Automation
+- product detail sesuai format inputan
+- ✅ membuat text description barang sesuai format inputan
+- ✅ Tombol link dibanner (Halaman utama)
+- ✅ gambar image us pada halaman utama tidak bisa diakses/ditampilkan
+- ✅ hilangkan isian awal username & password pada login admin
