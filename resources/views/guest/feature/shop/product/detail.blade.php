@@ -70,7 +70,7 @@
                                     {{ $data['product']->subCategories['name'] }}</p>
                             </div>
                         </div>
-                        <p>{{ $data['product']['description'] }}</p>
+                        <p>{!! nl2br(e($data['product']['description'])) !!}</p>
                     </div>
                 </div>
             </div>
@@ -177,7 +177,7 @@
                                     @endif
                                 </div>
                                 <h3>{{ $related_product['name'] }}</h3>
-                                <p class="p-4">{{ $related_product->description }}</p>
+                                <p class="p-4">{!! nl2br(e($related_product->description)) !!}</p>
                                 <p class="product-price">{{ $related_product->fPrice() }}</p>
                             </a>
                             <a class="boxed-btn" href="{{ route('shop-product.show', $related_product['name']) }}">Beli

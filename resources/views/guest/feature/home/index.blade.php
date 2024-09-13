@@ -1,6 +1,7 @@
 @extends('guest.layouts.app')
 
 {{-- @push('header_script')
+
     <style>
         .abt-bg {
             background-image: url("{{ asset('storage/' . $data['about']['image']) }}");
