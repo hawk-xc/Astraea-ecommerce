@@ -23,78 +23,28 @@
                         <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center pb-3">
-                                    <h6 class="text-bold">{{ strtoupper('Informasi Barang') }}</h6>
+                                    <h6 class="text-bold">{{ strtoupper('Informasi Slider') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Nama Barang</label>
+                                            <label class="form-label">Nama Slider</label>
                                             <input id="name" name="name" class="form-control bg-white"
-                                                type="text" placeholder="Nama Barang"
+                                                type="text" placeholder="Nama Slider"
                                                 value="{{ old('name', isset($data) ? $data['name'] : '') }}">
+                                            <input type="checkbox" name="buttonAdded">
                                         </div>
 
-                                        <div class="mb-3-select" id="role">
-                                            <label class="form-label">Kategori</label>
+                                        <div class="mb-3">
+                                            <label class="form-label">View Slider</label>
                                             <div class="input-group">
-                                                <select name="category_id" id="category_id"
-                                                    class="form-control categories-data">
+                                                <select class="form-control">
+                                                    <option value="Desktop">Desktop</option>
+                                                    <option value="SmartPhone">SmartPhone</option>
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div class="mb-3-select" id="role">
-                                            <label class="form-label">SubKategori</label>
-                                            <div class="input-group">
-                                                <select name="subcategory_id" id="subcategory_id"
-                                                    class="form-control subcategories-data">
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3-select" id="role">
-                                            <label class="form-label">Seri</label>
-                                            <div class="input-group">
-                                                <select name="sku_id" id="sku_id" class="form-control sku">
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3-select" id="role">
-                                            <label class="form-label">Warna</label>
-
-                                            <div class="">
-
-                                                <div class="row">
-
-                                                    @foreach ($colorList as $item)
-                                                        <div class="col-12 col-md-4">
-                                                            <div class="form-check mb-3">
-                                                                <input
-                                                                    {{ array_key_exists($item->id, $array_color) ? 'checked' : '' }}
-                                                                    class="form-check-input" type="checkbox"
-                                                                    value="{{ $item->id }}" name="color[]"
-                                                                    id="customRadio{{ $item->id }}">
-                                                                <label class="custom-control-label"
-                                                                    for="customRadio{{ $item->id }}">{{ $item->name }}</label>
-                                                            </div>
-
-                                                        </div>
-                                                    @endforeach
-
-
-
-
-
-                                                </div>
-
-                                            </div>
-
-                                            {{-- <div class="input-group">
-                                                <select name="color[]"  multiple="multiple" id="color_id" class="form-control color-data">
-                                                </select>
-                                            </div> --}}
-                                        </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Jumlah Barang</label>
@@ -183,16 +133,15 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center pb-3">
-                            <h6 class="text-bold">{{ strtoupper('Foto Barang') }}</h6>
+                            <h6 class="text-bold">{{ strtoupper('Foto Slider') }}</h6>
                         </div>
                         <div class="card-body">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label">Foto Tampak Depan</label>
                                             <div class="main-img-preview">
-                                                <img id="front" class="thumbnail img-preview" {{-- src="{{ asset('admin/img/placeholder.png') }}" --}}
+                                                <img id="front" class="thumbnail w-100" {{-- src="{{ asset('admin/img/placeholder.png') }}" --}}
                                                     src="{{ isset($data_gambar['front'][0]['name']) ? asset('storage/' . $data_gambar['front'][0]['name']) : asset('admin/img/placeholder.png') }}"
                                                     title="Foto Tampak Depan">
                                             </div>
@@ -210,202 +159,6 @@
                                                     class="btn btn-outline-danger m-0"
                                                     onclick="remove_photo('remove-front','front','input-front', 'pos-front')"
                                                     {{ isset($data_gambar['front'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Tampak Belakang</label>
-                                            <div class="main-img-preview">
-                                                <img id="back" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['back'][0]['name']) ? asset('storage/' . $data_gambar['back'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Tampak Belakang">
-                                            </div>
-                                            <div class="bck float-end">
-                                                <input id="pos-back" name="pos-back" type="text"
-                                                    value="{{ isset($data_gambar['back'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-back" name="back" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-back" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-back','back','input-back','pos-back')"
-                                                    {{ isset($data_gambar['back'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Samping Kiri</label>
-                                            <div class="main-img-preview">
-                                                <img id="left" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['left'][0]['name']) ? asset('storage/' . $data_gambar['left'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kiri">
-                                            </div>
-                                            <div class="lft float-end">
-                                                <input id="pos-left" name="pos-left" type="text"
-                                                    value="{{ isset($data_gambar['left'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-left" name="left" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-left" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-left','left','input-left', 'pos-left')"
-                                                    {{ isset($data_gambar['left'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Samping Kanan</label>
-                                            <div class="main-img-preview">
-                                                <img id="right" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['right'][0]['name']) ? asset('storage/' . $data_gambar['right'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kanan">
-                                            </div>
-                                            <div class="rgt float-end">
-                                                <input id="pos-right" name="pos-right" type="text"
-                                                    value="{{ isset($data_gambar['right'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-right" name="right" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-right" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-right','right','input-right', 'pos-right')"
-                                                    {{ isset($data_gambar['right'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Detail Tambahan 1</label>
-                                            <div class="main-img-preview">
-                                                <img id="detail1" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['detail1'][0]['name']) ? asset('storage/' . $data_gambar['detail1'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kanan">
-                                            </div>
-                                            <div class="dtl1 float-end">
-                                                <input id="pos-detail1" name="pos-detail1" type="text"
-                                                    value="{{ isset($data_gambar['detail1'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-detail1" name="detail1" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-detail1" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-detail1','detail1','input-detail1', 'pos-detail1')"
-                                                    {{ isset($data_gambar['detail1'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Detail Tambahan 2</label>
-                                            <div class="main-img-preview">
-                                                <img id="detail2" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['detail2'][0]['name']) ? asset('storage/' . $data_gambar['detail2'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kanan">
-                                            </div>
-                                            <div class="dtl2 float-end">
-                                                <input id="pos-detail2" name="pos-detail2" type="text"
-                                                    value="{{ isset($data_gambar['detail2'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-detail2" name="detail2" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-detail2" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-detail2','detail2','input-detail2', 'pos-detail2')"
-                                                    {{ isset($data_gambar['detail2'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Detail Tambahan 3</label>
-                                            <div class="main-img-preview">
-                                                <img id="detail3" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['detail3'][0]['name']) ? asset('storage/' . $data_gambar['detail3'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kanan">
-                                            </div>
-                                            <div class="dtl3 float-end">
-                                                <input id="pos-detail3" name="pos-detail3" type="text"
-                                                    value="{{ isset($data_gambar['detail3'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-detail3" name="detail3" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-detail3" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-detail3','detail3','input-detail3', 'pos-detail3')"
-                                                    {{ isset($data_gambar['detail3'][0]['name']) ? '' : 'hidden' }}>
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Foto Detail Tambahan 4</label>
-                                            <div class="main-img-preview">
-                                                <img id="detail4" class="thumbnail img-preview"
-                                                    src="{{ isset($data_gambar['detail4'][0]['name']) ? asset('storage/' . $data_gambar['detail4'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Samping Kanan">
-                                            </div>
-                                            <div class="dtl4 float-end">
-                                                <input id="pos-detail4" name="pos-detail4" type="text"
-                                                    value="{{ isset($data_gambar['detail4'][0]['name']) ? 'old_true' : '' }}"
-                                                    readonly hidden>
-                                                <div
-                                                    class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
-                                                    <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-detail4" name="detail4" type="file"
-                                                        class="btnUpload attachment_upload">
-                                                </div>
-                                                <button id="remove-detail4" type="button"
-                                                    class="btn btn-outline-danger m-0 "
-                                                    onclick="remove_photo('remove-detail4','detail4','input-detail4', 'pos-detail4')"
-                                                    {{ isset($data_gambar['detail4'][0]['name']) ? '' : 'hidden' }}>
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>

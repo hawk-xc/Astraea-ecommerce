@@ -70,12 +70,13 @@ class CProfileController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // dd($request);
         $id = Crypt::decryptString($id);
         $data = $request->validate([
             "title" => ['required', 'string', 'max:100'],
             "description" => ['required', 'string'],
             'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:5120'], // Mengubah 'image' menjadi 'file'
-        ],[
+        ], [
             "title.required" => "Nama mitra harus di isi",
             "description.required" => "Deskripsi mitra harus di isi",
             'image.image' => "Berkas harus berupa gambar",
@@ -83,14 +84,13 @@ class CProfileController extends Controller
             'image.max' => "Berkas tidak boleh lebih dari 5MB",
         ]);
 
-       $data['updated_by'] = auth()->user()->id;
+        $data['updated_by'] = auth()->user()->id;
 
         try {
             if (isset($data["image"])) {
                 $old_image = $this->repository->getById($id)->image;
-                if(isset($old_image))
-                {
-                    unlink(storage_path().'/app/public/'.$old_image);
+                if (isset($old_image)) {
+                    unlink(storage_path() . '/app/public/' . $old_image);
                 }
                 $image_path = $request->file('image')->store('images', 'public');
                 $data["image"] =  $image_path;

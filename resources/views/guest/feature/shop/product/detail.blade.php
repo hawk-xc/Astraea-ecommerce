@@ -52,9 +52,9 @@
                                     <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
                                         value="1" required>
                                     <select name="color" id="color" class="mr-3 color-selectore">
-                                        <option value="" >Pilih warna</option>
+                                        <option value="">Pilih warna</option>
                                         @foreach ($data['product']['colors'] as $color)
-                                            <option value="{{ $color->id }}">{{ $color->name}}</option>
+                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -180,8 +180,7 @@
                                 <p class="p-4">{{ $related_product->description }}</p>
                                 <p class="product-price">{{ $related_product->fPrice() }}</p>
                             </a>
-                            <a class="boxed-btn"
-                                href="{{ route('shop-product.show', $related_product['name']) }}">Beli
+                            <a class="boxed-btn" href="{{ route('shop-product.show', $related_product['name']) }}">Beli
                                 sekarang</a>
                             {{-- <form action="{{ route('fo.cart-product.update', $product['name']) }}" method="post">
 								@csrf
@@ -323,30 +322,28 @@
     <?php
     function displayStars($rating)
     {
-
-        if($rating){
-            $rt = $rating; 
-        }else{
+        if ($rating) {
+            $rt = $rating;
+        } else {
             $rt = 0;
         }
-      
-
+    
         $rating = max(0, min($rt, 5));
-
+    
         $fullStars = floor($rating);
         $emptyStars = 5 - $fullStars;
-
+    
         $starHTML = '<div class="star-ratingt text-center row d-flex flex-row-reverse">';
-
+    
         for ($i = 0; $i < $fullStars; $i++) {
             $starHTML .= '<span class="star full col-2">&#9733;</span>';
         }
-
+    
         for ($i = 0; $i < $emptyStars; $i++) {
             $starHTML .= '<span class="star col-2">&#9733;</span>';
         }
         $starHTML .= '</div>';
-
+    
         return $starHTML;
     }
     ?>
