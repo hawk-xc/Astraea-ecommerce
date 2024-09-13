@@ -29,8 +29,10 @@
                                 <div class="upload__img-wrap">
                                     @if (isset($data['image']))
                                         <div class='upload__img-box'>
-                                            <img src="{{ asset('storage/' . $data['image']) }}" class='img-bg br-5' style="max-width: 100%; max-height: 300px;">
-                                            <div class='upload__img-close-circle'><span>X</span></div>
+                                            <img src="{{ asset('storage/' . $data['image']) }}" class='img-bg br-5'
+                                                style="max-width: 100%; max-height: 300px;">
+                                            {{-- tombol hapus saya hilangkan --}}
+                                            {{-- <div class='upload__img-close-circle'><span>X</span></div> --}}
                                         </div>
                                     @endif
                                 </div>
@@ -41,7 +43,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center pb-3">
-                            <h6 class="text-bold">{{ Str::upper($ref['title'])}}</h6>
+                            <h6 class="text-bold">{{ Str::upper($ref['title']) }}</h6>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -53,10 +55,8 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Description</label>
-                                    <textarea id="description" name="description"
-                                        class="form-control bg-white disable-resize" type="text"
-                                        placeholder="Masukkan certificate description"
-                                        rows="15">{{ old('description', isset($data) ? $data['description'] : '') }}</textarea>
+                                    <textarea id="description" name="description" class="form-control bg-white disable-resize" type="text"
+                                        placeholder="Masukkan certificate description" rows="15">{{ old('description', isset($data) ? $data['description'] : '') }}</textarea>
                                 </div>
                             </div>
                             <div class="float-end">
@@ -80,7 +80,9 @@
                     reader.onload = function(e) {
                         var imgWrap = $(input).closest('.upload__box').find('.upload__img-wrap');
                         imgWrap.empty();
-                        imgWrap.append('<div class="upload__img-box"><img src="' + e.target.result + '" class="img-bg br-5" style="max-width: 100%; max-height: 300px;"><div class="upload__img-close-circle"><span>X</span></div></div>');
+                        imgWrap.append('<div class="upload__img-box"><img src="' + e.target.result +
+                            '" class="img-bg br-5" style="max-width: 100%; max-height: 300px;"><div class="upload__img-close-circle"><span>X</span></div></div>'
+                        );
                         bindImgCloseEvent();
                     }
                     reader.readAsDataURL(input.files[0]);

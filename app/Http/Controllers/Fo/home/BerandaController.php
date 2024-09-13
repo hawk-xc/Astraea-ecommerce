@@ -57,6 +57,8 @@ class BerandaController extends Controller
         $data['etetotal'] = $this->testimoniRepository->getTotal();
         $data['discount_new'] = $this->discountRepository->getDiscNewCostumer()->toArray()['image_banner'];
 
+        $data['sliders'] = \App\Models\Slider::all();
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 }

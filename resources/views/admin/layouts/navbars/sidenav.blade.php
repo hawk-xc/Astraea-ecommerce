@@ -25,8 +25,11 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Pages</h6>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#category" class="nav-link {{ request()->is('admin/category*') ? 'active' : '' }}" aria-controls="masterData" role="button" aria-expanded="{{ request()->is('admin/category*') ? 'true' : 'false' }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <a data-bs-toggle="collapse" href="#category"
+                    class="nav-link {{ request()->is('admin/category*') ? 'active' : '' }}" aria-controls="masterData"
+                    role="button" aria-expanded="{{ request()->is('admin/category*') ? 'true' : 'false' }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-app text-info text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Categories</span>
@@ -34,22 +37,26 @@
                 <div class="collapse {{ request()->is('admin/category*') ? 'show' : '' }}" id="category">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/category/category*') ? 'active' : '' }}" href="{{ route('category.index') }}">
+                            <a class="nav-link {{ request()->is('admin/category/category*') ? 'active' : '' }}"
+                                href="{{ route('category.index') }}">
                                 <span class="sidenav-normal">Categories</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/category/subcategory*') ? 'active' : '' }}" href="{{ route('subcategory.index') }}">
+                            <a class="nav-link {{ request()->is('admin/category/subcategory*') ? 'active' : '' }}"
+                                href="{{ route('subcategory.index') }}">
                                 <span class="sidenav-normal">Sub Categories</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/category/color*') ? 'active' : '' }}" href="{{ route('color.index') }}">
+                            <a class="nav-link {{ request()->is('admin/category/color*') ? 'active' : '' }}"
+                                href="{{ route('color.index') }}">
                                 <span class="sidenav-normal">Color Categories</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/category/sku*') ? 'active' : '' }}" href="{{ route('sku.index') }}">
+                            <a class="nav-link {{ request()->is('admin/category/sku*') ? 'active' : '' }}"
+                                href="{{ route('sku.index') }}">
                                 <span class="sidenav-normal">Seri</span>
                             </a>
                         </li>
@@ -57,8 +64,11 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#productss" class="nav-link {{ request()->is('admin/product*') ? 'active' : '' }}" aria-controls="masterData" role="button" aria-expanded="{{ request()->is('admin/product*') ? 'true' : 'false' }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <a data-bs-toggle="collapse" href="#productss"
+                    class="nav-link {{ request()->is('admin/product*') ? 'active' : '' }}" aria-controls="masterData"
+                    role="button" aria-expanded="{{ request()->is('admin/product*') ? 'true' : 'false' }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Products</span>
@@ -66,13 +76,22 @@
                 <div class="collapse {{ request()->is('admin/product*') ? 'show' : '' }}" id="productss">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/product/product*') ? 'active' : '' }}" href="{{ route('product.index') }}">
+                            <a class="nav-link {{ request()->is('admin/product/product*') ? 'active' : '' }}"
+                                href="{{ route('product.index') }}">
                                 <span class="sidenav-normal">Products</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/product/hampers*') ? 'active' : '' }}" href="{{ route('hampers.index') }}">
+                            <a class="nav-link {{ request()->is('admin/product/hampers*') ? 'active' : '' }}"
+                                href="{{ route('hampers.index') }}">
                                 <span class="sidenav-normal">Hampers</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/product/slider*') ? 'active' : '' }}"
+                                href="{{ route('slider.index') }}">
+                                <span class="sidenav-normal">Slider <span
+                                        class="badge badge-secondary">New</span></span>
                             </a>
                         </li>
                     </ul>
@@ -80,8 +99,11 @@
             </li>
 
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#discount" class="nav-link {{ request()->is('admin/discount*') ? 'active' : '' }}" aria-controls="masterData" role="button" aria-expanded="{{ request()->is('admin/discount*') ? 'true' : 'false' }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <a data-bs-toggle="collapse" href="#discount"
+                    class="nav-link {{ request()->is('admin/discount*') ? 'active' : '' }}" aria-controls="masterData"
+                    role="button" aria-expanded="{{ request()->is('admin/discount*') ? 'true' : 'false' }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Manajement Discount</span>
@@ -89,12 +111,14 @@
                 <div class="collapse {{ request()->is('admin/discount*') ? 'show' : '' }}" id="discount">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/discount/disc_new_customer*') ? 'active' : '' }}" href="{{ route('disc_new_customer.index') }}">
+                            <a class="nav-link {{ request()->is('admin/discount/disc_new_customer*') ? 'active' : '' }}"
+                                href="{{ route('disc_new_customer.index') }}">
                                 <span class="sidenav-normal">Discount New Customer</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/discount/discount*') ? 'active' : '' }}" href="{{ route('discount.index') }}">
+                            <a class="nav-link {{ request()->is('admin/discount/discount*') ? 'active' : '' }}"
+                                href="{{ route('discount.index') }}">
                                 <span class="sidenav-normal">Discount Event</span>
                             </a>
                         </li>
@@ -113,8 +137,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#sites" class="nav-link {{ request()->is('admin/comprof*') ? 'active' : '' }}" aria-controls="masterData" role="button" aria-expanded="{{ request()->is('admin/comprof*') ? 'true' : 'false' }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <a data-bs-toggle="collapse" href="#sites"
+                    class="nav-link {{ request()->is('admin/comprof*') ? 'active' : '' }}" aria-controls="masterData"
+                    role="button" aria-expanded="{{ request()->is('admin/comprof*') ? 'true' : 'false' }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="bi bi-globe mb-04 text-danger text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Company Profile</span>
@@ -122,32 +149,38 @@
                 <div class="collapse {{ request()->is('admin/comprof*') ? 'show' : '' }}" id="sites">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/com_profile*') ? 'active' : '' }}" href="{{ route('com_profile.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/com_profile*') ? 'active' : '' }}"
+                                href="{{ route('com_profile.index') }}">
                                 <span class="sidenav-normal">Profile</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/event*') ? 'active' : '' }}" href="{{ route('event.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/event*') ? 'active' : '' }}"
+                                href="{{ route('event.index') }}">
                                 <span class="sidenav-normal">Event</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/service*') ? 'active' : '' }}" href="{{ route('service.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/service*') ? 'active' : '' }}"
+                                href="{{ route('service.index') }}">
                                 <span class="sidenav-normal">Services</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/partner*') ? 'active' : '' }}" href="{{ route('partner.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/partner*') ? 'active' : '' }}"
+                                href="{{ route('partner.index') }}">
                                 <span class="sidenav-normal">Partner</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/certificate*') ? 'active' : '' }}" href="{{ route('certificate.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/certificate*') ? 'active' : '' }}"
+                                href="{{ route('certificate.index') }}">
                                 <span class="sidenav-normal">Certificate</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->is('admin/comprof/contact*') ? 'active' : '' }}" href="{{ route('contact.index') }}">
+                            <a class="nav-link {{ request()->is('admin/comprof/contact*') ? 'active' : '' }}"
+                                href="{{ route('contact.index') }}">
                                 <span class="sidenav-normal">Contact</span>
                             </a>
                         </li>
@@ -158,7 +191,8 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Customers Pages</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/management_customer*') ? 'active' : '' }}" href="{{ route('management_customer.index') }}">
+                <a class="nav-link {{ request()->is('admin/management_customer*') ? 'active' : '' }}"
+                    href="{{ route('management_customer.index') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
@@ -167,8 +201,11 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#orderss" class="nav-link  {{ request()->is('admin/order*') ? 'active' : '' }}" aria-controls="masterData" role="button" aria-expanded=" {{ request()->is('admin/order*') ? 'true' : 'false' }}">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <a data-bs-toggle="collapse" href="#orderss"
+                    class="nav-link  {{ request()->is('admin/order*') ? 'active' : '' }}" aria-controls="masterData"
+                    role="button" aria-expanded=" {{ request()->is('admin/order*') ? 'true' : 'false' }}">
+                    <div
+                        class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-single-copy-04 text-warning text-sm opacity-10"></i>
                     </div>
                     <span class="nav-link-text ms-1">Orders</span>
@@ -176,12 +213,14 @@
                 <div class="collapse {{ request()->is('admin/order*') ? 'show' : '' }}" id="orderss">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link  {{ request()->is('admin/order_product*') ? 'active' : '' }}" href="{{ route('order_product.index') }}">
+                            <a class="nav-link  {{ request()->is('admin/order_product*') ? 'active' : '' }}"
+                                href="{{ route('order_product.index') }}">
                                 <span class="sidenav-normal">Products</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link  {{ request()->is('admin/order_hampers*') ? 'active' : '' }}" href="{{ route('order_hampers.index') }}">
+                            <a class="nav-link  {{ request()->is('admin/order_hampers*') ? 'active' : '' }}"
+                                href="{{ route('order_hampers.index') }}">
                                 <span class="sidenav-normal">Hampers</span>
                             </a>
                         </li>
@@ -190,7 +229,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/testimoni*') ? 'active' : '' }}" href="{{ route('testimoni.index') }}">
+                <a class="nav-link {{ request()->is('admin/testimoni*') ? 'active' : '' }}"
+                    href="{{ route('testimoni.index') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-collection text-success text-sm opacity-10"></i>
@@ -200,7 +240,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin/mail_visitor*') ? 'active' : '' }}" href="{{ route('mail_visitor.index') }}">
+                <a class="nav-link {{ request()->is('admin/mail_visitor*') ? 'active' : '' }}"
+                    href="{{ route('mail_visitor.index') }}">
                     <div
                         class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-collection text-info text-sm opacity-10"></i>

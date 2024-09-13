@@ -18,6 +18,7 @@ use App\Http\Controllers\Bo\Discount\ManagementDiscountNewCustomerController;
 use App\Http\Controllers\Bo\Customer\CustomerManagementController;
 use App\Http\Controllers\Bo\Product\ProductController;
 use App\Http\Controllers\Bo\Product\HampersProductController;
+use App\Http\Controllers\Bo\Product\SliderProductController;
 use App\Http\Controllers\Bo\Order\ManagementOrderController;
 use App\Http\Controllers\Bo\Order\ManagementOrderHampersController;
 use App\Http\Controllers\Bo\AppFee\AppFeeController;
@@ -65,56 +66,56 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-    // Route::get('/up', function(){
-    //     $c = Customer::find('CST-20240824100602455340');
+// Route::get('/up', function(){
+//     $c = Customer::find('CST-20240824100602455340');
 
-    //     $c->password = Hash::make('12345678');
+//     $c->password = Hash::make('12345678');
 
-    //     $c->save();
-    // })->name('fo.home');
-  
+//     $c->save();
+// })->name('fo.home');
 
-    // fo
-    Route::get('/', [BerandaController::class, 'index'])->name('fo.home');
 
-    //contacct
-    Route::resource("contact", ContactUsController::class, ['as' => 'fo'], ['only' => ['index', 'store']]);
+// fo
+Route::get('/', [BerandaController::class, 'index'])->name('fo.home');
 
-    //about
-    Route::resource("about", AboutUsController::class, ['as' => 'fo'], ['only' => ['index']]);
+//contacct
+Route::resource("contact", ContactUsController::class, ['as' => 'fo'], ['only' => ['index', 'store']]);
 
-    //event
-    Route::resource("event", FoEventController::class, ['as' => 'fo'], ['only' => ['index', 'show']]);
+//about
+Route::resource("about", AboutUsController::class, ['as' => 'fo'], ['only' => ['index']]);
 
-    //partner
-    Route::resource("partner", FoPartnerController::class, ['as' => 'fo'], ['only' => ['show']]);
+//event
+Route::resource("event", FoEventController::class, ['as' => 'fo'], ['only' => ['index', 'show']]);
 
-    //certificate
-    Route::resource("certificate", FoCertificateController::class, ['as' => 'fo'], ['only' => ['show']]);
+//partner
+Route::resource("partner", FoPartnerController::class, ['as' => 'fo'], ['only' => ['show']]);
 
-    //product shop
-    Route::resource("shop-product", ShopProductController::class, ['only' => ['index', 'show']]);
-    Route::get("/shop-product-category/{id}", [ShopProductController::class, 'categoryShow'])->name('shop-product.category');
+//certificate
+Route::resource("certificate", FoCertificateController::class, ['as' => 'fo'], ['only' => ['show']]);
 
-    //product hampers
-    Route::resource("shop-hampers", ShopHampersController::class, ['only' => ['index', 'show']]);
-    Route::get("/shop-hampers-category/{id}", [ShopHampersController::class, 'categoryShow'])->name('shop-hampers.category');
+//product shop
+Route::resource("shop-product", ShopProductController::class, ['only' => ['index', 'show']]);
+Route::get("/shop-product-category/{id}", [ShopProductController::class, 'categoryShow'])->name('shop-product.category');
 
-    //cart product
-    Route::resource("cart-product", CartProductController::class, ['as' => 'fo']);
+//product hampers
+Route::resource("shop-hampers", ShopHampersController::class, ['only' => ['index', 'show']]);
+Route::get("/shop-hampers-category/{id}", [ShopHampersController::class, 'categoryShow'])->name('shop-hampers.category');
 
-    //cart hampers
-    Route::resource("cart-hampers", CartHampersController::class, ['as' => 'fo']);
+//cart product
+Route::resource("cart-product", CartProductController::class, ['as' => 'fo']);
+
+//cart hampers
+Route::resource("cart-hampers", CartHampersController::class, ['as' => 'fo']);
 
 //auth customer
 
-    Route::get('login', [AuthCustomerController::class, 'index'])->name('loginf.customer');
-    Route::post('login', [AuthCustomerController::class, 'login'])->name('login.customer');
-    Route::get('register', [AuthCustomerController::class, 'registerf'])->name('registerf.customer');
-    Route::post('register', [AuthCustomerController::class, 'register'])->name('register.customer');
+Route::get('login', [AuthCustomerController::class, 'index'])->name('loginf.customer');
+Route::post('login', [AuthCustomerController::class, 'login'])->name('login.customer');
+Route::get('register', [AuthCustomerController::class, 'registerf'])->name('registerf.customer');
+Route::post('register', [AuthCustomerController::class, 'register'])->name('register.customer');
 
-    Route::get('verify/{token}', [AuthCustomerController::class, 'verify'])->name('verify');
-    Route::resource("change-password", PasswordChangeContoller::class);
+Route::get('verify/{token}', [AuthCustomerController::class, 'verify'])->name('verify');
+Route::resource("change-password", PasswordChangeContoller::class);
 
 Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('dashboard', [DashboardCustomerController::class, 'index'])->name('dashboard.customer');
@@ -130,25 +131,25 @@ Route::group(['middleware' => ['auth:customer']], function () {
     Route::get('hhampers/{id}', [OrderHistoryController::class, 'hampers'])->name('historyh.customer');
 
     //product payment order
-        //payment product
-        Route::get('payment/{order}', [PaymentOrderController::class, 'index'])->name('product-payment');
-        Route::post('payment-create/{order}', [PaymentOrderController::class, 'create'])->name('product-payment.create');
+    //payment product
+    Route::get('payment/{order}', [PaymentOrderController::class, 'index'])->name('product-payment');
+    Route::post('payment-create/{order}', [PaymentOrderController::class, 'create'])->name('product-payment.create');
 
-        //payment hampers
-        Route::get('paymenth/{order}', [PaymentOrderHampersController::class, 'index'])->name('hampers-payment');
-        Route::post('paymenth-create/{order}', [PaymentOrderHampersController::class, 'create'])->name('hampers-payment.create');
+    //payment hampers
+    Route::get('paymenth/{order}', [PaymentOrderHampersController::class, 'index'])->name('hampers-payment');
+    Route::post('paymenth-create/{order}', [PaymentOrderHampersController::class, 'create'])->name('hampers-payment.create');
 
-        //ongkir product
-        Route::resource("shipping-product", ShippingProductController::class, ['as' => 'fo']);
-        Route::post('shipping-product-cekk/{order}', [ShippingProductController::class, 'storeCek'])->name('fo.shipping-product.cekk');
+    //ongkir product
+    Route::resource("shipping-product", ShippingProductController::class, ['as' => 'fo']);
+    Route::post('shipping-product-cekk/{order}', [ShippingProductController::class, 'storeCek'])->name('fo.shipping-product.cekk');
 
-        //ongkir hampers
-        Route::resource("shipping-hampers", ShippingHampersController::class, ['as' => 'fo']);
-        Route::post('shipping-hampers-cekk/{order}', [ShippingHampersController::class, 'storeCek'])->name('fo.shipping-hampers.cekk');
+    //ongkir hampers
+    Route::resource("shipping-hampers", ShippingHampersController::class, ['as' => 'fo']);
+    Route::post('shipping-hampers-cekk/{order}', [ShippingHampersController::class, 'storeCek'])->name('fo.shipping-hampers.cekk');
 
-        //discount
-        Route::resource("discount-apply", DiscountEventApplyController::class, ['as' => 'fo']);
-        Route::resource("discounth-apply", DiscountEventApplyHController::class, ['as' => 'fo']);
+    //discount
+    Route::resource("discount-apply", DiscountEventApplyController::class, ['as' => 'fo']);
+    Route::resource("discounth-apply", DiscountEventApplyHController::class, ['as' => 'fo']);
 
     //hampers payment order
 
@@ -196,6 +197,7 @@ Route::group(['prefix' => 'admin'], function () {
 
                 // Hampers Products
                 Route::resource("hampers", HampersProductController::class);
+                Route::resource('slider', SliderProductController::class);
             });
 
             Route::group(['prefix' => 'discount'], function () {
@@ -205,7 +207,7 @@ Route::group(['prefix' => 'admin'], function () {
 
                 //discount new customer
                 Route::resource("disc_new_customer", ManagementDiscountNewCustomerController::class, ['only' => ['index', 'update']]);
-             });
+            });
 
             // Customer management
             Route::resource("management_customer", CustomerManagementController::class);

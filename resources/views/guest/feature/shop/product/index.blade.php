@@ -62,11 +62,13 @@
                                             alt="">
                                     @endif
                                 </div>
-                                <h3>{{ $product['name'] }}</h3>
-                                <p class="p-4">{{ $product->description }}</p>
+                                <h2 class="">{{ $product['name'] }}</h2>
+                                {{-- <p class="p-4">{{ $product->description }}</p> --}}
+                                <p class="p-4">{!! nl2br(e($product->description)) !!}</p>
                                 <p class="product-price">{{ $product->fPrice() }}</p>
                             </a>
-                            <a class="boxed-btn" href="{{ route('shop-product.show', $product['slug']) }}">Beli sekarang</a>
+                            <a class="boxed-btn" href="{{ route('shop-product.show', $product['slug']) }}">Beli
+                                sekarang</a>
                             {{-- <form action="{{ route('fo.cart-product.update', $product['name']) }}" method="post">
 								@csrf
 								@method('PUT')

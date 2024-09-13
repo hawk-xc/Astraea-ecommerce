@@ -125,6 +125,10 @@ class CartProductController extends Controller
         $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'],$request->color, $cart);
 
         // dd($dtl_product);
+        if ($data['product']['stock'] <= 0) {
+            // Jika stok kosong, alihkan ke halaman home dengan pesan error
+            return redirect()->route('fo.home')->with('toast_warning', 'Maaf, stok sedang kosong.');
+        }
 
         if (isset($dtl_product['quantity'], $data['product']['stock']))
         {
