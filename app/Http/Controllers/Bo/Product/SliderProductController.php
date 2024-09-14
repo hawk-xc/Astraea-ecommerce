@@ -2,23 +2,17 @@
 
 namespace App\Http\Controllers\Bo\Product;
 
-use App\Repositories\HampersProductRepository;
-use App\Repositories\HampersImageProductRepository;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use \App\Models\Slider as SliderModel;
+use Illuminate\Support\Facades\File;
 
 class SliderProductController extends Controller
 {
-    private HampersProductRepository $repository;
-    private HampersImageProductRepository $images_repository;
-
     protected $data = array();
 
-    public function __construct(HampersProductRepository $repository, HampersImageProductRepository $images_repository)
+    public function __construct()
     {
-        $this->repository = $repository;
-        $this->images_repository = $images_repository;
         $this->data['title'] = 'slider produk';
         $this->data['view_directory'] = "admin.feature.products.sliders";
     }
@@ -27,8 +21,9 @@ class SliderProductController extends Controller
      */
     public function index()
     {
+        $sliders = SliderModel::all();
         $ref = $this->data;
-        return view($this->data['view_directory'] . '.index', compact('ref'));
+        return view($this->data['view_directory'] . '.index', compact('ref', 'sliders'));
     }
 
     /**
@@ -38,14 +33,8 @@ class SliderProductController extends Controller
     {
         $ref = $this->data;
 
-        if (old('color')) {
-            $array_color = array_flip(old('color'));
-        } else {
-            $array_color = [];
-        }
-
         $ref["url"] = route("slider.store");
-        return view($this->data['view_directory'] . '.form', compact('ref', 'array_color'));
+        return view($this->data['view_directory'] . '.form', compact('ref'));
     }
 
     /**
@@ -53,7 +42,51 @@ class SliderProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            "slider_title" => ['required', 'string', 'max:100'],
+            "view" => ['required', 'string', 'max:25'],
+            "button_title" => ['nullable', 'string', 'max:255'],
+            "button_link" => ['nullable', 'string', 'max:255'],
+            "button_background" => ['nullable', 'string', 'max:255'],
+            "button_text_color" => ['nullable', 'string', 'max:255'],
+            "horizontal" => ['nullable', 'string', 'max:255'],
+            "vertical" => ['nullable', 'string', 'max:250'],
+        ]);
+
+
+        $request->validate([
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:5120'],
+        ]);
+
+        // mengecek gambar diinput
+        // menambahkan gambar ke folder storage public
+        if ($request->hasFile('image')) {
+            $image = $request->file('image'); // Mengakses file tertentu
+            $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+        } else {
+            return redirect()->back()->with(
+                'error',
+                'Anda harus mengupload gambar terlebih dahulu'
+            );
+        }
+
+        try {
+            $slider = new SliderModel();
+            $slider->title = $data["slider_title"];
+            $slider->view = $data["view"];
+            $slider->button_title = $data["button_title"];
+            $slider->button_link = $data["button_link"];
+            $slider->image = 'storage/' . $image_path;
+            $slider->button_background = $data["button_background"];
+            $slider->button_text_color = $data["button_text_color"];
+            $slider->button_horizontal_layout = $data["horizontal"];
+            $slider->button_vertical_layout = $data["vertical"];
+            $slider->save();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('slider.index')->with('success', 'Berhasil menambah slider');
     }
 
     /**
@@ -85,6 +118,17 @@ class SliderProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $slider = SliderModel::findOrFail($id);
+
+        $imagePath = public_path($slider->image);
+
+        if (File::exists($imagePath)) {
+            File::delete($imagePath);
+            $slider->delete();
+        } else {
+            dd('file tidak ada');
+        }
+
+        return redirect()->route('slider.index')->with('success', 'Slider dan gambar berhasil dihapus.');
     }
 }

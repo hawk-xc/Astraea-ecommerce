@@ -29,98 +29,83 @@
                                     <div class="col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">Nama Slider</label>
-                                            <input id="name" name="name" class="form-control bg-white"
+                                            <input id="name" name="slider_title" class="form-control bg-white"
                                                 type="text" placeholder="Nama Slider"
-                                                value="{{ old('name', isset($data) ? $data['name'] : '') }}">
-                                            <input type="checkbox" name="buttonAdded">
+                                                value="{{ old('slider_title', isset($data) ? $data['slider_title'] : '') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">View Slider</label>
                                             <div class="input-group">
-                                                <select class="form-control">
+                                                <select class="form-control" name="view">
                                                     <option value="Desktop">Desktop</option>
                                                     <option value="SmartPhone">SmartPhone</option>
                                                 </select>
                                             </div>
                                         </div>
 
-
                                         <div class="mb-3">
-                                            <label class="form-label">Jumlah Barang</label>
-                                            <input id="text" name="stock" class="input-angka form-control bg-white"
-                                                type="text" placeholder="Jumlah Barang"
-                                                value="{{ old('stock', isset($data) ? $data['stock'] : '') }}">
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Berat Barang</label>
-                                            <div class="input-group">
-                                                <input id="text" name="weight"
-                                                    class="input-angka form-control bg-white" type="text"
-                                                    placeholder="Berat Barang"
-                                                    value="{{ old('weight', isset($data) ? $data['weight'] : '') }}">
-                                                <span class="input-group-text ">Gram</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Deskripsi Barang</label>
-                                            <textarea rows="7" id="description" name="description" class="form-control" type="text"
-                                                placeholder="Silahkan masukkan deskripsi barang">{{ old('description', isset($data) ? $data['description'] : '') }}</textarea>
+                                            <input type="checkbox" name="enable_button" id="enable_button">
+                                            <label class="form-label" for="enable_button">Tambahkan tombol</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12 d-none" id="button_config">
                             <div class="card mb-4">
                                 <div class="card-header d-flex justify-content-between align-items-center pb-3">
-                                    <h6 class="text-bold">{{ strtoupper('Komponen Biaya dan Keuntungan Produk') }}</h6>
+                                    <h6 class="text-bold">{{ strtoupper('Ubah Pengaturan tombol') }}</h6>
                                 </div>
                                 <div class="card-body">
                                     <div class="col-md-12">
                                         <div class="mb-3">
-                                            <label class="form-label">Harga Pokok Penjualan</label>
+                                            <label class="form-label">Title Tombol</label>
+                                            <input id="button_title" name="button_title" class="form-control bg-white"
+                                                type="text" placeholder="Title Tombol"
+                                                value="{{ old('button_title', isset($data) ? $data['button_title'] : '') }}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Link Tombol</label>
+                                            <input id="button_link" name="button_link" class="form-control bg-white"
+                                                type="text" placeholder="Link Tombol. ex: https://google.com"
+                                                value="{{ old('button_link', isset($data) ? $data['button_link'] : '') }}">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Warna Latar Belakang Tombol</label>
+                                            <input id="button_background" name="button_background" class="form-control"
+                                                type="color" style="width: 150px; heigth: 70px" value="#ffffff">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Warna Teks Tombol</label>
+                                            <input id="button_text_color" name="button_text_color" class="form-control"
+                                                type="color" style="width: 150px; heigth: 70px" value="#000000">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Tata Letak Sumbu Horizontal</label>
                                             <div class="input-group">
-                                                <span class="input-group-text " id="l_hpp">Rp.</span>
-                                                <input id="hpp" name="hpp"
-                                                    class="input-angka form-control bg-white" type="text"
-                                                    placeholder="Harga Pokok Penjualan"
-                                                    value="{{ old('hpp', isset($data) ? $data['hpp'] : '') }}">
+                                                <select class="form-control" name="horizontal">
+                                                    <option value="left">Kiri</option>
+                                                    <option value="center">Tengah</option>
+                                                    <option value="right" selected>Kanan</option>
+                                                </select>
                                             </div>
                                         </div>
+
                                         <div class="mb-3">
-                                            <label class="form-label">Margin Keuntungan</label>
+                                            <label class="form-label">Tata Letak Sumbu Vertikal</label>
                                             <div class="input-group">
-                                                <input id="margin" name="margin"
-                                                    class="percentage-input form-control bg-white" type="text"
-                                                    placeholder="Harga Jual"
-                                                    value="{{ old('margin', isset($data) ? $data['margin'] : '') }}">
-                                                <span class="input-group-text ">%</span>
+                                                <select class="form-control" name="vertical">
+                                                    <option value="top">Atas</option>
+                                                    <option value="middle">Tengah</option>
+                                                    <option value="bottom" selected>Bawah</option>
+                                                </select>
                                             </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Biaya Layanan</label>
-                                            <div class="input-group">
-                                                <input id="b_layanan" name="b_layanan"
-                                                    class="percentage-input form-control bg-white" type="text"
-                                                    placeholder="Biaya Layanan"
-                                                    value="{{ old('b_layanan', isset($data) ? $data['b_layanan'] : '') }}">
-                                                <span class="input-group-text ">%</span>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Harga Jual</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text " id="harga_jual">Rp.</span>
-                                                <input id="harga_jual" name="price"
-                                                    class="input-angka form-control bg-white" type="text"
-                                                    placeholder="Harga Jual"
-                                                    value="{{ old('price', isset($data) ? $data['price'] : '') }}">
-                                            </div>
-                                            <span id="r_h_jual"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -142,17 +127,17 @@
                                         <div class="form-group">
                                             <div class="main-img-preview">
                                                 <img id="front" class="thumbnail w-100" {{-- src="{{ asset('admin/img/placeholder.png') }}" --}}
-                                                    src="{{ isset($data_gambar['front'][0]['name']) ? asset('storage/' . $data_gambar['front'][0]['name']) : asset('admin/img/placeholder.png') }}"
+                                                    src="{{ isset($data_gambar['image'][0]['image']) ? asset('storage/' . $data_gambar['front'][0]['name']) : asset('admin/img/placeholder.png') }}"
                                                     title="Foto Tampak Depan">
                                             </div>
                                             <div class="frn float-end">
-                                                <input id="pos-front" name="pos-front"
-                                                    value="{{ isset($data_gambar['front'][0]['name']) ? 'old_true' : '' }}"
+                                                <input id="pos-front" name="image"
+                                                    value="{{ isset($data_gambar['image'][0]['name']) ? 'old_true' : '' }}"
                                                     readonly hidden>
                                                 <div
                                                     class="mb-3 mt-3 me-1 w-auto fileUpload btn btn-outline-primary col-md-6">
                                                     <span><i class="bi bi-upload"></i></span>
-                                                    <input id="input-front" name="front" type="file"
+                                                    <input id="input-front" name="image" type="file"
                                                         class="btnUpload attachment_upload" value>
                                                 </div>
                                                 <button id="remove-front" type="button"
@@ -186,10 +171,18 @@
 
     <script>
         $(document).ready(function() {
+            const checkButton = document.getElementById('enable_button');
+            const button_config = document.getElementById('button_config');
+
+            checkButton.addEventListener('change', function() {
+                if (checkButton.checked) {
+                    button_config.classList.remove('d-none');
+                } else {
+                    button_config.classList.add('d-none');
+                }
+            })
+
             function populateSelect2(selector, url, selectedIds, placeholder) {
-
-
-
                 $(selector).select2({
                     placeholder: placeholder,
                     ajax: {

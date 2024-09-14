@@ -15,12 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('image');
-            $table->string('button_title');
-            $table->string('button_link');
-            $table->string('button_background');
-            $table->string('button_text_color');
-            $table->string('button_horizontal_layout');
-            $table->string('button_vertical_layout');
+            $table->enum('view', ['desktop', 'smartphone'])->default('desktop');
+            $table->string('button_title')->nullable();
+            $table->string('button_link')->nullable();
+            $table->string('button_background')->default('#ffffff');
+            $table->string('button_text_color')->default('#000000');
+            $table->string('button_horizontal_layout')->default('right');
+            $table->string('button_vertical_layout')->default('bottom');
             $table->timestamps();
         });
     }

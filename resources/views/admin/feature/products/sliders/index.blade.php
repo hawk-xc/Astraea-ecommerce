@@ -19,13 +19,42 @@
                         <table class="table table-stripe hampers_table">
                             <thead>
                                 <tr>
-                                    <th class="text-center font-weight-bold text-primary">Slider</th>
+                                    <th class="text-center font-weight-bold text-primary w-5">Slider</th>
                                     <th class="font-weight-bold text-primary">Tampilan</th>
-                                    <th class="font-weight-bold text-primary">Gambar</th>
+                                    <th class="font-weight-bold text-primary">Tombol</th>
+                                    <th class="font-weight-bold text-primary">Referensi</th>
                                     <th class="text-center w-1 font-weight-bold text-primary">action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @foreach ($sliders as $key => $slider)
+                                    <tr>
+                                        <td class="fw-bold"> <img src="{{ asset($slider->image) }}" class="product-img"
+                                                style="width: 250px" alt=""></td>
+                                        <td>{{ $slider->view }}</td>
+                                        <td>{{ isset($slider->button_title) ? 'Ya' : 'Tidak' }}</td>
+                                        <td>{{ isset($slider->button_link) ? $slider->button_link : '-' }}</td>
+                                        <td>
+                                            <a href="{{ route('slider.edit', $slider->id) }}"
+                                                class="btn bg-gradient-info btn-tooltip">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <!-- Form Delete -->
+                                            <form action="{{ route('slider.destroy', $slider->id) }}" method="POST"
+                                                class="d-inline deleteForm">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn bg-gradient-danger btn-tooltip show-alert-delete-box"
+                                                    data-toggle="tooltip" title="Delete" data-name="{{ $slider->id }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -38,119 +67,29 @@
     <script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin/js/dataTables.bootstrap5.min.js') }}"></script>
     <script type="text/javascript">
-        $(function() {
-            var table = $('.hampers_table').DataTable({
-                language: {
-                    paginate: {
-                        next: "›",
-                        previous: "‹"
-                    }
-                },
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('hampers.data') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'categories.name',
-                        name: 'categories.name'
-                    },
-                    {
-                        data: 'color.name',
-                        name: 'color.name'
-                    },
-                    {
-                        data: 'price',
-                        name: 'price'
-                    },
-                    {
-                        data: 'stock',
-                        name: 'stock'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ],
-                columnDefs: [{
-                        "targets": 0,
-                        "className": "text-center align-middle text-sm font-weight-normal",
-                        "width": "4%"
-                    },
-                    {
-                        "targets": 1,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 2,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 3,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 4,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 5,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 6,
-                        "className": "align-middle text-sm font-weight-normal",
-                    }
-                ]
-            });
+        $(document).on('click', '.show-alert-delete-box', function(event) {
+            event.preventDefault(); // Prevent form submission
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
 
-            $(document).on('click', '#deleteRow', function(event) {
-                var form = $(this).closest("form");
-                var name = $(this).data("name");
-                console.log($('.hampers_table tr.active'));
-                event.preventDefault();
-                $.confirm({
-                    icon: 'fa fa-warning',
-                    title: 'Yakin Hapus Data',
-                    content: 'User ' + $(this).data('message') + ' Akan di hapus secara permanen',
-                    type: 'orange',
-                    typeAnimated: true,
-                    animationSpeed: 500,
-                    closeAnimation: 'zoom',
-                    closeIcon: true,
-                    closeIconClass: 'fa fa-close',
-                    draggable: true,
-                    backgroundDismiss: false,
-                    backgroundDismissAnimation: 'glow',
-                    buttons: {
-                        delete: {
-                            text: 'Hapus',
-                            btnClass: 'btn-red',
-                            action: function() {
-                                form.submit();
-                                // $.ajax({
-                                //     type: 'POST',
-                                //     dataType: 'json',
-                                //     timeout: 15000
-                                // }).done(function(msg, status) {
-                                //     //remove data from list
-                                // }).fail(function() {
-                                //     let res = msg.responseJSON;
-                                //     console.log(msg);
-                                // })
-                            }
-                        },
-                        batal: function() {}
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'Yakin Hapus Data?',
+                content: 'Data dengan ID ' + name + ' akan dihapus secara permanen.',
+                type: 'orange',
+                typeAnimated: true,
+                buttons: {
+                    confirm: {
+                        text: 'Hapus',
+                        btnClass: 'btn-red',
+                        action: function() {
+                            form.submit(); // Submit form setelah konfirmasi
+                        }
+                    },
+                    cancel: function() {
+                        // Tidak melakukan apa-apa jika klik "Batal"
                     }
-                });
+                }
             });
         });
     </script>

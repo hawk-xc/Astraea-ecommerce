@@ -17,7 +17,8 @@ class SliderSeeder extends Seeder
         $sliders = [
             [
                 'title' => 'Slider 1',
-                'image' => 'guest/img/slide-home/1.png',
+                'view' => 'desktop',
+                'image' => 'storage/images/1.png',
                 'button_title' => 'Selengkapnya',
                 'button_link' => '#',
                 'button_background' => '#fff',
@@ -27,7 +28,8 @@ class SliderSeeder extends Seeder
             ],
             [
                 'title' => 'Slider 2',
-                'image' => 'guest/img/slide-home/2.png',
+                'view' => 'desktop',
+                'image' => 'storage/images/2.png',
                 'button_title' => 'Selengkapnya',
                 'button_link' => '#',
                 'button_background' => '#fff',
@@ -37,7 +39,8 @@ class SliderSeeder extends Seeder
             ],
             [
                 'title' => 'Slider 3',
-                'image' => 'guest/img/slide-home/3.png',
+                'view' => 'desktop',
+                'image' => 'storage/images/3.png',
                 'button_title' => 'Selengkapnya',
                 'button_link' => '#',
                 'button_background' => '#fff',
