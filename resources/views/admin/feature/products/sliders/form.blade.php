@@ -13,10 +13,11 @@
     @include('admin.layouts.navbars.topnav', ['title' => Str::upper($ref['title'])])
     <div class="container-fluid py-4">
         <form method="POST" action="{{ $ref['url'] }}" enctype="multipart/form-data">
-            @if (isset($data))
+            @if (isset($slider))
                 @method('PUT')
             @endif
             @csrf
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="row">
@@ -31,15 +32,19 @@
                                             <label class="form-label">Nama Slider</label>
                                             <input id="name" name="slider_title" class="form-control bg-white"
                                                 type="text" placeholder="Nama Slider"
-                                                value="{{ old('slider_title', isset($data) ? $data['slider_title'] : '') }}">
+                                                value="{{ old('slider_title', isset($slider) ? $slider->title : '') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">View Slider</label>
                                             <div class="input-group">
                                                 <select class="form-control" name="view">
-                                                    <option value="Desktop">Desktop</option>
-                                                    <option value="SmartPhone">SmartPhone</option>
+                                                    <option value="Desktop"
+                                                        {{ old('view', isset($slider) ? ($slider->view == 'desktop' ? 'selected' : '') : '') }}>
+                                                        Desktop</option>
+                                                    <option value="SmartPhone"
+                                                        {{ old('view', isset($slider) ? ($slider->view == 'smartphone' ? 'selected' : '') : '') }}>
+                                                        SmartPhone</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -64,35 +69,43 @@
                                             <label class="form-label">Title Tombol</label>
                                             <input id="button_title" name="button_title" class="form-control bg-white"
                                                 type="text" placeholder="Title Tombol"
-                                                value="{{ old('button_title', isset($data) ? $data['button_title'] : '') }}">
+                                                value="{{ old('button_title', isset($slider) ? $slider->button_title : '') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Link Tombol</label>
                                             <input id="button_link" name="button_link" class="form-control bg-white"
                                                 type="text" placeholder="Link Tombol. ex: https://google.com"
-                                                value="{{ old('button_link', isset($data) ? $data['button_link'] : '') }}">
+                                                value="{{ old('button_link', isset($slider) ? $slider->button_link : '') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Warna Latar Belakang Tombol</label>
                                             <input id="button_background" name="button_background" class="form-control"
-                                                type="color" style="width: 150px; heigth: 70px" value="#ffffff">
+                                                type="color" style="width: 150px; heigth: 70px"
+                                                value="{{ old('button_background', isset($slider) ? $slider->button_background : '#ffffff') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Warna Teks Tombol</label>
                                             <input id="button_text_color" name="button_text_color" class="form-control"
-                                                type="color" style="width: 150px; heigth: 70px" value="#000000">
+                                                type="color" style="width: 150px; heigth: 70px"
+                                                value="{{ old('button_text_color', isset($slider) ? $slider->button_text_color : '#000000') }}">
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Tata Letak Sumbu Horizontal</label>
                                             <div class="input-group">
                                                 <select class="form-control" name="horizontal">
-                                                    <option value="left">Kiri</option>
-                                                    <option value="center">Tengah</option>
-                                                    <option value="right" selected>Kanan</option>
+                                                    <option value="left"
+                                                        {{ old('horizontal', isset($slider) ? ($slider->button_horizontal_layout == 'left' ? 'selected' : '') : '') }}>
+                                                        Kiri</option>
+                                                    <option value="center"
+                                                        {{ old('horizontal', isset($slider) ? ($slider->button_horizontal_layout == 'center' ? 'selected' : '') : '') }}>
+                                                        Tengah</option>
+                                                    <option value="right"
+                                                        {{ old('horizontal', isset($slider) ? ($slider->button_horizontal_layout == 'right' ? 'selected' : '') : 'selected') }}>
+                                                        Kanan</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -101,9 +114,15 @@
                                             <label class="form-label">Tata Letak Sumbu Vertikal</label>
                                             <div class="input-group">
                                                 <select class="form-control" name="vertical">
-                                                    <option value="top">Atas</option>
-                                                    <option value="middle">Tengah</option>
-                                                    <option value="bottom" selected>Bawah</option>
+                                                    <option value="top"
+                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'top' ? 'selected' : '') : '') }}>
+                                                        Atas</option>
+                                                    <option value="middle"
+                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'middle' ? 'selected' : '') : '') }}>
+                                                        Tengah</option>
+                                                    <option value="bottom"
+                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'bottom' ? 'selected' : '') : 'selected') }}>
+                                                        Bawah</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -126,9 +145,14 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="main-img-preview">
-                                                <img id="front" class="thumbnail w-100" {{-- src="{{ asset('admin/img/placeholder.png') }}" --}}
-                                                    src="{{ isset($data_gambar['image'][0]['image']) ? asset('storage/' . $data_gambar['front'][0]['name']) : asset('admin/img/placeholder.png') }}"
-                                                    title="Foto Tampak Depan">
+                                                @if (isset($slider))
+                                                    <img src="{{ asset($slider->image) }}" alt="{{ $slider->title }}"
+                                                        id="front" class="thumbnail w-100">
+                                                @else
+                                                    <img id="front" class="thumbnail w-100" {{-- src="{{ asset('admin/img/placeholder.png') }}" --}}
+                                                        src="{{ isset($data_gambar['image'][0]['image']) ? asset('storage/' . $data_gambar['front'][0]['name']) : asset('admin/img/placeholder.png') }}"
+                                                        title="Foto Tampak Depan">
+                                                @endif
                                             </div>
                                             <div class="frn float-end">
                                                 <input id="pos-front" name="image"
@@ -156,7 +180,12 @@
                             <div class="float-end">
                                 <a href="{{ route('product.index') }}" type="submit"
                                     class="me-1 btn bg-gradient-danger">Batal</a>
-                                <button type="submit" class="btn bg-gradient-info">Simpan</button>
+
+                                @if (isset($slider))
+                                    <button type="submit" class="btn bg-gradient-info">Update</button>
+                                @else
+                                    <button type="submit" class="btn bg-gradient-info">Simpan</button>
+                                @endif
                             </div>
                         </div>
                     </div>

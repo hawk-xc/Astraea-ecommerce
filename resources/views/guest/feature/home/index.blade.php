@@ -27,18 +27,26 @@
                         </div>
                         {{-- button bisa disesuaikan, apabila terdapat kondisi true, maka tampilkan button dibawah --}}
                         @if ($slider->button_title)
-                            <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
-                                style="
+                            <a href='{{ $slider->button_link }}'>
+                                <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                                    style="
                         position: absolute;
-                        {{ $slider->button_background !== '$fff' ? 'background_color: ' . $slider->button_background . ';' : '' }}
-                        {{ $slider->button_text_color !== '$000' ? 'color: ' . $slider->button_text_color . ';' : '' }}
-                        bottom: 5rem;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
+                        background-color: {{ $slider->button_background }};
+                        color: {{ $slider->button_text_color }};
+                        
+                        {{ $slider->button_vertical_layout == 'top' ? 'top: 20rem; margin-top: 15rem;' : '' }}
+                        {{ $slider->button_vertical_layout == 'bottom' ? 'bottom: 10rem;' : '' }}
+                        {{ $slider->button_vertical_layout == 'center' ? 'bottom: 50%;' : '' }}
+
+                        {{ $slider->button_horizontal_layout == 'middle' ? 'left: 50%' : '' }}
+                        {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem;' : '' }}
+                        {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem;' : '' }}
+                        transform: translate(-50%, 100%);
                         ">read
-                                more <i class="ri-links-fill"></i>
+                                    more <i class="ri-links-fill"></i>
                         @endif
                         </button>
+                        </a>
                     </div>
                 </div>
             </div>

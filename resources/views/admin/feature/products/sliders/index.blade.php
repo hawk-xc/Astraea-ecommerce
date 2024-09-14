@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center font-weight-bold text-primary w-5">Slider</th>
+                                    <th class="font-weight-bold text-primary">Nama Slider</th>
                                     <th class="font-weight-bold text-primary">Tampilan</th>
                                     <th class="font-weight-bold text-primary">Tombol</th>
                                     <th class="font-weight-bold text-primary">Referensi</th>
@@ -31,6 +32,7 @@
                                     <tr>
                                         <td class="fw-bold"> <img src="{{ asset($slider->image) }}" class="product-img"
                                                 style="width: 250px" alt=""></td>
+                                        <td>{{ $slider->title }}</td>
                                         <td>{{ $slider->view }}</td>
                                         <td>{{ isset($slider->button_title) ? 'Ya' : 'Tidak' }}</td>
                                         <td>{{ isset($slider->button_link) ? $slider->button_link : '-' }}</td>
