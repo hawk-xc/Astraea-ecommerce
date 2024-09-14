@@ -9,8 +9,8 @@
 
 ## Task Lists
 
-- Slider Content Automation pada Landing page
 - Slider pada gambar barang didetail product
+- ✅ Slider Content Automation pada Landing page
 - ✅ product detail sesuai format inputan
 - ✅ controller resource bagian create (image, color)
 - ✅ membuat text description barang sesuai format inputan
