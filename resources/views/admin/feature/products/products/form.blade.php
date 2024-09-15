@@ -490,7 +490,8 @@
             // populate sku
             var categorySelector = '.sku';
             var categoryUrl = "{{ route('sku.sDatas') }}";
-            var selectedCategoryIds = ['{{ old('sku_id', isset($data)) ? $data['sku_id'] : '' }}', ];
+            // saya menganti selectedCategoryIds, dikarenakan terdapat error disaat upload gambar
+            var selectedCategoryIds = ['{{ old('sku_id', $data['sku_id'] ?? '') }}', ];
             populateSelect2(categorySelector, categoryUrl, selectedCategoryIds, "Pilih Seri");
 
             // colorjs

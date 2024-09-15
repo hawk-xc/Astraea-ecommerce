@@ -395,14 +395,14 @@ class ProductController extends Controller
         ]);
 
         $request->validate([
-            'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'left' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'right' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'detail1' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'front' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'back' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'left' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'right' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'detail1' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'detail2' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'detail3' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'detail4' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
         ], [], [
             'front' => "Gambar Depan",
             'back' => "Gambar Belakang",
