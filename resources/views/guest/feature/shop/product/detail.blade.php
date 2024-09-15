@@ -231,7 +231,8 @@
                 @foreach ($data['related_products'] as $related_product)
                     <div class="col-lg-4 col-md-6 text-center">
                         <div class="single-product-item">
-                            <a href="{{ route('shop-product.show', $related_product['name']) }}">
+                            <a href="{{ route('shop-product.show', $related_product['name']) }}"
+                                style="text-decoration: none;">
                                 <div class="product-image">
                                     @if (isset($related_product['images'][0]['name']))
                                         <img src="{{ asset('storage/' . $related_product['images'][0]['name']) }}"
