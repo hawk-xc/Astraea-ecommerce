@@ -9,7 +9,7 @@
 
 ## Task Lists
 
-- Slider pada gambar barang didetail product
+- ✅ Fitur Carousel didetail product
 - ✅ Slider Content Automation pada Landing page
 - ✅ product detail sesuai format inputan
 - ✅ controller resource bagian create (image, color)

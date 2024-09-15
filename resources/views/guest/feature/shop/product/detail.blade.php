@@ -1,6 +1,9 @@
 @extends('guest.layouts.app')
 
 @section('content')
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <!-- breadcrumb-section -->
     <div class="breadcrumb-section breadcrumb-bg">
         <div class="container">
@@ -22,8 +25,70 @@
                 <div class="col-md-5">
                     <div class="single-product-img">
                         @if (isset($data['product']['images'][0]['name']))
-                            <img src="{{ asset('storage/' . $data['product']['images'][0]['name']) }}"
-                                id="single-product-img" alt="">
+                            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel"
+                                data-bs-interval="3000">
+                                <!-- Carousel indicators -->
+                                <div class="carousel-indicators">
+                                    @foreach ($data['product']['images'] as $index => $productImages)
+                                        <button type="button" data-bs-target="#productCarousel"
+                                            data-bs-slide-to="{{ $index }}" class="{{ $index == 0 ? 'active' : '' }}"
+                                            aria-current="{{ $index == 0 ? 'true' : '' }}"
+                                            aria-label="Slide {{ $index + 1 }}"></button>
+                                    @endforeach
+                                </div>
+
+                                <!-- Carousel inner (slides) -->
+                                <div class="carousel-inner">
+                                    @foreach ($data['product']['images'] as $index => $productImages)
+                                        <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                            {{-- <img src="{{ asset('storage/' . $productImages['name']) }}" class="d-block"
+                                                alt="..." style="height: 50px"> --}}
+                                            <img src="{{ asset('storage/' . $productImages['name']) }}"
+                                                class="d-block square-image" alt="Product Image">
+
+                                        </div>
+                                    @endforeach
+                                    <style>
+                                        .square-image {
+                                            width: 450px;
+                                            /* Sesuaikan ukuran persegi */
+                                            height: 450px;
+                                            object-fit: cover;
+                                            /* Memotong gambar agar sesuai ukuran tanpa distorsi */
+                                        }
+
+                                        .carousel-control-prev-icon,
+                                        .carousel-control-next-icon {
+                                            background-color: rgb(231, 210, 210);
+                                            color: black;
+                                            /* Mengubah warna ikon menjadi hitam */
+                                            border-radius: 50%;
+                                            /* Menambahkan efek lingkaran jika diinginkan */
+                                            width: 40px;
+                                            height: 40px;
+                                        }
+
+                                        .carousel-control-prev,
+                                        .carousel-control-next {
+                                            opacity: 1;
+                                            /* Memastikan tombol selalu terlihat */
+                                        }
+                                    </style>
+
+                                </div>
+
+                                <!-- Carousel controls -->
+                                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                                    data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
                         @else
                             <img src="{{ asset('guest/img/latest-news/none_image.png') }}" alt="">
                         @endif
@@ -172,8 +237,8 @@
                                         <img src="{{ asset('storage/' . $related_product['images'][0]['name']) }}"
                                             class="product-img" alt="">
                                     @else
-                                        <img src="{{ asset('guest/img/latest-news/none_image.png') }}" class="product-img"
-                                            alt="">
+                                        <img src="{{ asset('guest/img/latest-news/none_image.png') }}"
+                                            class="product-img" alt="">
                                     @endif
                                 </div>
                                 <h3>{{ $related_product['name'] }}</h3>
