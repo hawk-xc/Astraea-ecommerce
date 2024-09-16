@@ -19,6 +19,8 @@
     <div class="single-product mt-150 mb-150">
         <div class="container">
             <div class="row">
+
+                {{-- ejer --}}
                 <div class="col-md-5">
                     <div class="single-product-img">
                         @if (isset($data['product']['images'][0]['name']))
@@ -38,29 +40,21 @@
                                 <div class="carousel-inner">
                                     @foreach ($data['product']['images'] as $index => $productImages)
                                         <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                                            {{-- <img src="{{ asset('storage/' . $productImages['name']) }}" class="d-block"
-                                                alt="..." style="height: 50px"> --}}
                                             <img src="{{ asset('storage/' . $productImages['name']) }}"
-                                                class="d-block square-image" alt="Product Image">
-
+                                                class="d-block square-image" alt="Product Image" draggable="false">
                                         </div>
                                     @endforeach
                                     <style>
                                         .square-image {
                                             width: 450px;
-                                            /* Sesuaikan ukuran persegi */
                                             height: 450px;
                                             object-fit: cover;
-                                            /* Memotong gambar agar sesuai ukuran tanpa distorsi */
                                         }
 
                                         .carousel-control-prev-icon,
                                         .carousel-control-next-icon {
                                             background-color: rgb(231, 210, 210);
-                                            color: black;
-                                            /* Mengubah warna ikon menjadi hitam */
                                             border-radius: 50%;
-                                            /* Menambahkan efek lingkaran jika diinginkan */
                                             width: 40px;
                                             height: 40px;
                                         }
@@ -68,43 +62,80 @@
                                         .carousel-control-prev,
                                         .carousel-control-next {
                                             opacity: 1;
-                                            /* Memastikan tombol selalu terlihat */
                                         }
                                     </style>
-
                                 </div>
 
                                 <!-- Carousel controls -->
                                 <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                     data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    {{-- <span class="visually-hidden">Previous</span> --}}
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
                                     data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    {{-- <span class="visually-hidden">Next</span> --}}
                                 </button>
                             </div>
                         @else
                             <img src="{{ asset('guest/img/latest-news/none_image.png') }}" alt="">
                         @endif
                     </div>
-                    <div class="single-product-allimg"
-                        style="
-                    display: flex;
-                    flex-direction: row;
-                    overflow-y: scroll;
-                    overflow-x: hidden;
-                    /* width: 3rem; */
-                    ">
-                        @foreach ($data['product']['images'] as $productImages)
-                            <div class="single-product-sub-img">
-                                <img src="{{ asset('storage/' . $productImages['name']) }}" alt="">
+
+                    <!-- Thumbnails (Horizontal Scroll with Drag Support) -->
+                    <div class="single-product-allimg" id="thumbnailContainer"
+                        style="display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; cursor: grab;">
+                        @foreach ($data['product']['images'] as $index => $productImages)
+                            <div class="single-product-sub-img" style="flex: 0 0 auto; margin-right: 10px;">
+                                <img src="{{ asset('storage/' . $productImages['name']) }}"
+                                    style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;"
+                                    data-bs-target="#productCarousel" data-bs-slide-to="{{ $index }}"
+                                    draggable="false" />
                             </div>
                         @endforeach
                     </div>
                 </div>
+
+                <!-- JavaScript for Drag-to-Scroll -->
+                <script>
+                    const thumbnailContainer = document.getElementById('thumbnailContainer');
+
+                    let isDown = false;
+                    let startX;
+                    let scrollLeft;
+
+                    thumbnailContainer.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        thumbnailContainer.classList.add('active');
+                        startX = e.pageX - thumbnailContainer.offsetLeft;
+                        scrollLeft = thumbnailContainer.scrollLeft;
+                    });
+
+                    thumbnailContainer.addEventListener('mouseleave', () => {
+                        isDown = false;
+                        thumbnailContainer.classList.remove('active');
+                    });
+
+                    thumbnailContainer.addEventListener('mouseup', () => {
+                        isDown = false;
+                        thumbnailContainer.classList.remove('active');
+                    });
+
+                    thumbnailContainer.addEventListener('mousemove', (e) => {
+                        if (!isDown) return; // stop the fn from running
+                        e.preventDefault();
+                        const x = e.pageX - thumbnailContainer.offsetLeft;
+                        const walk = (x - startX) * 2; //scroll-fast
+                        thumbnailContainer.scrollLeft = scrollLeft - walk;
+                    });
+
+                    thumbnailContainer.addEventListener('touchmove', function(e) {
+                        const x = e.touches[0].clientX - thumbnailContainer.offsetLeft;
+                        thumbnailContainer.scrollLeft = scrollLeft - x;
+                    });
+                </script>
+
+                {{-- ejraj --}}
+
                 <div class="col-md-7">
                     <div class="single-product-content">
                         <h3>{{ $data['product']['name'] }}</h3>
