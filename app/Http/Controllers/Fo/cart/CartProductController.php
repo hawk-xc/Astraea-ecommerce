@@ -38,8 +38,6 @@ class CartProductController extends Controller
         $this->shippingRepository = $shippingRepository;
         $this->data['title'] = 'Cart Product';
         $this->data['view_directory'] = "guest.feature.cart.product";
-
-
     }
     /**
      * Display a listing of the resource.
@@ -56,8 +54,7 @@ class CartProductController extends Controller
         // dd($data);
 
         //lempar ke shop karena belum terisi
-        if(!isset($data['order']['no_nota']))
-        {
+        if (!isset($data['order']['no_nota'])) {
             return redirect()->route('shop-product.index')->with('toast_success', 'Cart masih kosong silahkan pilih product terlebih dahulu');
         }
 
@@ -112,41 +109,33 @@ class CartProductController extends Controller
             "color" => "Color"
         ]);
 
-        // dd($request->all());
         $quantity_product = isset($record['quantity']) ? $record['quantity'] : 1;
-
 
         $cart = $this->repository->cartCheckLogin();
         $waktuSekarang = Carbon::now()->toDateTimeString();
         // $data['product'] = $this->productRepository->getBySlugFo($slug);
-        // dd();
         $data['product'] = $this->productRepository->getById(app('encrypter')->decrypt($id, false));
 
-        $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'],$request->color, $cart);
+        $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'], $request->color, $cart);
 
-        // dd($dtl_product);
         if ($data['product']['stock'] <= 0) {
             // Jika stok kosong, alihkan ke halaman home dengan pesan error
             return redirect()->route('fo.home')->with('toast_warning', 'Maaf, stok sedang kosong.');
         }
 
-        if (isset($dtl_product['quantity'], $data['product']['stock']))
-        {
-            if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock'])
-            {
+        if (isset($dtl_product['quantity'], $data['product']['stock'])) {
+            if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock']) {
                 return back()->with('toast_warning', 'stok tidak mencukupi');
             }
         }
 
         try {
             //mendeteksi apakah cart sudah ada
-            if($this->repository->searchId($cart))
-            {
+            if ($this->repository->searchId($cart)) {
                 //cart yang sudah ada
                 $price_total = $this->repository->getById($cart)['sub_total_price'];
                 //mendeteksi product dalam cart apakah sudah ada atau belum
-                if(isset($dtl_product))
-                {
+                if (isset($dtl_product)) {
                     $quantity_product = $dtl_product['quantity'] + $quantity_product;
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
@@ -154,26 +143,24 @@ class CartProductController extends Controller
                         'color'           => $request->color,
                         'price'           => $data['product']['price'],
                         'sub_total_price' => $add_price,
-                       
-                        ];
+
+                    ];
                     $this->detail_repository->updateDetailCart($dtl_product['id'], $update_dtl);
-                }
-                else
-                {
+                } else {
                     //memasukkan produk yang belum ada dengan quantity satu
                     $add_price = $data['product']['price'];
                     $order_detail = [
                         'id'        => 'DTL-CRP-' . Helper::table_id(),
                         'order_id'  => $cart,
-                        'product_id'=> $data['product']['id'],
+                        'product_id' => $data['product']['id'],
                         'quantity'  => $quantity_product,
                         'color'     => $request->color,
                         'price'     => $add_price,
                         'sub_total_price' => $data['product']['price'],
                         'created_by' => 'pelanggan',
-                        
-                     ];
-                     $this->detail_repository->store($order_detail);
+
+                    ];
+                    $this->detail_repository->store($order_detail);
                 }
                 //menghitung sub total
                 $sub_total = $this->detail_repository->subTotalOrder($cart);
@@ -181,13 +168,11 @@ class CartProductController extends Controller
                 $this->shippingRepository->destroy($cart);
                 //mengupdate cart
                 $this->repository->edit($cart, [
-                        'shipping' => 0,
-                        'shipping_status' => 'PENDING',
-                        'sub_total_price' => $sub_total
-                    ]);
-            }
-            else
-            {
+                    'shipping' => 0,
+                    'shipping_status' => 'PENDING',
+                    'sub_total_price' => $sub_total
+                ]);
+            } else {
                 $order_data = [
                     'id'          => $cart,
                     'order_date'  => $waktuSekarang,
@@ -199,23 +184,23 @@ class CartProductController extends Controller
                     'address'     => '',
                     'created_by'  => 'pelanggan',
                     'updated_by'  => 'pelanggan',
-                    ];
-                if(isset(Auth()->guard('customer')->user()->id))
-                {
-                        $order_data['costumer_id'] = Auth()->guard('customer')->user()->id;
+                ];
+                if (isset(Auth()->guard('customer')->user()->id)) {
+                    $order_data['costumer_id'] = Auth()->guard('customer')->user()->id;
                 }
                 $this->repository->store($order_data);
 
-                 $order_detail = [
+                $order_detail = [
                     'id'        => 'DTL-CRP-' . Helper::table_id(),
                     'order_id'  => $cart,
-                    'product_id'=> $data['product']['id'],
+                    'product_id' => $data['product']['id'],
                     'quantity'  => $quantity_product,
+                    'color'     => $request->color,
                     'price'     => $data['product']['price'],
                     'sub_total_price' => $data['product']['price'],
                     'created_by' => 'pelanggan',
-                 ];
-                 $this->detail_repository->store($order_detail);
+                ];
+                $this->detail_repository->store($order_detail);
             }
             return back()->with('toast_success', 'Berhasil menambah produk');
         } catch (Exception $e) {
@@ -225,6 +210,9 @@ class CartProductController extends Controller
             return back()->with('toast_warning', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
         }
     }
+    // {
+    //     dd($request);
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -255,8 +243,8 @@ class CartProductController extends Controller
 
         $dtl_order = $this->detail_repository->orderDtll($orderDetailId);
         //check stock dan harga
-         $price = $dtl_order['product_data']['price'];
-         $price = $dtl_order['product_data']['stock'];
+        $price = $dtl_order['product_data']['price'];
+        $price = $dtl_order['product_data']['stock'];
         //masukkan price
 
         $order = true;
@@ -268,29 +256,28 @@ class CartProductController extends Controller
                 'quantity'        => $quantity,
                 'price'           => $dtl_order['product_data']['price'],
                 'sub_total_price' => $add_price,
-                ];
+            ];
             $this->detail_repository->updateDetailCart($orderDetailId, $update_dtl);
 
             //add ke keranjang
 
-                //menghitung sub total
-                $sub_total = $this->detail_repository->subTotalOrder($dtl_order['order_id']);
-                //menghapus  data shipping atau ongkir pengiriman
-                $this->shippingRepository->destroy($dtl_order['order_id']);
-                //mengupdate cart
-                $this->repository->edit($dtl_order['order_id'], [
-                        'shipping' => 0,
-                        'shipping_status' => 'PENDING',
-                        'sub_total_price' => $sub_total
-                ]);
+            //menghitung sub total
+            $sub_total = $this->detail_repository->subTotalOrder($dtl_order['order_id']);
+            //menghapus  data shipping atau ongkir pengiriman
+            $this->shippingRepository->destroy($dtl_order['order_id']);
+            //mengupdate cart
+            $this->repository->edit($dtl_order['order_id'], [
+                'shipping' => 0,
+                'shipping_status' => 'PENDING',
+                'sub_total_price' => $sub_total
+            ]);
 
             return response()->json([
-                    'price' => Helper::to_rupiah($dtl_order['product_data']['price']),
-                    'price_sub_total_product' => Helper::to_rupiah($add_price),
-                    'price_sub_total' => Helper::to_rupiah($sub_total),
-                    'success' => true
-                ]);
-
+                'price' => Helper::to_rupiah($dtl_order['product_data']['price']),
+                'price_sub_total_product' => Helper::to_rupiah($add_price),
+                'price_sub_total' => Helper::to_rupiah($sub_total),
+                'success' => true
+            ]);
         } else {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }

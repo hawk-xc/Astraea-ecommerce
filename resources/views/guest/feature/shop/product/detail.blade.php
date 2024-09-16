@@ -1,9 +1,6 @@
 @extends('guest.layouts.app')
 
 @section('content')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
     <!-- breadcrumb-section -->
     <div class="breadcrumb-section breadcrumb-bg">
         <div class="container">
@@ -81,19 +78,26 @@
                                 <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                     data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
+                                    {{-- <span class="visually-hidden">Previous</span> --}}
                                 </button>
                                 <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
                                     data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
+                                    {{-- <span class="visually-hidden">Next</span> --}}
                                 </button>
                             </div>
                         @else
                             <img src="{{ asset('guest/img/latest-news/none_image.png') }}" alt="">
                         @endif
                     </div>
-                    <div class="single-product-allimg">
+                    <div class="single-product-allimg"
+                        style="
+                    display: flex;
+                    flex-direction: row;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                    /* width: 3rem; */
+                    ">
                         @foreach ($data['product']['images'] as $productImages)
                             <div class="single-product-sub-img">
                                 <img src="{{ asset('storage/' . $productImages['name']) }}" alt="">
@@ -115,9 +119,9 @@
                                 @method('PUT')
                                 <div class="row mb-3">
                                     <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
-                                        value="1" required>
+                                        value="1" min="1" required>
                                     <select name="color" id="color" class="mr-3 color-selectore">
-                                        <option value="">Pilih warna</option>
+                                        {{-- <option value="">Pilih warna</option> --}}
                                         @foreach ($data['product']['colors'] as $color)
                                             <option value="{{ $color->id }}">{{ $color->name }}</option>
                                         @endforeach
@@ -215,6 +219,11 @@
 
         </div>
     </div>
+
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> --}}
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- end single product -->
 
     <!-- more products -->
@@ -231,8 +240,7 @@
                 @foreach ($data['related_products'] as $related_product)
                     <div class="col-lg-4 col-md-6 text-center">
                         <div class="single-product-item">
-                            <a href="{{ route('shop-product.show', $related_product['name']) }}"
-                                style="text-decoration: none;">
+                            <a href="{{ route('shop-product.show', $related_product['name']) }}">
                                 <div class="product-image">
                                     @if (isset($related_product['images'][0]['name']))
                                         <img src="{{ asset('storage/' . $related_product['images'][0]['name']) }}"
