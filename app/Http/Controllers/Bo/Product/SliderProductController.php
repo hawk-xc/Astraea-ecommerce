@@ -151,7 +151,7 @@ class SliderProductController extends Controller
             $slider->button_background = $data["button_background"];
             $slider->button_text_color = $data["button_text_color"];
             $slider->button_horizontal_layout = $data["horizontal"];
-            $slider->button_vertical_layout = $data["vertical"];
+            $slider->button_vertical_layout = 'top';
             $slider->update();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());

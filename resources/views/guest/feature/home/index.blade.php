@@ -20,35 +20,30 @@
             {{-- <div class="single-homepage-slider" style="background-image: url('{{ asset('guest/img/slide-home/1.png') }}')"> --}}
             <div class="single-homepage-slider" style="background-image: url('{{ asset($slider->image) }}')">
                 <div class="container">
-                    <div class="row">
+                    <div class="row" style="height: 100vh;">
                         <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
                             <div class="hero-text">
                             </div>
                         </div>
                         {{-- button bisa disesuaikan, apabila terdapat kondisi true, maka tampilkan button dibawah --}}
-                        @if ($slider->button_title)
-                            <a href='{{ $slider->button_link }}'>
-                                <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
-                                    style="
+                    </div>
+                </div>
+                @if ($slider->button_title)
+                    <a href='{{ $slider->button_link }}'>
+                        <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                            style="
                         position: absolute;
                         background-color: {{ $slider->button_background }};
                         color: {{ $slider->button_text_color }};
-                        
-                        {{ $slider->button_vertical_layout == 'top' ? 'top: 20rem; margin-top: 15rem;' : '' }}
-                        {{ $slider->button_vertical_layout == 'bottom' ? 'bottom: 10rem;' : '' }}
-                        {{ $slider->button_vertical_layout == 'center' ? 'bottom: 50%;' : '' }}
-
-                        {{ $slider->button_horizontal_layout == 'middle' ? 'left: 50%' : '' }}
-                        {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem;' : '' }}
-                        {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem;' : '' }}
-                        transform: translate(-50%, 100%);
+                        {{ $slider->button_horizontal_layout == 'center' ? 'left: 50%; transform: translate(-50%, 100%);' : '' }}
+                        {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(-50%, 100%);' : '' }}
+                        {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
+                        top: 55rem;
                         ">read
-                                    more <i class="ri-links-fill"></i>
-                        @endif
+                            more <i class="ri-links-fill"></i>
                         </button>
-                        </a>
-                    </div>
-                </div>
+                    </a>
+                @endif
             </div>
         @endforeach
     </div>

@@ -109,23 +109,6 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label">Tata Letak Sumbu Vertikal</label>
-                                            <div class="input-group">
-                                                <select class="form-control" name="vertical">
-                                                    <option value="top"
-                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'top' ? 'selected' : '') : '') }}>
-                                                        Atas</option>
-                                                    <option value="middle"
-                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'middle' ? 'selected' : '') : '') }}>
-                                                        Tengah</option>
-                                                    <option value="bottom"
-                                                        {{ old('vertical', isset($slider) ? ($slider->button_vertical_layout == 'bottom' ? 'selected' : '') : 'selected') }}>
-                                                        Bawah</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
