@@ -17,21 +17,22 @@
         {{-- <div class="single-homepage-slider homepage-bg-1"> --}}
         {{-- slider automation menggunakan blade laravel, plan saya ingin menggunakan looping --}}
         @foreach ($data['sliders'] as $slider)
-            {{-- <div class="single-homepage-slider" style="background-image: url('{{ asset('guest/img/slide-home/1.png') }}')"> --}}
-            <div class="single-homepage-slider" style="background-image: url('{{ asset($slider->image) }}')">
-                <div class="container">
-                    <div class="row" style="height: 100vh;">
-                        <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
-                            <div class="hero-text">
+            @if ($slider->view == 'desktop')
+                {{-- <div class="single-homepage-slider" style="background-image: url('{{ asset('guest/img/slide-home/1.png') }}')"> --}}
+                <div class="single-homepage-slider imager1" style="background-image: url('{{ asset($slider->image) }}')">
+                    <div class="container">
+                        <div class="row" style="height: 100vh;">
+                            <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                <div class="hero-text">
+                                </div>
                             </div>
+                            {{-- button bisa disesuaikan, apabila terdapat kondisi true, maka tampilkan button dibawah --}}
                         </div>
-                        {{-- button bisa disesuaikan, apabila terdapat kondisi true, maka tampilkan button dibawah --}}
                     </div>
-                </div>
-                @if ($slider->button_title)
-                    <a href='{{ $slider->button_link }}'>
-                        <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
-                            style="
+                    @if ($slider->button_title)
+                        <a href='{{ $slider->button_link }}'>
+                            <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                                style="
                         position: absolute;
                         background-color: {{ $slider->button_background }};
                         color: {{ $slider->button_text_color }};
@@ -40,13 +41,72 @@
                         {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
                         top: 55rem;
                         ">read
-                            more <i class="ri-links-fill"></i>
-                        </button>
-                    </a>
-                @endif
-            </div>
+                                more <i class="ri-links-fill"></i>
+                            </button>
+                        </a>
+                    @endif
+                </div>
+                {{-- @elseif ($slider->view == 'smartphone')
+                <div class="imager2">
+                    <span>hello world</span>
+                </div> --}}
+            @endif
+        @endforeach
+        @foreach ($data['sliders'] as $slider)
+            @if ($slider->view == 'smartphone')
+                <div class="single-homepage-slider imager2" style="background-image: url('{{ asset($slider->image) }}')">
+                    <div class="container">
+                        <div class="row" style="height: 100vh;">
+                            <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                <div class="hero-text">
+                                </div>
+                            </div>
+                            {{-- button bisa disesuaikan, apabila terdapat kondisi true, maka tampilkan button dibawah --}}
+                        </div>
+                    </div>
+                    @if ($slider->button_title)
+                        <a href='{{ $slider->button_link }}'>
+                            <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                                style="
+            position: absolute;
+            background-color: {{ $slider->button_background }};
+            color: {{ $slider->button_text_color }};
+            {{ $slider->button_horizontal_layout == 'center' ? 'left: 50%; transform: translate(-50%, 100%);' : '' }}
+            {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(-50%, 100%);' : '' }}
+            {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
+            top: 55rem;
+            ">read
+                                more <i class="ri-links-fill"></i>
+                            </button>
+                        </a>
+                    @endif
+                </div>
+            @endif
         @endforeach
     </div>
+    <style>
+        /* Menyembunyikan teks pada layar kecil (smartphone) */
+        @media (max-width: 768px) {
+            .imager1 {
+                display: none;
+            }
+
+            .imager2 {
+                display: block;
+            }
+        }
+
+        /* Menampilkan teks pada layar besar (desktop) */
+        @media (min-width: 769px) {
+            .imager1 {
+                display: block;
+            }
+
+            .imager2 {
+                display: none;
+            }
+        }
+    </style>
 
     <!-- end home page slider -->
 
