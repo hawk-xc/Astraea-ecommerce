@@ -151,6 +151,11 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
             'Laravel\\Prompts\\' => 16,
             'LaravelFrontendPresets\\ArgonPreset\\' => 35,
         ),
+        'J' => 
+        array (
+            'Jenssegers\\Agent\\' => 17,
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -500,6 +505,14 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         array (
             0 => __DIR__ . '/..' . '/laravel-frontend-presets/argon/src',
         ),
+        'Jenssegers\\Agent\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jenssegers/agent/src',
+        ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\Support\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Macroable',
@@ -631,6 +644,16 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
@@ -657,6 +680,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Http\\Controllers\\Bo\\Order\\ShippingController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Order/ShippingController.php',
         'App\\Http\\Controllers\\Bo\\Product\\HampersProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Product/HampersProductController.php',
         'App\\Http\\Controllers\\Bo\\Product\\ProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Product/ProductController.php',
+        'App\\Http\\Controllers\\Bo\\Product\\SliderProductController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/Product/SliderProductController.php',
         'App\\Http\\Controllers\\Bo\\User\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/User/UserController.php',
         'App\\Http\\Controllers\\Bo\\testimoni\\TestimoniController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/testimoni/TestimoniController.php',
         'App\\Http\\Controllers\\Bo\\visitor\\VisitorMailController' => __DIR__ . '/../..' . '/app/Http/Controllers/Bo/visitor/VisitorMailController.php',
@@ -754,11 +778,13 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'App\\Models\\PesananDetail' => __DIR__ . '/../..' . '/app/Models/PesananDetail.php',
         'App\\Models\\PesananHampers' => __DIR__ . '/../..' . '/app/Models/PesananHampers.php',
         'App\\Models\\PesananHampersDetail' => __DIR__ . '/../..' . '/app/Models/PesananHampersDetail.php',
+        'App\\Models\\ProductColor' => __DIR__ . '/../..' . '/app/Models/ProductColor.php',
         'App\\Models\\ProductImages' => __DIR__ . '/../..' . '/app/Models/ProductImages.php',
         'App\\Models\\Products' => __DIR__ . '/../..' . '/app/Models/Products.php',
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\Service' => __DIR__ . '/../..' . '/app/Models/Service.php',
         'App\\Models\\Sku' => __DIR__ . '/../..' . '/app/Models/Sku.php',
+        'App\\Models\\Slider' => __DIR__ . '/../..' . '/app/Models/Slider.php',
         'App\\Models\\SubCategories' => __DIR__ . '/../..' . '/app/Models/SubCategories.php',
         'App\\Models\\Testimoni' => __DIR__ . '/../..' . '/app/Models/Testimoni.php',
         'App\\Models\\Ulasan' => __DIR__ . '/../..' . '/app/Models/Ulasan.php',
@@ -994,6 +1020,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'Database\\Seeders\\DistrictsSeeder' => __DIR__ . '/../..' . '/database/seeders/DistrictsSeeder.php',
         'Database\\Seeders\\ProvinceSeeder' => __DIR__ . '/../..' . '/database/seeders/ProvinceSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
+        'Database\\Seeders\\SliderSeeder' => __DIR__ . '/../..' . '/database/seeders/SliderSeeder.php',
         'Database\\Seeders\\SubDistrictsSeeder' => __DIR__ . '/../..' . '/database/seeders/SubDistrictsSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
@@ -1088,6 +1115,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
         'DeepCopy\\TypeFilter\\TypeFilter' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
         'DeepCopy\\TypeMatcher\\TypeMatcher' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
         'Dflydev\\DotAccessData\\Data' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Data.php',
         'Dflydev\\DotAccessData\\DataInterface' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/DataInterface.php',
         'Dflydev\\DotAccessData\\Exception\\DataException' => __DIR__ . '/..' . '/dflydev/dot-access-data/src/Exception/DataException.php',
@@ -3282,6 +3310,14 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
+        'Jenssegers\\Agent\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Agent.php',
+        'Jenssegers\\Agent\\AgentServiceProvider' => __DIR__ . '/..' . '/jenssegers/agent/src/AgentServiceProvider.php',
+        'Jenssegers\\Agent\\Facades\\Agent' => __DIR__ . '/..' . '/jenssegers/agent/src/Facades/Agent.php',
         'LaravelFrontendPresets\\ArgonPreset\\ArgonPreset' => __DIR__ . '/..' . '/laravel-frontend-presets/argon/src/ArgonPreset.php',
         'LaravelFrontendPresets\\ArgonPreset\\ArgonPresetServiceProvider' => __DIR__ . '/..' . '/laravel-frontend-presets/argon/src/ArgonPresetServiceProvider.php',
         'Laravel\\Prompts\\Concerns\\Colors' => __DIR__ . '/..' . '/laravel/prompts/src/Concerns/Colors.php',
@@ -3777,6 +3813,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         'Masterminds\\HTML5\\Serializer\\OutputRules' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/OutputRules.php',
         'Masterminds\\HTML5\\Serializer\\RulesInterface' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/RulesInterface.php',
         'Masterminds\\HTML5\\Serializer\\Traverser' => __DIR__ . '/..' . '/masterminds/html5/src/HTML5/Serializer/Traverser.php',
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegration' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegration.php',
         'Mockery\\Adapter\\Phpunit\\MockeryPHPUnitIntegrationAssertPostConditions' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryPHPUnitIntegrationAssertPostConditions.php',
         'Mockery\\Adapter\\Phpunit\\MockeryTestCase' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery/Adapter/Phpunit/MockeryTestCase.php',
@@ -7502,6 +7539,7 @@ class ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit71e3b74d398c5df0187ef08e5bfff13e::$classMap;
 
         }, null, ClassLoader::class);

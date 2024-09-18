@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '94c277d3c576e6c724bc59b85904e7b42baea7d2',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '427bf2704c0e01e2bbd14f7802a2dc8860985a89',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -409,6 +409,24 @@
                 0 => 'v10.48.15',
             ),
         ),
+        'jaybizzle/crawler-detect' => array(
+            'pretty_version' => 'v1.2.119',
+            'version' => '1.2.119.0',
+            'reference' => '275002e22b0333c15a7c6792fdae5d5deefc9ef0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jaybizzle/crawler-detect',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'jenssegers/agent' => array(
+            'pretty_version' => 'v2.6.4',
+            'version' => '2.6.4.0',
+            'reference' => 'daa11c43729510b3700bc34d414664966b03bffe',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../jenssegers/agent',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
             'replaced' => array(
@@ -434,9 +452,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '94c277d3c576e6c724bc59b85904e7b42baea7d2',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '427bf2704c0e01e2bbd14f7802a2dc8860985a89',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -576,6 +594,15 @@
             'install_path' => __DIR__ . '/../maximebf/debugbar',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'mobiledetect/mobiledetectlib' => array(
+            'pretty_version' => '2.8.45',
+            'version' => '2.8.45.0',
+            'reference' => '96aaebcf4f50d3d2692ab81d2c5132e425bca266',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mobiledetect/mobiledetectlib',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'mockery/mockery' => array(
             'pretty_version' => '1.6.12',

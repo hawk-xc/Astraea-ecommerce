@@ -186,7 +186,7 @@ return [
          * Package Service Providers...
          */
 
-         /*
+        /*
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
@@ -197,6 +197,8 @@ return [
         App\Providers\RepositoryServiceProvider::class,
 
     ],
+
+    'Agent' => Jenssegers\Agent\Facades\Agent::class,
 
     /*
     |--------------------------------------------------------------------------
