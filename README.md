@@ -9,8 +9,8 @@
 
 ## Task Lists
 
-- Fitur Carousel didetail product
-- Slider Content Automation pada Landing page
+- ✅ Fitur Carousel didetail product
+- ✅ Slider Content Automation pada Landing page
 - ✅ input color pada add to cart product
 - ✅ alert login dulu (jadi ini gambar event) -> ta hapus fiturnya
 - ✅ product detail sesuai format inputan
