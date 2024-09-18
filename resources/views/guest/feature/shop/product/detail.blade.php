@@ -85,7 +85,9 @@
                     <div class="single-product-allimg" id="thumbnailContainer"
                         style="display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; cursor: grab;">
                         @foreach ($data['product']['images'] as $index => $productImages)
-                            <div class="single-product-sub-img" style="flex: 0 0 auto; margin-right: 10px;">
+                            <div class="single-product-sub-img"
+                                style="flex: 0 0 auto; margin-right: 10px; z-index:
+                        999;">
                                 <img src="{{ asset('storage/' . $productImages['name']) }}"
                                     style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;"
                                     data-bs-target="#productCarousel" data-bs-slide-to="{{ $index }}"

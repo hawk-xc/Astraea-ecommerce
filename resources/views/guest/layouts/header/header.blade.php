@@ -16,7 +16,7 @@
                     <nav class="main-menu pt-3">
                         <ul>
                             <li class="{{ $ref['title'] == 'Home' ? 'current-list-item' : '' }}">
-                                <a href={{ env('APP_URL') }}>Home</a>
+                                <a href={{ env('APP_URL') . '/' }}>Home</a>
                             </li>
                             <li
                                 class="{{ $ref['title'] == 'Shop Product' || $ref['title'] == 'Shop Hampers' ? 'current-list-item' : '' }}">
