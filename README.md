@@ -9,8 +9,9 @@
 
 ## Task Lists
 
-- Rebuild create product
 - Menu Automation OUR SERVICES
+- hilangkan isian awal username & password pada login admin (belakangan)
+- ✅ Memperbaiki bug pada create product
 - ✅ Fitur Carousel didetail product
 - ✅ Slider Content Automation pada Landing page
 - ✅ input color pada add to cart product
@@ -20,4 +21,3 @@
 - ✅ membuat text description barang sesuai format inputan
 - ✅ Tombol link dibanner (Halaman utama)
 - ✅ gambar image us pada halaman utama tidak bisa diakses/ditampilkan
-- ✅ hilangkan isian awal username & password pada login admin

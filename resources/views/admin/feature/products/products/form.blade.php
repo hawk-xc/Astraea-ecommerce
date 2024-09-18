@@ -40,6 +40,13 @@
                                                 <select name="category_id" id="category_id"
                                                     class="form-control categories-data">
                                                 </select>
+                                                {{-- <select class="form-select" aria-label="Default select example"
+                                                    name="category_id">
+                                                    @foreach ($ref['category'] as $item)
+                                                        <option value="{{ $item->id }}" id="{{ $item->id }}">
+                                                            {{ $item->name }}</option>
+                                                    @endforeach
+                                                </select> --}}
                                             </div>
                                         </div>
 
@@ -49,13 +56,28 @@
                                                 <select name="subcategory_id" id="subcategory_id"
                                                     class="form-control subcategories-data">
                                                 </select>
+                                                {{-- <select class="form-select" aria-label="Default select example"
+                                                    name="subcategory_id">
+                                                    @foreach ($ref['sub_category'] as $item)
+                                                        <option value="{{ $item->id_category }}" id="{{ $item->id }}">
+                                                            {{ $item->name }}</option>
+                                                    @endforeach
+                                                </select> --}}
                                             </div>
                                         </div>
 
                                         <div class="mb-3-select" id="role">
                                             <label class="form-label">Seri</label>
                                             <div class="input-group">
-                                                <select name="sku_id" id="sku_id" class="form-control sku">
+                                                {{-- <select name="sku_id" id="sku_id" class="form-control sku">
+                                                </select> --}}
+                                                <select class="form-select" aria-label="Default select example"
+                                                    name="sku_id">
+                                                    @foreach ($ref['sku'] as $item)
+                                                        <option value="{{ $item->id }}" id="{{ $item->id }}"
+                                                            {{ isset($data['sku_id']) ? ($item->id == $data['sku_id'] ? 'selected' : '') : '' }}>
+                                                            {{ $item->name }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>

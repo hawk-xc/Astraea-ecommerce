@@ -127,6 +127,7 @@ class ProductController extends Controller
     public function create()
     {
         $ref = $this->data;
+        $ref['sku'] = \App\Models\Sku::all();
 
         $colorList = Color::orderBy('name')->get();
 
@@ -395,14 +396,14 @@ class ProductController extends Controller
         ]);
 
         $request->validate([
-            'front' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'back' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'left' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'right' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'detail1' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'detail2' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'detail3' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
-            'detail4' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:5120'],
+            'front' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'back' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'left' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'right' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'detail1' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'detail2' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'detail3' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
+            'detail4' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
         ], [], [
             'front' => "Gambar Depan",
             'back' => "Gambar Belakang",
@@ -414,7 +415,9 @@ class ProductController extends Controller
             'detail4' => "Gambar Detail 4",
         ]);
 
+
         try {
+            // dd($request->all());
             $produk = new Products();
             $produk->id = 'PDT-' . Helper::table_id();
             $produk->name = $request->name;
@@ -485,6 +488,8 @@ class ProductController extends Controller
     {
         $id = Crypt::decryptString($id);
         $ref = $this->data;
+        $ref['sku'] = \App\Models\Sku::all();
+
         $data = $this->repository->getById($id);
         $data_gambar = $this->images_repository->getByIdProduct($id);
         $id = Crypt::encryptString($id);
