@@ -32,6 +32,7 @@ class ServiceController extends Controller
     {
         $ref = $this->data;
         $ref['services'] = ServiceModel::get();
+        $ref["url"] = route("slider.show");
         return view($this->data['view_directory'] . '.index', compact('ref'));
     }
 
@@ -62,7 +63,12 @@ class ServiceController extends Controller
 
     public function show(string $slug)
     {
-        dd($slug);
+        $service = ServiceModel::where('slug', $slug)->firstOrFail();
+        $ref = $this->data;
+        $ref['services'] = ServiceModel::get();
+        $ref["url"] = route("service.show", $slug);
+
+        return view($this->data['view_directory'] . '.show', compact('service'));
     }
     /**
      * Show the form for creating a new resource.
@@ -219,23 +225,35 @@ class ServiceController extends Controller
     //     }
     // }
 
+    public function destroy(string $slug)
+    {
+        $service = ServiceModel::where('slug', $slug)->get()->first();
+        $image = $service->image;
+        $image_path = public_path($image);
+        if (File::exists($image_path)) {
+            File::delete($image_path);
+        }
+        $service->delete();
+        return redirect()->route('service.index')->with('success', 'Service berhasil dihapus');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $id = Crypt::decryptString($id);
-        $image = $this->repository->getById($id);
-        $image_path = storage_path() . '/app/public/' . $image->image;
-        try {
-            unlink($image_path);
-            $this->repository->destroy($id);
-            return redirect()->route('service.index')->with('success', 'Service berhasil dihapus');
-        } catch (\Exception $e) {
-            if (env('APP_DEBUG')) {
-                return $e->getMessage();
-            }
-            return back()->with('error', 'Terjadi kesalahan saat menghapus service');
-        }
-    }
+    // public function destroy(string $id)
+    // {
+    //     $id = Crypt::decryptString($id);
+    //     $image = $this->repository->getById($id);
+    //     $image_path = storage_path() . '/app/public/' . $image->image;
+    //     try {
+    //         unlink($image_path);
+    //         $this->repository->destroy($id);
+    //         return redirect()->route('service.index')->with('success', 'Service berhasil dihapus');
+    //     } catch (\Exception $e) {
+    //         if (env('APP_DEBUG')) {
+    //             return $e->getMessage();
+    //         }
+    //         return back()->with('error', 'Terjadi kesalahan saat menghapus service');
+    //     }
+    // }
 }

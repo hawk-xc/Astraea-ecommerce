@@ -64,3 +64,35 @@
         </div>
     </div>
 @endsection
+
+@push('footer_script')
+    <script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).on('click', '.show-alert-delete-box', function(event) {
+            event.preventDefault(); // Prevent form submission
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+
+            $.confirm({
+                icon: 'fa fa-warning',
+                title: 'Yakin Hapus Data?',
+                content: 'Data dengan ID ' + name + ' akan dihapus secara permanen.',
+                type: 'orange',
+                typeAnimated: true,
+                buttons: {
+                    confirm: {
+                        text: 'Hapus',
+                        btnClass: 'btn-red',
+                        action: function() {
+                            form.submit(); // Submit form setelah konfirmasi
+                        }
+                    },
+                    cancel: function() {
+                        // Tidak melakukan apa-apa jika klik "Batal"
+                    }
+                }
+            });
+        });
+    </script>
+@endpush

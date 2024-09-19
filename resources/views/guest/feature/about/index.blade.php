@@ -73,15 +73,17 @@
                 </div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; gap: 20px; margin-bottom: 5rem;">
                     @foreach ($data['services'] as $service)
-                        <div class="card card-style">
-                            <img class="card-img-top" src="{{ asset($service['image']) }}"
-                                alt="{{ $service['slug'] . ' image' }}">
-                            <div class="card-body">
-                                <h3 class="mt-2">{{ $service['name'] }}</h3>
+                        <a href="{{ route('service.show', $service->slug) }}">
+                            <div class="card card-style">
+                                <img class="card-img-top" src="{{ asset($service['image']) }}"
+                                    alt="{{ $service['slug'] . ' image' }}">
+                                <div class="card-body">
+                                    <h3 class="mt-2">{{ $service['slug'] }}</h3>
 
-                                <p class="card-text">{{ Str::limit($service['description'], 65, '...') }}</p>
+                                    <p class="card-text">{{ Str::limit($service['description'], 65, '...') }}</p>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                     {{-- @foreach ($data['services'] as $service)
                         <div class="col-lg-4 col-md-6 text-center mb-3">
@@ -195,28 +197,3 @@
         <!-- end logo carousel -->
     @endif
 @endsection
-
-@push('footer_script')
-    <?php
-    function displayStars($rating)
-    {
-        $rating = max(0, min($rating, 5));
-    
-        $fullStars = floor($rating);
-        $emptyStars = 5 - $fullStars;
-    
-        $starHTML = '<div class="star-ratingt text-center row d-flex justify-content-center">';
-    
-        for ($i = 0; $i < $fullStars; $i++) {
-            $starHTML .= '<span class="star full col-2">&#9733;</span>';
-        }
-    
-        for ($i = 0; $i < $emptyStars; $i++) {
-            $starHTML .= '<span class="star col-2">&#9733;</span>';
-        }
-        $starHTML .= '</div>';
-    
-        return $starHTML;
-    }
-    ?>
-@endpush

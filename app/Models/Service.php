@@ -13,6 +13,7 @@ class Service extends Model
         'name',
         'description',
         'image',
+        'slug',
         'created_by',
         'updated_by'
     ];

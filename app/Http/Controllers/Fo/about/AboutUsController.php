@@ -11,6 +11,7 @@ use App\Repositories\TestimoniRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use \App\Models\Service as ServiceModel;
 
 class AboutUsController extends Controller
 {
@@ -51,7 +52,7 @@ class AboutUsController extends Controller
             });
         $data['about'] = $this->aboutUsRepository->getById('1');
         $data['contact'] = $this->contactUsRepository->getById('1');
-        $data['services'] = $this->serviceRepository->getAllFo();
+        $data['services'] = ServiceModel::get();
 
         $data['ptotal'] = $this->partnerRepository->getTotal();
         $data['ctotal'] = $this->certificateRepository->getTotal();

@@ -234,7 +234,10 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::post("/events/{id}", [EventController::class, 'active'])->name('events.active');
 
                 //comprof service
-                Route::resource("service", ServiceController::class);
+                // Route::resource("service", ServiceController::class);
+                Route::resource("service", ServiceController::class)->except(['show']);
+
+                Route::get('service/{slug}', [ServiceController::class, 'show'])->name('service.show');
 
                 //comprof partner
                 Route::resource("partner", PartnerController::class);
