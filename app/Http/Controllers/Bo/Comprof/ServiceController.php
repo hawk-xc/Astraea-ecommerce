@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Bo\Comprof;
 
 use App\Repositories\ServiceRepository;
@@ -8,6 +9,9 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
+use \App\Models\Service as ServiceModel;
+use Illuminate\Support\Facades\File;
 
 class ServiceController extends Controller
 {
@@ -20,12 +24,14 @@ class ServiceController extends Controller
         $this->data['title'] = 'Service';
         $this->data['view_directory'] = "admin.feature.comprof.service";
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $ref = $this->data;
+        $ref['services'] = ServiceModel::get();
         return view($this->data['view_directory'] . '.index', compact('ref'));
     }
 
@@ -53,6 +59,7 @@ class ServiceController extends Controller
                 ->make(true);
         }
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -71,8 +78,8 @@ class ServiceController extends Controller
         $data = $request->validate([
             "name" => ['required', 'string', 'max:100'],
             "description" => ['required', 'string'],
-            'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:5120'], // Mengubah 'image' menjadi 'file'
-        ],[
+            'image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
+        ], [
             "name.required" => "Nama service harus di isi",
             "description.required" => "Deskripsi service harus di isi",
             'image.required' => "Gambar harus diisi",
@@ -81,86 +88,134 @@ class ServiceController extends Controller
             'image.max' => "Berkas tidak boleh lebih dari 5MB",
         ]);
 
-        $data['created_by'] = auth()->user()->id;
-        $data['updated_by'] = auth()->user()->id;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image'); // Mengakses file tertentu
+            $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+        } else {
+            return redirect()->back()->with(
+                'error',
+                'Anda harus mengupload gambar terlebih dahulu'
+            );
+        }
 
-        try
-        {
-            $image_path = $request->file('image')->store('images', 'public'); // Menggunakan 'image' sebagai nama field file
-            //save image
-            $data["image"] = $image_path;
-            //proses save
-            $this->repository->store($data);
-            return redirect()->route('service.index')->with('success', 'Berhasil menambah service ' . $data["name"]);
+        try {
+            $services = new ServiceModel;
+            $services->name = $data["name"];
+            $services->description = $data["description"];
+            $services->slug = Str::slug($data['name']);
+            $services->image = 'storage/' . $image_path;
+            $services->created_by = auth()->user()->id;
+            $services->updated_by = auth()->user()->id;
+            $services->save();
+
+            return redirect()->route('service.index')->with('success', 'Data service berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
-                return $e->getMessage();
-            }
-            return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
-        }
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $slug)
     {
-        $id = Crypt::encryptString($id);
         $ref = $this->data;
-        $data = $this->repository->getById($id);
-        $id = Crypt::decryptString($id);
-        $ref["url"] = route("service.update", $id);
-        return view($this->data['view_directory'] . '.form', compact('ref', "data"));
+        $service = ServiceModel::where('slug', $slug)->first();
+        // $id = Crypt::encryptString($id);
+        // $data = $this->repository->getById($id);
+        // $id = Crypt::decryptString($id);
+        $ref["url"] = route("service.update", $slug);
+        return view($this->data['view_directory'] . '.form', compact('ref', "service"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+
+    public function update(Request $request, string $slug)
     {
-        $id = Crypt::decryptString($id);
-       $data = $request->validate([
+        $service = ServiceModel::where('slug', $slug)->get()->first();
+
+        $data = $request->validate([
             "name" => ['required', 'string', 'max:100'],
             "description" => ['required', 'string'],
-            'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:5120'], // Mengubah 'image' menjadi 'file'
-        ],[
+            'image' => ['image', 'mimes:png,jpg,jpeg', 'max:5120'],
+        ], [
             "name.required" => "Nama service harus di isi",
             "description.required" => "Deskripsi service harus di isi",
+            'image.required' => "Gambar harus diisi",
             'image.image' => "Berkas harus berupa gambar",
             'image.mimes' => "Berkas harus dalam format PNG, JPG, atau JPEG",
             'image.max' => "Berkas tidak boleh lebih dari 5MB",
         ]);
 
-       $data['updated_by'] = auth()->user()->id;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image'); // Mengakses file tertentu
+            $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+
+
+            $imagePath = public_path($service->image);
+
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            } else {
+                dd('file tidak ada');
+            }
+
+            $image_path = 'storage/' . $image_path;
+        } else {
+            $image_path = $service->image;
+        }
 
         try {
-            if (isset($data["image"])) {
-                $old_image = $this->repository->getById($id)->image;
-                unlink(storage_path().'/app/public/'.$old_image);
-                $image_path = $request->file('image')->store('images', 'public');
-                $data["image"] =  $image_path;
-            } else {
-                unset($data["image"]);
-            }
-            $this->repository->edit($id, $data);
-            return redirect()->route('service.index')->with('success', 'Berhasil mengubah service ' . $data["name"]);
-        } catch (Exception $e) {
-            if (env('APP_DEBUG')) {
-                return $e->getMessage();
-            }
-            return back()->with('error', "Oops..!! Terjadi keesalahan saat mengubah data")->withInput($request->input);
+            $service->name = $data['name'];
+            $service->description = $data['description'];
+            $service->slug = Str::slug($data['name']);
+            $service->image = $image_path;
+            $service->update();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
+
+        return redirect()->route('service.index')->with('success', 'Berhasil menambah service baru');
     }
+
+    // public function update(Request $request, string $id)
+    // {
+    //     $id = Crypt::decryptString($id);
+    //     $data = $request->validate([
+    //         "name" => ['required', 'string', 'max:100'],
+    //         "description" => ['required', 'string'],
+    //         'image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //     ], [
+    //         "name.required" => "Nama service harus di isi",
+    //         "description.required" => "Deskripsi service harus di isi",
+    //         'image.image' => "Berkas harus berupa gambar",
+    //         'image.mimes' => "Berkas harus dalam format PNG, JPG, atau JPEG",
+    //         'image.max' => "Berkas tidak boleh lebih dari 5MB",
+    //     ]);
+
+    //     $data['updated_by'] = auth()->user()->id;
+    //     $data['slug'] = Str::slug($data['name']); // Menambahkan slug
+
+    //     try {
+    //         if ($request->hasFile('image')) {
+    //             $old_image = $this->repository->getById($id)->image;
+    //             unlink(storage_path() . '/app/public/' . $old_image);
+    //             $image_path = $request->file('image')->store('images', 'public');
+    //             $data["image"] = $image_path;
+    //         } else {
+    //             unset($data["image"]);
+    //         }
+    //         $this->repository->edit($id, $data);
+    //         return redirect()->route('service.index')->with('success', 'Berhasil mengubah service ' . $data["name"]);
+    //     } catch (Exception $e) {
+    //         if (env('APP_DEBUG')) {
+    //             return $e->getMessage();
+    //         }
+    //         return back()->with('error', "Oops..!! Terjadi kesalahan saat mengubah data")->withInput($request->input());
+    //     }
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -169,20 +224,16 @@ class ServiceController extends Controller
     {
         $id = Crypt::decryptString($id);
         $image = $this->repository->getById($id);
-        $image_path = storage_path().'/app/public/'.$image->image;
-        try 
-        {
+        $image_path = storage_path() . '/app/public/' . $image->image;
+        try {
             unlink($image_path);
             $this->repository->destroy($id);
             return redirect()->route('service.index')->with('success', 'Service berhasil dihapus');
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('error', 'Terjadi kesalahan saat menghapus service');
         }
-
     }
 }

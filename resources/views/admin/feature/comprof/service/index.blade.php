@@ -6,6 +6,9 @@
 @endpush
 
 @section('content')
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     @include('admin.layouts.navbars.topnav', ['title' => Str::upper($ref['title'])])
     <div class="container-fluid py-4">
         <div class="row">
@@ -25,7 +28,35 @@
                                     <th class="text-center w-1">action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                                @foreach ($ref['services'] as $index => $service)
+                                    <tr>
+                                        <td style="padding: 20px;">{{ $index + 1 }}</td>
+                                        <td style="padding: 20px;">{{ $service->name }}</td>
+                                        <td>
+                                            {{ Str::limit($service['description'], 70, '...') }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('service.edit', $service->slug) }}"
+                                                class="btn bg-gradient-info btn-tooltip">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+
+                                            <!-- Form Delete -->
+                                            <form action="{{ route('service.destroy', $service->slug) }}" method="POST"
+                                                class="d-inline deleteForm">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="btn bg-gradient-danger btn-tooltip show-alert-delete-box"
+                                                    data-toggle="tooltip" title="Delete" data-name="">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -33,90 +64,3 @@
         </div>
     </div>
 @endsection
-
-@push('footer_script')
-    <script src="{{ asset('admin/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('admin/js/dataTables.bootstrap5.min.js') }}"></script>
-    <script type="text/javascript">
-        $(function() {
-            var table = $('.services_table').DataTable({
-                language: {
-                    paginate: {
-                        next: "›",
-                        previous: "‹"
-                    }
-                },
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('services.data') }}",
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ],
-                columnDefs: [{
-                        "targets": 0,
-                        "className": "text-center align-middle text-sm font-weight-normal",
-                        "width": "4%"
-                    },
-                    {
-                        "targets": 1,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 2,
-                        "className": "ps-3 pt-0 pb-0 align-middle text-sm font-weight-normal",
-                    },
-                    {
-                        "targets": 3,
-                        "className": "align-middle text-sm font-weight-normal",
-                    }
-                ]
-            });
-
-            $(document).on('click', '#deleteRow', function(event) {
-                var form = $(this).closest("form");
-                var name = $(this).data("name");
-                event.preventDefault();
-                $.confirm({
-                    icon: 'fa fa-warning',
-                    title: 'Yakin Hapus Data',
-                    content: 'Data ' + $(this).data('message') + ' Akan di hapus secara permanen',
-                    type: 'orange',
-                    typeAnimated: true,
-                    animationSpeed: 500,
-                    closeAnimation: 'zoom',
-                    closeIcon: true,
-                    closeIconClass: 'fa fa-close',
-                    draggable: true,
-                    backgroundDismiss: false,
-                    backgroundDismissAnimation: 'glow',
-                    buttons: {
-                        delete: {
-                            text: 'Hapus',
-                            btnClass: 'btn-red',
-                            action: function() {
-                                form.submit();
-                            }
-                        },
-                        batal: function() {}
-                    }
-                });
-            });
-        });
-    </script>
-@endpush

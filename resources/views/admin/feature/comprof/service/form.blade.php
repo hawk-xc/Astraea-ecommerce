@@ -10,7 +10,7 @@
     @include('admin.layouts.navbars.topnav', ['title' => Str::upper($ref['title'])])
     <div class="container-fluid py-4">
         <form method="POST" action="{{ $ref['url'] }}" enctype="multipart/form-data">
-            @if (isset($data))
+            @if (isset($service))
                 @method('PUT')
             @endif
             @csrf
@@ -18,7 +18,7 @@
                 <div class="col-md-6 col-sm-12">
                     <div class="card mb-4">
                         <div class="card-header d-flex justify-content-between align-items-center pb-3">
-                            <h6 class="text-bold">{{ Str::upper($ref['title'])}}</h6>
+                            <h6 class="text-bold">{{ Str::upper($ref['title']) }}</h6>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -26,14 +26,12 @@
                                     <label class="form-label">Name</label>
                                     <input id="name" name="name" class="form-control bg-white" type="text"
                                         placeholder="Input service name"
-                                        value="{{ old('name', isset($data) ? $data['name'] : '') }}">
+                                        value="{{ old('name', isset($service) ? $service->name : '') }}">
                                 </div>
                                 <div class="col-12 mb-3">
                                     <label class="form-label">Description</label>
-                                    <textarea id="description" name="description"
-                                        class="form-control bg-white disable-resize" type="text"
-                                        placeholder="Masukkan service description"
-                                        rows="15">{{ old('description', isset($data) ? $data['description'] : '') }}</textarea>
+                                    <textarea id="description" name="description" class="form-control bg-white disable-resize" type="text"
+                                        placeholder="Masukkan service description" rows="15">{{ old('description', isset($service) ? $service->description : '') }}</textarea>
                                 </div>
                             </div>
                             <div class="float-end">
@@ -54,9 +52,16 @@
                                     <input type="file" class="form-control" name="image" accept="image/*">
                                 </div>
                                 <div class="upload__img-wrap">
-                                    @if (isset($data['image']))
+                                    @if (isset($service))
                                         <div class='upload__img-box'>
-                                            <img src="{{ asset('storage/' . $data['image']) }}" class='img-bg br-5' style="max-width: 100%; max-height: 300px;">
+                                            <img src="{{ asset($service->image) }}" class='img-bg br-5'
+                                                style="max-width: 100%; max-height: 300px;">
+                                            <div class='upload__img-close-circle'><span>X</span></div>
+                                        </div>
+                                    @else
+                                        <div class='upload__img-box'>
+                                            <img src="" class='img-bg br-5'
+                                                style="max-width: 100%; max-height: 300px;">
                                             <div class='upload__img-close-circle'><span>X</span></div>
                                         </div>
                                     @endif
@@ -70,6 +75,7 @@
     </div>
 @endsection
 
+
 @push('footer_script')
     <script>
         $(document).ready(function() {
@@ -80,7 +86,9 @@
                     reader.onload = function(e) {
                         var imgWrap = $(input).closest('.upload__box').find('.upload__img-wrap');
                         imgWrap.empty();
-                        imgWrap.append('<div class="upload__img-box"><img src="' + e.target.result + '" class="img-bg br-5" style="max-width: 100%; max-height: 300px;"><div class="upload__img-close-circle"><span>X</span></div></div>');
+                        imgWrap.append('<div class="upload__img-box"><img src="' + e.target.result +
+                            '" class="img-bg br-5" style="max-width: 100%; max-height: 300px;"><div class="upload__img-close-circle"><span>X</span></div></div>'
+                        );
                         bindImgCloseEvent();
                     }
                     reader.readAsDataURL(input.files[0]);
