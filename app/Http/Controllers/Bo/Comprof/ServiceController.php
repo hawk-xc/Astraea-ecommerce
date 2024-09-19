@@ -60,6 +60,10 @@ class ServiceController extends Controller
         }
     }
 
+    public function show(string $slug)
+    {
+        dd($slug);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -158,8 +162,6 @@ class ServiceController extends Controller
 
             if (File::exists($imagePath)) {
                 File::delete($imagePath);
-            } else {
-                dd('file tidak ada');
             }
 
             $image_path = 'storage/' . $image_path;
@@ -177,7 +179,7 @@ class ServiceController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('service.index')->with('success', 'Berhasil menambah service baru');
+        return redirect()->route('service.index')->with('success', 'Berhasil update service baru');
     }
 
     // public function update(Request $request, string $id)

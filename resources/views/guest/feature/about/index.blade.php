@@ -21,6 +21,9 @@
     </style>
 @endpush
 @section('content')
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     <!-- breadcrumb-section -->
     <div class="breadcrumb-section breadcrumb-bg">
         <div class="container">
@@ -68,16 +71,38 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; gap: 20px; margin-bottom: 5rem;">
                     @foreach ($data['services'] as $service)
+                        <div class="card card-style">
+                            <img class="card-img-top" src="{{ asset($service['image']) }}"
+                                alt="{{ $service['slug'] . ' image' }}">
+                            <div class="card-body">
+                                <h3 class="mt-2">{{ $service['name'] }}</h3>
+
+                                <p class="card-text">{{ Str::limit($service['description'], 65, '...') }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                    {{-- @foreach ($data['services'] as $service)
                         <div class="col-lg-4 col-md-6 text-center mb-3">
                             <img class="sevice-img" src="{{ asset('storage/' . $service['image']) }}" alt="">
                             <h3 class="mt-2">{{ $service['name'] }}</h3>
+
                             <p class="text-justify px-3 text-break">{{ $service['description'] }}</p>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                 </div>
             </div>
+            <style>
+                .card-style {
+                    width: 18rem;
+                }
+
+                .card-style:hover {
+                    animation-duration: 2ms;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+            </style>
         </div>
         <!-- end our service -->
     @endif
