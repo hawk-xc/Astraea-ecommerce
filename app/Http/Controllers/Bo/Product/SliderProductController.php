@@ -107,7 +107,7 @@ class SliderProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $slider = SliderModel::findOrFail($id);
+        $slider = SliderModel::findOrFail(1);
 
         $data = $request->validate([
             "slider_title" => ['required', 'string', 'max:100'],

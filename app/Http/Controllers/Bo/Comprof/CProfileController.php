@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Bo\Comprof;
 use App\Repositories\AboutUsRepository;
 use Exception;
 use Helper;
+use \App\Models\AboutUs as AboutModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File;
 
 class CProfileController extends Controller
 {
@@ -70,8 +72,9 @@ class CProfileController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request);
-        $id = Crypt::decryptString($id);
+        // $id = Crypt::decryptString($id);
+        $aboutus = AboutModel::find(1);
+
         $data = $request->validate([
             "title" => ['required', 'string', 'max:100'],
             "description" => ['required', 'string'],
@@ -84,27 +87,50 @@ class CProfileController extends Controller
             'image.max' => "Berkas tidak boleh lebih dari 5MB",
         ]);
 
-        $data['updated_by'] = auth()->user()->id;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image'); // Mengakses file tertentu
+            $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+
+            if (File::exists(public_path($aboutus->image))) {
+                File::delete(public_path($aboutus->image));
+            }
+
+            $image_path = $image_path;
+        } else {
+            $image_path = $aboutus->image;
+        }
 
         try {
-            if (isset($data["image"])) {
-                $old_image = $this->repository->getById($id)->image;
-                if (isset($old_image)) {
-                    unlink(storage_path() . '/app/public/' . $old_image);
-                }
-                $image_path = $request->file('image')->store('images', 'public');
-                $data["image"] =  $image_path;
-            } else {
-                unset($data["image"]);
-            }
-            $this->repository->edit($id, $data);
-            return redirect()->route('com_profile.index')->with('success', 'Berhasil mengubah About Us');
-        } catch (Exception $e) {
-            if (env('APP_DEBUG')) {
-                return $e->getMessage();
-            }
-            return back()->with('error', "Oops..!! Terjadi keesalahan saat mengubah data")->withInput($request->input);
+            $aboutus->title = $data["title"];
+            $aboutus->description = $data["description"];
+            $aboutus->updated_by = auth()->user()->id;
+            $aboutus->image = $image_path;
+            $aboutus->update();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
+
+        return redirect()->route('com_profile.index')->with('success', 'Berhasil mengubah About Us');
+
+        // try {
+        //     if (isset($data["image"])) {
+        //         $old_image = $this->repository->getById($id)->image;
+        //         if (isset($old_image)) {
+        //             unlink(storage_path() . '/app/public/' . $old_image);
+        //         }
+        //         $image_path = $request->file('image')->store('images', 'public');
+        //         $data["image"] =  $image_path;
+        //     } else {
+        //         unset($data["image"]);
+        //     }
+        //     $this->repository->edit($id, $data);
+        //     return redirect()->route('com_profile.index')->with('success', 'Berhasil mengubah About Us');
+        // } catch (Exception $e) {
+        //     if (env('APP_DEBUG')) {
+        //         return $e->getMessage();
+        //     }
+        //     return back()->with('error', "Oops..!! Terjadi keesalahan saat mengubah data")->withInput($request->input);
+        // }
     }
 
     /**
