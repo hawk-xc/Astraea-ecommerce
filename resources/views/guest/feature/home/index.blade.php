@@ -15,21 +15,23 @@
     <div class="homepage-slider">
         <!-- single home slider -->
         @if (Agent::isDesktop())
-            @foreach ($data['sliders'] as $slider)
-                @if ($slider->view == 'desktop')
-                    <div class="single-homepage-slider imager1" style="background-image: url('{{ asset($slider->image) }}')">
-                        <div class="container">
-                            <div class="row" style="height: 100vh;">
-                                <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
-                                    <div class="hero-text">
+            @if ($data['desktop_sliders']->count() > 1)
+                @foreach ($data['desktop_sliders'] as $slider)
+                    @if ($slider->view == 'desktop')
+                        <div class="single-homepage-slider imager1"
+                            style="background-image: url('{{ asset($slider->image) }}')">
+                            <div class="container">
+                                <div class="row" style="height: 100vh;">
+                                    <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                        <div class="hero-text">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        {{-- @if ($slider->button_title) --}}
-                        <a href='{{ $slider->button_link }}'>
-                            <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
-                                style="position: absolute;
+                            {{-- @if ($slider->button_title) --}}
+                            <a href='{{ $slider->button_link }}'>
+                                <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                                    style="position: absolute;
                                                 z-index: 999;
                                                 background-color: {{ $slider->button_background }};
                                                 color: {{ $slider->button_text_color }};
@@ -37,18 +39,49 @@
                                                 {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(-50%, 100%);' : '' }}
                                                 {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
                                                 top: 45rem;">
-                                read more <i class="ri-links-fill"></i>
-                            </button>
-                        </a>
-                        {{-- @endif --}}
+                                    read more <i class="ri-links-fill"></i>
+                                </button>
+                            </a>
+                            {{-- @endif --}}
+                        </div>
+                    @endif
+                @endforeach
+            @else
+                {
+                <div class="single-homepage-slider imager1"
+                    style="background-image: url('{{ asset($data['desktop_sliders']->image) }}')">
+                    <div class="container">
+                        <div class="row" style="height: 100vh;">
+                            <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                <div class="hero-text">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                @endif
-            @endforeach
+                    {{-- @if ($slider->button_title) --}}
+                    <a href='{{ $data['desktop_sliders']->button_link }}'>
+                        <button
+                            class="btn {{ $data['desktop_sliders']->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                            style="position: absolute;
+                                                z-index: 999;
+                                                background-color: {{ $data['desktop_sliders']->button_background }};
+                                                color: {{ $data['desktop_sliders']->button_text_color }};
+                                                {{ $data['desktop_sliders']->button_horizontal_layout == 'center' ? 'left: 50%; transform: translate(-50%, 100%);' : '' }}
+                                                {{ $data['desktop_sliders']->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(-50%, 100%);' : '' }}
+                                                {{ $data['desktop_sliders']->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
+                                                top: 45rem;">
+                            read more <i class="ri-links-fill"></i>
+                        </button>
+                    </a>
+                    {{-- @endif --}}
+                </div>
+                }
+            @endif
         @endif
 
         @if (Agent::isMobile())
-            @foreach ($data['sliders'] as $slider)
-                @if ($slider->view == 'smartphone')
+            @if ($data['smartphone_sliders']->count() > 1)
+                @foreach ($data['smartphone_sliders'] as $slider)
                     <a href='{{ $slider->button_link }}'>
                         <div class="single-homepage-slider imager2"
                             style="background-image: url('{{ asset($slider->image) }}')">
@@ -62,8 +95,23 @@
                             </div>
                         </div>
                     </a>
-                @endif
-            @endforeach
+                @endforeach
+            @else
+                <a
+                    href="{{ $data['smartphone_sliders']->first()->button_link && $data['smartphone_sliders']->first()->button_link }}">
+                    <div class="single-homepage-slider imager2"
+                        style="background-image: url('{{ asset($data['smartphone_sliders']->first()->image) }}')">
+                        <div class="container">
+                            <div class="row" style="height: 100vh;">
+                                <div class="col-md-12 col-lg-7 offset-lg-1 offset-xl-0">
+                                    <div class="hero-text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @endif
         @endif
     </div>
 
@@ -194,11 +242,12 @@
                                     <h3><a href="{{ route('fo.event.show', $event->slug) }}">{{ $event->title }}</a></h3>
                                     <p class="blog-meta">
                                         <span class="author"><i class="fas fa-user"></i>{{ $event->name }}</span>
-                                        <span class="date"><i class="fas fa-calendar"></i>{{ $event->updated_at }}</span>
+                                        <span class="date"><i
+                                                class="fas fa-calendar"></i>{{ $event->updated_at }}</span>
                                     </p>
                                     <p class="excerpt">{!! $event->description !!}</p>
-                                    <a href="{{ route('fo.event.show', $event->slug) }}" class="read-more-btn">read more <i
-                                            class="fas fa-angle-right"></i></a>
+                                    <a href="{{ route('fo.event.show', $event->slug) }}" class="read-more-btn">read more
+                                        <i class="fas fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -278,25 +327,25 @@
     </script>
 
     <?php
-    function displayStars($rating)
-    {
-        $rating = max(0, min($rating, 5));
+    // function displayStars($rating)
+    // {
+    //     $rating = max(0, min($rating, 5));
     
-        $fullStars = floor($rating);
-        $emptyStars = 5 - $fullStars;
+    //     $fullStars = floor($rating);
+    //     $emptyStars = 5 - $fullStars;
     
-        $starHTML = '<div class="star-ratingt text-center row d-flex justify-content-center">';
+    //     $starHTML = '<div class="star-ratingt text-center row d-flex justify-content-center">';
     
-        for ($i = 0; $i < $fullStars; $i++) {
-            $starHTML .= '<span class="star full col-2">&#9733;</span>';
-        }
+    //     for ($i = 0; $i < $fullStars; $i++) {
+    //         $starHTML .= '<span class="star full col-2">&#9733;</span>';
+    //     }
     
-        for ($i = 0; $i < $emptyStars; $i++) {
-            $starHTML .= '<span class="star col-2">&#9733;</span>';
-        }
-        $starHTML .= '</div>';
+    //     for ($i = 0; $i < $emptyStars; $i++) {
+    //         $starHTML .= '<span class="star col-2">&#9733;</span>';
+    //     }
+    //     $starHTML .= '</div>';
     
-        return $starHTML;
-    }
+    //     return $starHTML;
+    // }
     ?>
 @endpush
