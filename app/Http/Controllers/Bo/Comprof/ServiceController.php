@@ -32,7 +32,7 @@ class ServiceController extends Controller
     {
         $ref = $this->data;
         $ref['services'] = ServiceModel::get();
-        $ref["url"] = route("slider.show");
+        // $ref["url"] = route("slider.show");
         return view($this->data['view_directory'] . '.index', compact('ref'));
     }
 

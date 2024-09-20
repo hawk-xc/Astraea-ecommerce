@@ -83,8 +83,11 @@ Route::resource("contact", ContactUsController::class, ['as' => 'fo'], ['only' =
 
 //about
 Route::resource("about", AboutUsController::class, ['as' => 'fo'], ['only' => ['index']])->except(['show']);
+Route::get('about/{slug}', [AboutUsController::class, 'show'])->name('about.show');
+
 
 //event
+
 Route::resource("event", FoEventController::class, ['as' => 'fo'], ['only' => ['index', 'show']]);
 
 //partner
@@ -236,8 +239,6 @@ Route::group(['prefix' => 'admin'], function () {
                 //comprof service
                 // Route::resource("service", ServiceController::class);
                 Route::resource("service", ServiceController::class)->except(['show']);
-
-                Route::get('service/{slug}', [ServiceController::class, 'show'])->name('service.show');
 
                 //comprof partner
                 Route::resource("partner", PartnerController::class);

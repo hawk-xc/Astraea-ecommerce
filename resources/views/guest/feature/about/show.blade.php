@@ -38,7 +38,7 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                    <!-- featured section -->
+                                                                                                                                                                            <!-- featured section -->
     <div class="container"
         style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 3rem;">
         <img src="{{ asset($service->image) }}" alt="{{ $service->name . ' image' }}" class="image">
@@ -49,6 +49,7 @@
         .container-sn {
             padding: 5rem;
             display: flex;
+            gap: 2rem;
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -56,7 +57,8 @@
         }
 
         .image {
-            width: 50%;
+            width: 70%;
+            margin-bottom: 2rem;
         }
     </style>
 @endsection

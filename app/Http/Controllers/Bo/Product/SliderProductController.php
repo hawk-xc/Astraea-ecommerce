@@ -171,10 +171,9 @@ class SliderProductController extends Controller
 
         if (File::exists($imagePath)) {
             File::delete($imagePath);
-            $slider->delete();
-        } else {
-            dd('file tidak ada');
         }
+
+        $slider->delete();
 
         return redirect()->route('slider.index')->with('success', 'Slider dan gambar berhasil dihapus.');
     }

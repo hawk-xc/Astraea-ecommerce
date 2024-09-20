@@ -73,7 +73,7 @@
                 </div>
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; gap: 20px; margin-bottom: 5rem;">
                     @foreach ($data['services'] as $service)
-                        <a href="{{ route('service.show', $service->slug) }}">
+                        <a href="{{ route('about.show', $service->slug) }}">
                             <div class="card card-style">
                                 <img class="card-img-top" src="{{ asset($service['image']) }}"
                                     alt="{{ $service['slug'] . ' image' }}">
