@@ -82,9 +82,39 @@ class AboutUsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $service = ServiceModel::where('slug', $slug)->firstOrFail();
+        // Set the view directory for the 'show' view
+        $ref = $this->data;
+
+        $this->data['title'] = 'About Us';
+
+        $this->data['view_directory'] = "guest.feature.about";
+
+        $data['partners'] = $this->partnerRepository->getImage()
+            ->map(function ($item) {
+                $item['id'] = encrypt($item['id']);
+                return $item;
+            });
+        $data['certificates'] = $this->certificateRepository->getImage()
+            ->map(function ($item) {
+                $item['id'] = encrypt($item['id']);
+                return $item;
+            });
+        $data['about'] = $this->aboutUsRepository->getById('1');
+        $data['contact'] = $this->contactUsRepository->getById('1');
+        $data['services'] = ServiceModel::get();
+
+        $data['ptotal'] = $this->partnerRepository->getTotal();
+        $data['ctotal'] = $this->certificateRepository->getTotal();
+        $data['stotal'] = $this->serviceRepository->getTotal();
+
+        $data['testimonis'] = $this->testimoniRepository->getAllFo();
+        $data['etetotal'] = $this->testimoniRepository->getTotal();
+
+        // Return the view and pass the data for the service
+        return view($this->data['view_directory'] . '.show', compact('ref', 'service', 'data'));
     }
 
     /**

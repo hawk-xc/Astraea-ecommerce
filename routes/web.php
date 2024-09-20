@@ -82,7 +82,7 @@ Route::get('/', [BerandaController::class, 'index'])->name('fo.home');
 Route::resource("contact", ContactUsController::class, ['as' => 'fo'], ['only' => ['index', 'store']]);
 
 //about
-Route::resource("about", AboutUsController::class, ['as' => 'fo'], ['only' => ['index']]);
+Route::resource("about", AboutUsController::class, ['as' => 'fo'], ['only' => ['index']])->except(['show']);
 
 //event
 Route::resource("event", FoEventController::class, ['as' => 'fo'], ['only' => ['index', 'show']]);
