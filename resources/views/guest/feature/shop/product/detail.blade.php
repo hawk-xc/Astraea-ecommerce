@@ -146,7 +146,7 @@
                             ? '<p class="star-ratingt"><span class="star full">&#9733;</span> ' . $data['avgrat'] . '  </p>'
                             : '' !!}
                         <strong>Stok:</strong> {{ $data['product']['stock'] }}</p>
-                        <div class="single-product-form">
+                        <div class="single-product-form margin-left">
                             <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}" method="post">
                                 @csrf
                                 @method('PUT')

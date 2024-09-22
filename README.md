@@ -9,8 +9,11 @@
 
 ## Task Lists
 
-- Menu Automation OUR SERVICES
+- service dibuat seperti partner
+- hamburgermenu pada navbar di css
 - hilangkan isian awal username & password pada login admin (belakangan)
+- ✅ product detail kurang rapi pada stok dan add cart
+- ✅ Menu Automation OUR SERVICES
 - ✅ Memperbaiki bug pada create product
 - ✅ Fitur Carousel didetail product
 - ✅ Slider Content Automation pada Landing page

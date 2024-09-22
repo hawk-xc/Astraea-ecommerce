@@ -293,7 +293,7 @@
         <!-- end logo carousel -->
     @endif
 
-    <div class="modal fade" id="iklan_new">
+    {{-- <div class="modal fade" id="iklan_new">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal body -->
@@ -305,7 +305,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection
 @push('footer_script')
     <script>
