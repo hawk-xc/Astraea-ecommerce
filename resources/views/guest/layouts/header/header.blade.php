@@ -141,6 +141,14 @@
             display: none;
         }
 
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
         .current-route-link {
             background-color: orange;
         }
