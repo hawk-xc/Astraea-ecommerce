@@ -9,7 +9,7 @@
 
 ## Task Lists
 
-- hilangkan isian awal username & password pada login admin (belakangan)
+- ✅ hilangkan isian awal username & password pada login admin (belakangan)
 - ✅ hamburgermenu pada navbar di css
 - ✅ card service sama bentuk
 - ✅ service dibuat seperti partner
