@@ -79,9 +79,9 @@
                                     alt="{{ $service['slug'] . ' image' }}"
                                     style="object-fit: cover; width: 100%; height: 200px; display: block;">
                                 <div class="card-body">
-                                    <h3 class="mt-2">{{ $service['slug'] }}</h3>
+                                    <h3 class="mt-2">{{ $service['name'] }}</h3>
 
-                                    <p class="card-text">{{ Str::limit($service['description'], 65, '...') }}</p>
+                                    <p class="card-text">{!! nl2br(e(Str::limit($service['description'], 65, '...'))) !!}</p>
                                 </div>
                             </div>
                         </a>

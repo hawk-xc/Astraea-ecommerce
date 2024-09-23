@@ -38,14 +38,14 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                            <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
             <img src="{{ asset($service->image) }}" alt="{{ $service->name . ' image' }}" style="width: 100%;">
         </div>
         <div style="flex: 1;">
             <h2>{{ $service->name }}</h2>
-            <p>{{ $service->description }}</p>
+            <p>{!! nl2br(e($service->description)) !!}</p>
         </div>
     </div>
 
