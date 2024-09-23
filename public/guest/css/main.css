@@ -2892,3 +2892,10 @@ table.order-details tbody td {
   vertical-align: middle;
   width: 100%;
 }
+
+.service-detail {
+  display: flex;
+  flex-direction: row;
+  padding: 5rem;
+  gap: 2.4rem;
+}

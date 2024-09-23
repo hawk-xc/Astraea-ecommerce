@@ -38,11 +38,15 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                <!-- featured section -->
-    <div class="container"
-        style="display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 3rem;">
-        <img src="{{ asset($service->image) }}" alt="{{ $service->name . ' image' }}" class="image">
-        <p>{{ $service->description }}</p>
+                                                                                                                                                                                                                                                                            <!-- featured section -->
+    <div class="service-detail">
+        <div style="flex: 1;">
+            <img src="{{ asset($service->image) }}" alt="{{ $service->name . ' image' }}" style="width: 100%;">
+        </div>
+        <div style="flex: 1;">
+            <h2>{{ $service->name }}</h2>
+            <p>{{ $service->description }}</p>
+        </div>
     </div>
 
     <style type="text/css">
