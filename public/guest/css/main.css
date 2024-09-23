@@ -2899,3 +2899,9 @@ table.order-details tbody td {
   padding: 5rem;
   gap: 2.4rem;
 }
+
+@media only screen and (max-width: 767px) {
+  .service-detail {
+    flex-direction: column;
+  }
+}
