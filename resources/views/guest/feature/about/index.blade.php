@@ -74,9 +74,10 @@
                 <div style="display: flex; flex-wrap: wrap; justify-content: space-evenly; gap: 20px; margin-bottom: 5rem;">
                     @foreach ($data['services'] as $service)
                         <a href="{{ route('about.show', $service->slug) }}">
-                            <div class="card card-style">
+                            <div class="card card-style" style="min-height:30rem;">
                                 <img class="card-img-top" src="{{ asset($service['image']) }}"
-                                    alt="{{ $service['slug'] . ' image' }}">
+                                    alt="{{ $service['slug'] . ' image' }}"
+                                    style="object-fit: cover; width: 100%; height: 200px; display: block;">
                                 <div class="card-body">
                                     <h3 class="mt-2">{{ $service['slug'] }}</h3>
 
@@ -85,14 +86,6 @@
                             </div>
                         </a>
                     @endforeach
-                    {{-- @foreach ($data['services'] as $service)
-                        <div class="col-lg-4 col-md-6 text-center mb-3">
-                            <img class="sevice-img" src="{{ asset('storage/' . $service['image']) }}" alt="">
-                            <h3 class="mt-2">{{ $service['name'] }}</h3>
-
-                            <p class="text-justify px-3 text-break">{{ $service['description'] }}</p>
-                        </div>
-                    @endforeach --}}
                 </div>
             </div>
             <style>
