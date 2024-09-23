@@ -9,9 +9,9 @@
 
 ## Task Lists
 
-- card service sama bentuk
-- hamburgermenu pada navbar di css
 - hilangkan isian awal username & password pada login admin (belakangan)
+- ✅ hamburgermenu pada navbar di css
+- ✅ card service sama bentuk
 - ✅ service dibuat seperti partner
 - ✅ product detail kurang rapi pada stok dan add cart
 - ✅ Menu Automation OUR SERVICES
