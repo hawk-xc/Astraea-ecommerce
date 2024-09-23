@@ -17,15 +17,20 @@
                                         @csrf
                                         @method('post')
                                         <div class="flex flex-col mb-3">
+                                            {{-- <input type="text" name="username" class="form-control form-control-lg"
+                                                value="{{ old('email') ?? 'geo03' }}" aria-label="username"> --}}
                                             <input type="text" name="username" class="form-control form-control-lg"
-                                                value="{{ old('email') ?? 'geo03' }}" aria-label="username">
+                                                value="{{ old('email') ?? '' }}" aria-label="username"
+                                                placeholder="username">
                                             @error('username')
                                                 <p class="text-danger text-xs pt-1"> {{ $message }} </p>
                                             @enderror
                                         </div>
                                         <div class="flex flex-col mb-3">
+                                            {{-- <input type="password" name="password" class="form-control form-control-lg"
+                                                aria-label="Password" value="password"> --}}
                                             <input type="password" name="password" class="form-control form-control-lg"
-                                                aria-label="Password" value="password">
+                                                aria-label="Password" value="" placeholder="password">
                                             @error('password')
                                                 <p class="text-danger text-xs pt-1"> {{ $message }} </p>
                                             @enderror
