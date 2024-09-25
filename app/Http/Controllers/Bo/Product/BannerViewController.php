@@ -8,12 +8,23 @@ use App\Models\BannerView as BannerModel;
 
 class BannerViewController extends Controller
 {
+    protected $data = array();
+
+    public function __construct()
+    {
+        $this->data['title'] = 'Banner';
+        $this->data['view_directory'] = "admin.feature.products.banner";
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $banner = BannerModel::first()->get();
+
+        $ref = $this->data;
+        return view($this->data['view_directory'] . '.index', compact('ref', 'banner'));
     }
 
     /**
