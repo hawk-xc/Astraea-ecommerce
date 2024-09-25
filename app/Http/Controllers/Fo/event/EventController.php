@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use \App\Models\BannerView as BannerModel;
 
 class EventController extends Controller
 {
@@ -34,6 +35,8 @@ class EventController extends Controller
         $data['etotal'] = $this->eventRepository->getTotal();
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -62,6 +65,9 @@ class EventController extends Controller
         $data['event'] = $this->eventRepository->getBySlugFo($slug);
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.detail', compact('ref', 'data'));
     }
 

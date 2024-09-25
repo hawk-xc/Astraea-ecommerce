@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use \App\Models\Service as ServiceModel;
+use \App\Models\BannerView as BannerModel;
 
 class AboutUsController extends Controller
 {
@@ -60,6 +61,9 @@ class AboutUsController extends Controller
 
         $data['testimonis'] = $this->testimoniRepository->getAllFo();
         $data['etetotal'] = $this->testimoniRepository->getTotal();
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -113,6 +117,8 @@ class AboutUsController extends Controller
         $data['testimonis'] = $this->testimoniRepository->getAllFo();
         $data['etetotal'] = $this->testimoniRepository->getTotal();
 
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         // Return the view and pass the data for the service
         return view($this->data['view_directory'] . '.show', compact('ref', 'service', 'data'));
     }
@@ -141,3 +147,4 @@ class AboutUsController extends Controller
         //
     }
 }
+

@@ -7,6 +7,7 @@ use App\Repositories\AboutUsRepository;
 use App\Repositories\VisitorMailRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use \App\Models\BannerView as BannerModel;
 
 class ContactUsController extends Controller
 {
@@ -30,6 +31,9 @@ class ContactUsController extends Controller
         $ref = $this->data;
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 

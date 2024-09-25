@@ -49,13 +49,23 @@
                                 <div class="dropdown-menu dropdown-submenu-content">
                                     @auth('customer')
                                         <a class="dropdown-item" href="{{ route('dashboard.customer') }}">Profile</a>
+                                        <a class="dropdown-item" href="{{ route('fo.cart-product.index') }}">Cart
+                                            Product</a>
+                                        <a class="dropdown-item" href="{{ route('fo.cart-hampers.index') }}">Cart
+                                            Hampers</a>
+                                        <hr>
+                                        <form id="logout-form" method="POST" action="{{ route('logout.customer') }}"
+                                            style="display: none;"">
+                                            @csrf
+                                        </form>
+                                        <a href="javascript:void(0);" class="dropdown-item"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <span>Log out</span>
+                                        </a>
                                     @else
                                         <a class="dropdown-item" href="{{ route('loginf.customer') }}">Login</a>
+                                        <a class="dropdown-item" href="{{ route('registerf.customer') }}">Register</a>
                                     @endauth
-                                    <a class="dropdown-item" href="{{ route('fo.cart-product.index') }}">Cart
-                                        Product</a>
-                                    <a class="dropdown-item" href="{{ route('fo.cart-hampers.index') }}">Cart
-                                        Hampers</a>
                                 </div>
                             </div>
                         </div>
@@ -108,136 +118,160 @@
                                     <ul class="sub-menu">
                                         <li>
                                             @auth('customer')
+                                            <li>
                                                 <a class="user-icon" href="{{ route('dashboard.customer') }}">
                                                     Profile
                                                 </a>
-                                            @else
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('fo.cart-product.index') }}">
+                                                    Cart Product
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('fo.cart-hampers.index') }}">
+                                                    Cart Hampers
+                                                </a>
+                                            </li>
+                                            <hr>
+                                            <li>
+                                                <form id="logout-form" method="POST"
+                                                    action="{{ route('logout.customer') }}" style="display: none;"">
+                                                    @csrf
+                                                </form>
+                                                <a href="javascript:void(0);"
+                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    <span>Log out</span>
+                                                </a>
+                                            </li>
+                                        @else
+                                            <li>
                                                 <a class="user-icon" href="{{ route('loginf.customer') }}">
                                                     Login
                                                 </a>
-                                            @endauth
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('fo.cart-product.index') }}">
-                                                Cart Product</a>
-                                        </li>
-                                        <li><a href="{{ route('fo.cart-hampers.index') }}">
-                                                Cart Hampers</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                            </li>
+                                            <li>
+                                                <a class="user-icon" href="{{ route('registerf.customer') }}">
+                                                    Register
+                                                </a>
+                                            </li>
+                                        @endauth
                             </li>
                         </ul>
-                    </nav>
-                    {{-- mengganti mobile nav menu dengan nav baru --}}
-                    {{-- <div class="mobile-menu"></div> --}}
-                    <!-- menu end -->
                 </div>
+                </li>
+                </ul>
+                </nav>
+                {{-- mengganti mobile nav menu dengan nav baru --}}
+                {{-- <div class="mobile-menu"></div> --}}
+                <!-- menu end -->
             </div>
         </div>
     </div>
-    <style type="text/css">
+</div>
+<style type="text/css">
+    .navbar {
+        display: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+    .current-route-link {
+        background-color: orange;
+    }
+
+    .current-route-link:hover {
+        background-color: orangered;
+    }
+
+    .dropdown {
+        display: none;
+    }
+
+    .hamburger-menu {
+        width: 100px;
+        height: 100px;
+        background-color: brown;
+    }
+
+    @media only screen and (max-width: 767px) {
         .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .desktop-nav {
             display: none;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: none;
-        }
-
-        .current-route-link {
-            background-color: orange;
-        }
-
-        .current-route-link:hover {
-            background-color: orangered;
         }
 
         .dropdown {
+            display: inline;
+        }
+
+        .dropdown-submenu .dropdown-menu {
             display: none;
+            transform:
+                margin-top: 0;
+            /* Set margin top to avoid overlap */
+            position: relative;
+            transition: all 0.3s ease;
+            /* Smooth transition for grow effect */
         }
 
-        .hamburger-menu {
-            width: 100px;
-            height: 100px;
-            background-color: brown;
+        .dropdown-submenu .dropdown-menu.show {
+            display: block;
+            transform: scaleY(1);
+            /* Grow vertically */
+            opacity: 1;
+            visibility: visible;
         }
 
-        @media only screen and (max-width: 767px) {
-            .navbar {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .desktop-nav {
-                display: none;
-            }
-
-            .dropdown {
-                display: inline;
-            }
-
-            .dropdown-submenu .dropdown-menu {
-                display: none;
-                transform:
-                    margin-top: 0;
-                /* Set margin top to avoid overlap */
-                position: relative;
-                transition: all 0.3s ease;
-                /* Smooth transition for grow effect */
-            }
-
-            .dropdown-submenu .dropdown-menu.show {
-                display: block;
-                transform: scaleY(1);
-                /* Grow vertically */
-                opacity: 1;
-                visibility: visible;
-            }
-
-            .dropdown-submenu-content {
-                transform-origin: top;
-                /* Transform from the top down */
-                transform: scaleY(0);
-                /* Initially hidden */
-                opacity: 0;
-                visibility: hidden;
-            }
-
-            /* Custom padding untuk dropdown-item */
-            .dropdown-item {
-                padding: 1rem 1.5rem;
-                /* Ubah nilai ini sesuai keinginan */
-            }
+        .dropdown-submenu-content {
+            transform-origin: top;
+            /* Transform from the top down */
+            transform: scaleY(0);
+            /* Initially hidden */
+            opacity: 0;
+            visibility: hidden;
         }
-    </style>
 
-    <script>
-        $(document).ready(function() {
-            $('.dropdown-submenu a.dropdown-toggle').on('click', function(e) {
-                var $submenu = $(this).next('.dropdown-menu');
+        /* Custom padding untuk dropdown-item */
+        .dropdown-item {
+            padding: 1rem 1.5rem;
+            /* Ubah nilai ini sesuai keinginan */
+        }
+    }
+</style>
 
-                // Toggle the visibility and grow effect
-                $submenu.toggleClass('show');
+<script>
+    $(document).ready(function() {
+        $('.dropdown-submenu a.dropdown-toggle').on('click', function(e) {
+            var $submenu = $(this).next('.dropdown-menu');
 
-                // Close any open submenus that are not this one
-                $('.dropdown-submenu .dropdown-menu').not($submenu).removeClass('show');
+            // Toggle the visibility and grow effect
+            $submenu.toggleClass('show');
 
-                e.preventDefault();
-                e.stopPropagation(); // Prevent closing the main dropdown
-            });
+            // Close any open submenus that are not this one
+            $('.dropdown-submenu .dropdown-menu').not($submenu).removeClass('show');
 
-            // Optional: Close dropdown if clicked outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest('.dropdown').length) {
-                    $('.dropdown-submenu .dropdown-menu').removeClass('show');
-                }
-            });
+            e.preventDefault();
+            e.stopPropagation(); // Prevent closing the main dropdown
         });
-    </script>
+
+        // Optional: Close dropdown if clicked outside
+        $(document).on('click', function(e) {
+            if (!$(e.target).closest('.dropdown').length) {
+                $('.dropdown-submenu .dropdown-menu').removeClass('show');
+            }
+        });
+    });
+</script>
 </div>
+

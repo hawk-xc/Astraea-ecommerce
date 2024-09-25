@@ -1,8 +1,7 @@
 @extends('guest.layouts.app')
 
 @section('content')
-    <!-- breadcrumb-section -->
-    <div class="breadcrumb-section breadcrumb-bg">
+    <div class="breadcrumb-section" style="background-image: url({{ asset($data['banner'][0]) }})">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
@@ -13,14 +12,10 @@
             </div>
         </div>
     </div>
-    <!-- end breadcrumb section -->
-
-    <!-- single product -->
     <div class="single-product mt-150 mb-150">
         <div class="container">
             <div class="row">
 
-                {{-- ejer --}}
                 <div class="col-md-5">
                     <div class="single-product-img">
                         @if (isset($data['product']['images'][0]['name']))
@@ -36,8 +31,7 @@
                                     @endforeach
                                 </div>
 
-                                <!-- Carousel inner (slides) -->
-                                <div class="carousel-inner">
+                                <div class="carousel-inner" style="z-index: 0;">
                                     @foreach ($data['product']['images'] as $index => $productImages)
                                         <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                             <img src="{{ asset('storage/' . $productImages['name']) }}"
@@ -66,7 +60,6 @@
                                     </style>
                                 </div>
 
-                                <!-- Carousel controls -->
                                 <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
                                     data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -81,15 +74,12 @@
                         @endif
                     </div>
 
-                    <!-- Thumbnails (Horizontal Scroll with Drag Support) -->
                     <div class="single-product-allimg" id="thumbnailContainer"
                         style="display: flex; flex-direction: row; overflow-x: auto; white-space: nowrap; cursor: grab;">
                         @foreach ($data['product']['images'] as $index => $productImages)
-                            <div class="single-product-sub-img"
-                                style="flex: 0 0 auto; margin-right: 10px; z-index:
-                        999;">
+                            <div class="single-product-sub-img" style="flex: 0 0 auto; margin-right: 10px;">
                                 <img src="{{ asset('storage/' . $productImages['name']) }}"
-                                    style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;"
+                                    style="width: 80px; height: 80px; object-fit: cover; cursor: pointer; z-index: 100;"
                                     data-bs-target="#productCarousel" data-bs-slide-to="{{ $index }}"
                                     draggable="false" />
                             </div>
@@ -455,3 +445,4 @@
     }
     ?>
 @endpush
+

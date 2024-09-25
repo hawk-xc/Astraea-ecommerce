@@ -27,8 +27,8 @@ class ProductRepository implements ProductInterface
         //     ->groupBy('p.name', 'p.price', 'p.weight', 'p.b_layanan')
         //     ->get();
         return Products::with('categories', 'images')
-            ->select('id', 'name','slug', 'price', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
-            ->groupBy('id', 'name', 'price', 'weight', 'b_layanan', 'description')
+            ->select('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+            ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
             ->orderBy('created_at', 'DESC')
             ->orderBy('name', 'ASC')
             ->paginate(15);

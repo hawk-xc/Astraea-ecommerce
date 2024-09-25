@@ -25,7 +25,7 @@
         use Illuminate\Support\Str;
     @endphp
     <!-- breadcrumb-section -->
-    <div class="breadcrumb-section breadcrumb-bg">
+    <div class="breadcrumb-section" style="background-image: url({{ asset($data['banner'][0]) }})">
         <div class="container-nd">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
@@ -38,7 +38,7 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                                                                            <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
             <img src="{{ asset($service->image) }}" alt="{{ $service->name . ' image' }}" style="width: 100%;">
@@ -50,6 +50,12 @@
     </div>
 
     <style type="text/css">
+  .service-detail {
+  display: flex;
+  flex-direction: row;
+  padding: 5rem;
+  gap: 2.4rem;
+}
         .container-sn {
             padding: 5rem;
             display: flex;
