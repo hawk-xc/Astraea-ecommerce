@@ -25,7 +25,8 @@
         use Illuminate\Support\Str;
     @endphp
     <!-- breadcrumb-section -->
-    <div class="breadcrumb-section breadcrumb-bg">
+    {{-- <div class="breadcrumb-section" style="background-image: url(../img/breadcrumb-bg.jpg);"> --}}
+    <div class="breadcrumb-section" style="background-image: url(https://bintangsempurna.co.id/uploads/posts/design-2.jpg);">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">

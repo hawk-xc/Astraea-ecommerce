@@ -9,6 +9,10 @@
 
 ## Task Lists
 
+- Tambah fitur Ganti Banner
+- ✅ Merapikan Posisi Button
+- ✅ Mengubah menu pada Hamburger menu
+- ✅ Merapikan artikel about profile
 - ✅ hilangkan isian awal username & password pada login admin (belakangan)
 - ✅ hamburgermenu pada navbar di css
 - ✅ card service sama bentuk

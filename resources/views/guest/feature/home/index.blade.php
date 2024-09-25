@@ -177,7 +177,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="abt-text">
                         <h2>{{ $data['about']['title'] }}</h2>
-                        <p>{{ $data['about']['description'] }}</p>
+                        <p>{!! nl2br(e($data['about']['description'])) !!}</p>
                         <a href="{{ route('fo.about.index') }}" class="boxed-btn mt-4">know more</a>
                     </div>
                 </div>
