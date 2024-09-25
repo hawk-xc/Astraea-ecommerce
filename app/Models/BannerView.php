@@ -11,4 +11,3 @@ class BannerView extends Model
 
     protected $fillable = ['images'];
 }
-

@@ -1,3 +1,4 @@
+
 @extends('guest.layouts.app')
 
 {{-- @push('header_script')
@@ -349,4 +350,3 @@
     // }
     ?>
 @endpush
-

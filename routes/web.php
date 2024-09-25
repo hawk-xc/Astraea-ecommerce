@@ -1,4 +1,3 @@
-
 <?php
 //bo
 use App\Http\Controllers\Bo\Account\ProfileController;
@@ -262,4 +261,3 @@ Route::group(['prefix' => 'admin'], function () {
         });
     });
 });
-

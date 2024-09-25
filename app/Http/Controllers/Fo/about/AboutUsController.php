@@ -147,4 +147,3 @@ class AboutUsController extends Controller
         //
     }
 }
-

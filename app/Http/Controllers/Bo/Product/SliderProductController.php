@@ -176,4 +176,3 @@ class SliderProductController extends Controller
         return redirect()->route('slider.index')->with('success', 'Slider dan gambar berhasil dihapus.');
     }
 }
-

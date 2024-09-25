@@ -74,4 +74,3 @@ class BannerViewController extends Controller
         return redirect()->route('banner.index')->with('success', 'Berhasil mengubah banner');
     }
 }
-

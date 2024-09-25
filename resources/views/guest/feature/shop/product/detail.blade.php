@@ -1,6 +1,7 @@
 @extends('guest.layouts.app')
 
 @section('content')
+
     <div class="breadcrumb-section" style="background-image: url({{ asset($data['banner'][0]) }})">
         <div class="container">
             <div class="row">
