@@ -27,21 +27,22 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- @if ($slider->button_title) --}}
-                            <a href='{{ $slider->button_link }}'>
-                                <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
-                                    style="position: absolute;
-                                                z-index: 999;
-                                                background-color: {{ $slider->button_background }};
-                                                color: {{ $slider->button_text_color }};
-                                                {{ $slider->button_horizontal_layout == 'center' ? 'left: 50%; transform: translate(-50%, 100%);' : '' }}
-                                                {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(-50%, 100%);' : '' }}
-                                                {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
-                                                top: 45rem;">
-                                    read more <i class="ri-links-fill"></i>
-                                </button>
-                            </a>
-                            {{-- @endif --}}
+                            @if ($slider->button_title)
+                                <a href='{{ $slider->button_link }}'>
+                                    <button class="btn {{ $slider->button_background == '#fff' ? 'btn-light' : '' }} btn-lg"
+                                        style="position: absolute;
+                                            z-index: 999;
+                                            background-color: {{ $slider->button_background }};
+                                            color: {{ $slider->button_text_color }};
+                                            {{ $slider->button_horizontal_layout == 'center' ? 'left: 50%; transform: translate(-50%, 100%);' : '' }}
+                                            {{ $slider->button_horizontal_layout == 'left' ? 'left: 10rem; transform: translate(50%, 100%);' : '' }}
+                                            {{ $slider->button_horizontal_layout == 'right' ? 'right: 10rem; transform: translate(-50%, 100%);' : '' }}
+                                            bottom: 15vh;">
+                                        <!-- Changed from fixed value to 5vh -->
+                                        {{ $slider->button_title }} <i class="ri-links-fill"></i>
+                                    </button>
+                                </a>
+                            @endif
                         </div>
                     @endif
                 @endforeach

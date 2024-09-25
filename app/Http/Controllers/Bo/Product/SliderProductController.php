@@ -55,7 +55,7 @@ class SliderProductController extends Controller
 
 
         $request->validate([
-            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'image' => ['required', 'mimes:png,jpg,jpeg', 'max:10120'],
         ]);
 
         // mengecek gambar diinput
@@ -107,7 +107,7 @@ class SliderProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $slider = SliderModel::findOrFail(1);
+        $slider = SliderModel::findOrFail($id);
 
         $data = $request->validate([
             "slider_title" => ['required', 'string', 'max:100'],
@@ -121,7 +121,7 @@ class SliderProductController extends Controller
         ]);
 
         $request->validate([
-            'image' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'image' => ['nullable', 'mimes:png,jpg,jpeg', 'max:10120'],
         ]);
 
         if ($request->hasFile('image')) {
@@ -133,8 +133,6 @@ class SliderProductController extends Controller
 
             if (File::exists($imagePath)) {
                 File::delete($imagePath);
-            } else {
-                dd('file tidak ada');
             }
 
             $image_path = 'storage/' . $image_path;
