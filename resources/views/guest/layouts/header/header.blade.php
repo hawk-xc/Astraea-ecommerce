@@ -53,6 +53,15 @@
                                             Product</a>
                                         <a class="dropdown-item" href="{{ route('fo.cart-hampers.index') }}">Cart
                                             Hampers</a>
+                                        <hr>
+                                        <form id="logout-form" method="POST" action="{{ route('logout.customer') }}"
+                                            style="display: none;"">
+                                            @csrf
+                                        </form>
+                                        <a href="javascript:void(0);" class="dropdown-item"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <span>Log out</span>
+                                        </a>
                                     @else
                                         <a class="dropdown-item" href="{{ route('loginf.customer') }}">Login</a>
                                         <a class="dropdown-item" href="{{ route('registerf.customer') }}">Register</a>
@@ -122,6 +131,17 @@
                                             <li>
                                                 <a href="{{ route('fo.cart-hampers.index') }}">
                                                     Cart Hampers
+                                                </a>
+                                            </li>
+                                            <hr>
+                                            <li>
+                                                <form id="logout-form" method="POST"
+                                                    action="{{ route('logout.customer') }}" style="display: none;"">
+                                                    @csrf
+                                                </form>
+                                                <a href="javascript:void(0);"
+                                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                    <span>Log out</span>
                                                 </a>
                                             </li>
                                         @else
