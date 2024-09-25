@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Http\FormRequest;
 
+use \App\Models\BannerView as BannerModel;
+
 
 use Helper;
 
@@ -61,6 +63,9 @@ class AuthCustomerController extends Controller
         $ref['title'] = 'Login';
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -75,6 +80,9 @@ class AuthCustomerController extends Controller
         $ref['title'] = 'Register';
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index_reg', compact('ref', 'data'));
     }
 

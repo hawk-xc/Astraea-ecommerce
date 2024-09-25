@@ -1,3 +1,4 @@
+
 @extends('guest.layouts.app')
 
 {{-- @push('header_script')
@@ -50,6 +51,12 @@
     </div>
 
     <style type="text/css">
+  .service-detail {
+  display: flex;
+  flex-direction: row;
+  padding: 5rem;
+  gap: 2.4rem;
+}
         .container-sn {
             padding: 5rem;
             display: flex;

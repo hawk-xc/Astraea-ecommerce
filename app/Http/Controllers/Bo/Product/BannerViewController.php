@@ -24,7 +24,8 @@ class BannerViewController extends Controller
     {
         $banner = BannerModel::first();
         $ref = $this->data;
-        $ref["url"] = route("banner.update", isset($banner) ? $banner->id : 1);
+        // $ref["url"] = route("banner.update", isset($banner) ? $banner->id : 1);
+        $ref["url"] = route("banner.update", 1);
 
         return view($this->data['view_directory'] . '.index', compact('ref', 'banner'));
     }

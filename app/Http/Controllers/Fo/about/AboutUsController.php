@@ -61,6 +61,9 @@ class AboutUsController extends Controller
 
         $data['testimonis'] = $this->testimoniRepository->getAllFo();
         $data['etetotal'] = $this->testimoniRepository->getTotal();
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 

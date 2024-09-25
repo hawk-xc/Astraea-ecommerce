@@ -1,6 +1,7 @@
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl
-        {{ str_contains(Request::url(), 'virtual-reality') == true ? ' mt-3 mx-3 bg-primary' : '' }}"
-    id="navbarBlur" data-scroll="false">
+        {{ str_contains(Request::url(), 'virtual-reality') == true ? ' mt-3 mx-3 bg-primary' : '' }}" id="navbarBlur"
+        data-scroll="false">
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
             <h6 class="font-weight-bolder text-white pt-2 mb-0">{{ $title }}</h6>
@@ -20,9 +21,14 @@
                     </a>
                 </li>
                 <li class="nav-item d-flex align-items-center">
-                    <form action="{{ route('logout.customer') }}" method="post">
+                    <form role="form" method="post" action="{{ route('logout') }}" id="logout-form">
                         @csrf
-                        <p><button type="submit" class="dashboard">Log out</button></p>
+                        <a href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                            class="nav-link text-white font-weight-bold px-0">
+                            <i class="fa fa-user me-sm-1"></i>
+                            <span class="d-sm-inline d-none">Log out</span>
+                        </a>
                     </form>
                 </li>
             </ul>

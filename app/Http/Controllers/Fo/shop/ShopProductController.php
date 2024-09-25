@@ -13,6 +13,7 @@ use App\Repositories\OrderDetailRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\BannerView as BannerModel;
 
 class ShopProductController extends Controller
 {
@@ -46,6 +47,9 @@ class ShopProductController extends Controller
         $this->orderDetailRepository = $orderDetailRepository;
         $this->data['title'] = 'Shop Product';
         $this->data['view_directory'] = "guest.feature.shop.product";
+
+        $this->data['banner'] = BannerModel::first()->pluck('images');
+
     }
     /**
      * Display a listing of the resource.
@@ -62,7 +66,8 @@ class ShopProductController extends Controller
             });
         $data['categories'] = $this->categoriesRepository->getAllFo();
         $data['products'] = $this->productRepository->getAllFo();
-        // dd($data['products']->toArray());
+
+        $data['banner'] = BannerModel::first()->pluck('images');
         
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
@@ -90,6 +95,8 @@ class ShopProductController extends Controller
         $data['subcategories'] = $this->subCategoriesRepository->getCate($idCategory);
         $data['products'] = $this->productRepository->getAllCatgoryFo($idCategory);
         // dd($data);
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -110,6 +117,8 @@ class ShopProductController extends Controller
         $data['ulasans'] = $this->ulasanRepository->getAllFo($data['product']['id']);
         $data['avgrat'] = $this->ulasanRepository->getAvgRat($data['product']['id']);
         $data['product']['id'] = Crypt::encryptString($data['product']['id']);
+
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         // dd($data["product"]);
         return view($this->data['view_directory'] . '.detail', compact('ref', 'data'));

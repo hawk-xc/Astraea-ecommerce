@@ -14,6 +14,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
+use \App\Models\BannerView as BannerModel;
+
 class ShopHampersController extends Controller
 {
     private ContactUsRepository $contactUsRepository;
@@ -63,6 +65,9 @@ class ShopHampersController extends Controller
             });
         $data['categories'] = $this->categoriesRepository->getAllFo();
         $data['products'] = $this->productRepository->getAllFo();
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -80,6 +85,9 @@ class ShopHampersController extends Controller
         $data['categories'] = $this->categoriesRepository->getAllFo();
         $data['subcategories'] = $this->subCategoriesRepository->getCate($idCategory);
         $data['products'] = $this->productRepository->getAllCatgoryFo($idCategory);
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -100,6 +108,8 @@ class ShopHampersController extends Controller
         $data['ulasans'] = $this->ulasanRepository->getAllFo($data['product']['id']);
         $data['avgrat'] = $this->ulasanRepository->getAvgRat($data['product']['id']);
         $data['product']['id'] = Crypt::encryptString($data['product']['id']);
+
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         return view($this->data['view_directory'] . '.detail', compact('ref', 'data')); 
     }

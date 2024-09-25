@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Http\FormRequest;
 
+use \App\Models\BannerView as BannerModel;
+
 class PasswordChangeContoller extends Controller
 {
     private ContactUsRepository $contactUsRepository;
@@ -47,6 +49,9 @@ class PasswordChangeContoller extends Controller
         $ref = $this->data;
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -101,6 +106,9 @@ class PasswordChangeContoller extends Controller
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
         $data['url'] = route('change-password.update', $token);
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.form', compact('ref', 'data'));
 
     }
