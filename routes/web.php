@@ -1,59 +1,61 @@
 
 <?php
 //bo
-use App\Http\Controllers\Bo\Categories\CategoriesController;
-use App\Http\Controllers\Bo\Categories\SubCategoriesController;
-use App\Http\Controllers\Bo\Categories\ColorCategoryController;
-use App\Http\Controllers\Bo\Home\HomeController;
-use App\Http\Controllers\Bo\Auth\LoginController;
-use App\Http\Controllers\Bo\Comprof\ContactController;
-use App\Http\Controllers\Bo\Comprof\EventController;
-use App\Http\Controllers\Bo\Comprof\CProfileController;
-use App\Http\Controllers\Bo\Comprof\ServiceController;
-use App\Http\Controllers\Bo\Comprof\PartnerController;
-use App\Http\Controllers\Bo\Comprof\CertificateController;
 use App\Http\Controllers\Bo\Account\ProfileController;
+use App\Http\Controllers\Bo\AppFee\AppFeeController;
+use App\Http\Controllers\Bo\Auth\LoginController;
+use App\Http\Controllers\Bo\Categories\CategoriesController;
+use App\Http\Controllers\Bo\Categories\ColorCategoryController;
+use App\Http\Controllers\Bo\Categories\SkuController;
+use App\Http\Controllers\Bo\Categories\SubCategoriesController;
+use App\Http\Controllers\Bo\Comprof\CertificateController;
+use App\Http\Controllers\Bo\Comprof\ContactController;
+use App\Http\Controllers\Bo\Comprof\CProfileController;
+use App\Http\Controllers\Bo\Comprof\EventController;
+use App\Http\Controllers\Bo\Comprof\PartnerController;
+use App\Http\Controllers\Bo\Comprof\ServiceController;
+use App\Http\Controllers\Bo\Customer\CustomerManagementController;
 use App\Http\Controllers\Bo\Discount\ManagementDiscountEventController;
 use App\Http\Controllers\Bo\Discount\ManagementDiscountNewCustomerController;
-use App\Http\Controllers\Bo\Customer\CustomerManagementController;
-use App\Http\Controllers\Bo\Product\ProductController;
-use App\Http\Controllers\Bo\Product\HampersProductController;
-use App\Http\Controllers\Bo\Product\SliderProductController;
+use App\Http\Controllers\Bo\Home\HomeController;
 use App\Http\Controllers\Bo\Order\ManagementOrderController;
 use App\Http\Controllers\Bo\Order\ManagementOrderHampersController;
-use App\Http\Controllers\Bo\AppFee\AppFeeController;
-use App\Http\Controllers\Bo\Categories\SkuController;
-use App\Http\Controllers\Bo\User\UserController;
-use App\Http\Controllers\Bo\visitor\VisitorMailController;
+use App\Http\Controllers\Bo\Product\BannerViewController;
+use App\Http\Controllers\Bo\Product\HampersProductController;
+use App\Http\Controllers\Bo\Product\ProductController;
+use App\Http\Controllers\Bo\Product\SliderProductController;
 use App\Http\Controllers\Bo\testimoni\TestimoniController as BoTestimoniController;
+use App\Http\Controllers\Bo\User\UserController;
 
 //fo
-use App\Http\Controllers\Fo\home\BerandaController;
-use App\Http\Controllers\Fo\contact\ContactUsController;
+use App\Http\Controllers\Bo\visitor\VisitorMailController;
 use App\Http\Controllers\Fo\about\AboutUsController;
-use App\Http\Controllers\Fo\event\EventController as FoEventController;
-use App\Http\Controllers\Fo\partner\PartnerController as FoPartnerController;
-use App\Http\Controllers\Fo\certificate\CertificateController as FoCertificateController;
-use App\Http\Controllers\Fo\shop\ShopProductController;
-use App\Http\Controllers\Fo\shop\ShopHampersController;
-use App\Http\Controllers\Fo\cart\CartProductController;
-use App\Http\Controllers\Fo\cart\CartHampersController;
 use App\Http\Controllers\Fo\auth\AuthCustomerController;
-use App\Http\Controllers\Fo\pass_change\PasswordChangeContoller;
+use App\Http\Controllers\Fo\cart\CartHampersController;
+use App\Http\Controllers\Fo\cart\CartProductController;
+use App\Http\Controllers\Fo\certificate\CertificateController as FoCertificateController;
+use App\Http\Controllers\Fo\contact\ContactUsController;
+use App\Http\Controllers\Fo\customer\CouponListController;
 use App\Http\Controllers\Fo\customer\DashboardCustomerController;
 use App\Http\Controllers\Fo\customer\OrderHistoryController;
-use App\Http\Controllers\Fo\customer\CouponListController;
 use App\Http\Controllers\Fo\customer\TestimoniController;
 use App\Http\Controllers\Fo\customer\UlasanController;
-use App\Http\Controllers\Fo\payment\PaymentOrderController;
-use App\Http\Controllers\Fo\payment\PaymentOrderHampersController;
-use App\Http\Controllers\Fo\shipping\ShippingProductController;
-use App\Http\Controllers\Fo\shipping\ShippingHampersController;
 use App\Http\Controllers\Fo\discount\DiscountEventApplyController;
 use App\Http\Controllers\Fo\discount\DiscountEventApplyHController;
+use App\Http\Controllers\Fo\event\EventController as FoEventController;
+use App\Http\Controllers\Fo\home\BerandaController;
+use App\Http\Controllers\Fo\partner\PartnerController as FoPartnerController;
+use App\Http\Controllers\Fo\pass_change\PasswordChangeContoller;
+use App\Http\Controllers\Fo\payment\PaymentOrderController;
+use App\Http\Controllers\Fo\payment\PaymentOrderHampersController;
+use App\Http\Controllers\Fo\shipping\ShippingHampersController;
+use App\Http\Controllers\Fo\shipping\ShippingProductController;
+use App\Http\Controllers\Fo\shop\ShopHampersController;
+use App\Http\Controllers\Fo\shop\ShopProductController;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -230,6 +232,8 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::group(['prefix' => 'comprof'], function () {
                 //comprof contact us
+                Route::resource("banner", BannerViewController::class, ['only' => ['index', 'update']]);
+
                 Route::resource("contact", ContactController::class, ['only' => ['index', 'update']]);
 
                 //comprof event

@@ -9,7 +9,8 @@
 
 ## Task Lists
 
-- Tambah fitur Ganti Banner
+- ✅ Integrasi Banner ke semua pages
+- ✅ Tambah fitur Ganti Banner
 - ✅ Merapikan Posisi Button
 - ✅ Mengubah menu pada Hamburger menu
 - ✅ Merapikan artikel about profile

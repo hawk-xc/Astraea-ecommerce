@@ -184,6 +184,12 @@
                                 <span class="sidenav-normal">Contact</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/comprof/banner*') ? 'active' : '' }}"
+                                href="{{ route('banner.index') }}">
+                                <span class="sidenav-normal">Banner</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Bo\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\BannerView as BannerModel;
+use Illuminate\Support\Facades\File;
 
 class BannerViewController extends Controller
 {
@@ -13,7 +14,7 @@ class BannerViewController extends Controller
     public function __construct()
     {
         $this->data['title'] = 'Banner';
-        $this->data['view_directory'] = "admin.feature.products.banner";
+        $this->data['view_directory'] = "admin.feature.banner";
     }
 
     /**
@@ -21,18 +22,11 @@ class BannerViewController extends Controller
      */
     public function index()
     {
-        $banner = BannerModel::first()->get();
-
+        $banner = BannerModel::first();
         $ref = $this->data;
-        return view($this->data['view_directory'] . '.index', compact('ref', 'banner'));
-    }
+        $ref["url"] = route("banner.update", isset($banner) ? $banner->id : 1);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return view($this->data['view_directory'] . '.index', compact('ref', 'banner'));
     }
 
     /**
@@ -40,6 +34,42 @@ class BannerViewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $banner = BannerModel::find($id);
+
+        $request->validate([
+            'image' => ['nullable', 'mimes:png,jpg,jpeg', 'max:10120'],
+        ]);
+
+        if (isset($banner)) {
+            if ($request->hasFile('image')) {
+                $image = $request->file('image'); // Mengakses file tertentu
+                $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+
+
+                $imagePath = public_path($banner->images);
+
+                if (File::exists($imagePath)) {
+                    File::delete($imagePath);
+                }
+
+                $image_path = 'storage/' . $image_path;
+
+                $banner->images = $image_path;
+                $banner->update();
+            } else {
+                $image_path = $banner->images;
+            }
+        } else {
+            $image = $request->file('image'); // Mengakses file tertentu
+            $image_path = $image->store('images', 'public'); // Menyimpan file ke folder 'public/image'
+
+            $image_path = 'storage/' . $image_path;
+
+            $banner = new BannerModel();
+            $banner->images = $image_path;
+            $banner->save();
+        }
+
+        return redirect()->route('banner.index')->with('success', 'Berhasil mengubah banner');
     }
 }
