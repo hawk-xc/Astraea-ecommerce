@@ -105,12 +105,6 @@ Route::get("/shop-product-category/{id}", [ShopProductController::class, 'catego
 Route::resource("shop-hampers", ShopHampersController::class, ['only' => ['index', 'show']]);
 Route::get("/shop-hampers-category/{id}", [ShopHampersController::class, 'categoryShow'])->name('shop-hampers.category');
 
-//cart product
-Route::resource("cart-product", CartProductController::class, ['as' => 'fo']);
-
-//cart hampers
-Route::resource("cart-hampers", CartHampersController::class, ['as' => 'fo']);
-
 //auth customer
 
 Route::get('login', [AuthCustomerController::class, 'index'])->name('loginf.customer');
@@ -122,6 +116,12 @@ Route::get('verify/{token}', [AuthCustomerController::class, 'verify'])->name('v
 Route::resource("change-password", PasswordChangeContoller::class);
 
 Route::group(['middleware' => ['auth:customer']], function () {
+    //cart product
+    Route::resource("cart-product", CartProductController::class, ['as' => 'fo']);
+
+    //cart hampers
+    Route::resource("cart-hampers", CartHampersController::class, ['as' => 'fo']);
+
     Route::get('dashboard', [DashboardCustomerController::class, 'index'])->name('dashboard.customer');
     Route::get('profile-edit', [DashboardCustomerController::class, 'edit'])->name('customer.profiile.edit');
     Route::post('profile-edit', [DashboardCustomerController::class, 'update'])->name('customer.profiile.update');

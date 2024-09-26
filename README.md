@@ -9,6 +9,10 @@
 
 ## Task Lists
 
+- ⁠Tambah watermark stok kosong pada product
+- ⁠Popup kupon tidak tampil
+- ⁠Tampilan stok kosong dipaling bawah
+- [HARD] Update category (Tidak bisa hapus)
 - ✅ Integrasi Banner ke semua pages
 - ✅ Tambah fitur Ganti Banner
 - ✅ Merapikan Posisi Button
