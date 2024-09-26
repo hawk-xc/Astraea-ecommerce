@@ -10,12 +10,12 @@
 ## Task Lists
 
 - ⁠Tambah watermark stok kosong pada product
-- Event page disamakan service
 - ⁠Tampilan stok kosong dipaling bawah
 - [HARD] Update category (Tidak bisa hapus)
 - show password login/register
 - menambahkan opsi pilihan pada all (product pages)
 - add to cart (error stock / tidak calculate stok)
+- ✅ Event page disamakan service
 - ✅ ⁠Popup kupon tidak tampil
 - ✅ payment page title checkout -> catatan
 - ✅ error message shipping belum dimasukkan -> cek ongkir terlebih dahulu
