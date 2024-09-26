@@ -1,4 +1,3 @@
-
 @extends('guest.layouts.app')
 
 {{-- @push('header_script')
@@ -178,7 +177,7 @@
                 <div class="col-lg-6 col-md-12">
                     <div class="abt-text">
                         <h2>{{ $data['about']['title'] }}</h2>
-                         <p>{!! nl2br(e($data['about']['description'])) !!}</p>
+                        <p>{!! nl2br(e($data['about']['description'])) !!}</p>
                         <a href="{{ route('fo.about.index') }}" class="boxed-btn mt-4">know more</a>
                     </div>
                 </div>
@@ -294,7 +293,7 @@
         <!-- end logo carousel -->
     @endif
 
-    {{-- <div class="modal fade" id="iklan_new">
+    <div class="modal fade" id="iklan_new">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- Modal body -->
@@ -306,7 +305,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 @endsection
 @push('footer_script')
     <script>

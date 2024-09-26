@@ -12,6 +12,7 @@ use App\Repositories\DiscountRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use App\Models\Discount as DiscoutModel;
 
 class BerandaController extends Controller
 {

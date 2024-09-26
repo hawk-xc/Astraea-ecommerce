@@ -13,6 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File;
 
 class ManagementDiscountNewCustomerController extends Controller
 {
@@ -43,18 +44,12 @@ class ManagementDiscountNewCustomerController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
@@ -67,10 +62,7 @@ class ManagementDiscountNewCustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-
-    }
+    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.
@@ -84,14 +76,14 @@ class ManagementDiscountNewCustomerController extends Controller
             "description_discount" => ['required', 'string'],
             'image_banner' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
             "discount_amount" => ['required', 'string', 'max:3'],
-        ],[], [
+        ], [], [
             "title" => "Nama discount",
             "code_discount" => "Kode discount",
             "description_discount" => "Deskripsi Diskon",
             'image_banner' => "Banner",
             "discount_amount" => "Besaran diskon",
         ]);
-        
+
         $data['updated_by'] = auth()->user()->id;
         $old_image = $this->repository->getById($id)->image_banner;
         $data['code_discount'] = strtoupper($data['code_discount']);
@@ -99,9 +91,10 @@ class ManagementDiscountNewCustomerController extends Controller
         try {
 
             if (isset($data["image_banner"])) {
-                if($old_image != null)
-                {
-                    unlink(storage_path().'/app/public/'.$old_image);
+                if ($old_image != null) {
+                    if (File::exists(asset($old_image))) {
+                        unlink(storage_path() . '/app/public/' . $old_image);
+                    }
                 }
                 $image_path = $request->file('image_banner')->store('images', 'public');
                 $data["image_banner"] =  $image_path;
@@ -119,15 +112,9 @@ class ManagementDiscountNewCustomerController extends Controller
         }
     }
 
-    public function active(string $id)
-    {
-
-    }
+    public function active(string $id) {}
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-
-    }
+    public function destroy(string $id) {}
 }
