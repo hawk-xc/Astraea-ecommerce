@@ -58,8 +58,7 @@ class PaymentOrderController extends Controller
 
     public function index(String $order)
     {
-        try
-        {
+        try {
             $no_nota = Crypt::decryptString($order);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
@@ -74,8 +73,7 @@ class PaymentOrderController extends Controller
         $data['order'] = $this->orderRepository->getByNota($no_nota);
 
         //jika sudah ada link pembayaran maka akan diarahkan
-        if(isset($data['order']['payment_link']))
-        {
+        if (isset($data['order']['payment_link'])) {
             return redirect()->route('shop-product.index')->with('toast_success', 'Selamat berbelanja kembali');
         }
 
@@ -88,7 +86,7 @@ class PaymentOrderController extends Controller
         $data['app_fee'] = $this->appFeeRepository->getById(1)['fee_amount'];
 
         //total price
-        $data['total_price'] = ($data['order']['shipping']  + $data['app_fee']) + ( $data['order']['sub_total_price'] * (1 - $data['order']['discount_amount'] / 100));
+        $data['total_price'] = ($data['order']['shipping']  + $data['app_fee']) + ($data['order']['sub_total_price'] * (1 - $data['order']['discount_amount'] / 100));
 
         $data['total_price'] = Helper::to_rupiah($data['total_price']);
         $data['app_fee'] = Helper::to_rupiah($data['app_fee']);
@@ -99,10 +97,9 @@ class PaymentOrderController extends Controller
 
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
-    public function create(Request $request,String $order)
+    public function create(Request $request, String $order)
     {
-        try
-        {
+        try {
             $no_nota = Crypt::decryptString($order);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
@@ -111,8 +108,7 @@ class PaymentOrderController extends Controller
         //data
         $data['order'] = $this->orderRepository->getByNota($no_nota);
 
-        if(isset($data['order']['payment_link']))
-        {
+        if (isset($data['order']['payment_link'])) {
             return redirect($data['order']['payment_link']);
         }
 
@@ -121,9 +117,8 @@ class PaymentOrderController extends Controller
         $data['app_fee'] = $this->appFeeRepository->getById(1)['fee_amount'];
 
         //shipping checking
-        if(!isset($data['shipping']['price']))
-        {
-            return redirect()->back()->with('toast_warning', 'Shipping belum dimasukkan');
+        if (!isset($data['shipping']['price'])) {
+            return redirect()->back()->with('toast_warning', 'Cek ongkir terlebih dahulu');
         }
         //checking data discount
         $reccord['id_cutomer'] = Auth()->guard('customer')->user()->id;
@@ -136,11 +131,9 @@ class PaymentOrderController extends Controller
         $currentDateTime = Carbon::now();
 
         //checking berlaku discount
-        if(isset($coupon['discountData']['is_active']))
-        {
-            if(($startDateTime >= $currentDateTime) || ($endDateTime <= $currentDateTime)  || ($coupon['discountData']['is_active'] != '1'))
-            {
-                if($coupon['discountData']['id'] != 'DIS-20240000000000000001'){
+        if (isset($coupon['discountData']['is_active'])) {
+            if (($startDateTime >= $currentDateTime) || ($endDateTime <= $currentDateTime)  || ($coupon['discountData']['is_active'] != '1')) {
+                if ($coupon['discountData']['id'] != 'DIS-20240000000000000001') {
                     return redirect()->back()->with('toast_warning', 'Coupon discount tidak tersedia');
                 }
             }
@@ -151,8 +144,7 @@ class PaymentOrderController extends Controller
         //checking data product
         $data['detail_order'] = $this->orderDetailRepository->orderList($data['order']['id']);
         foreach ($data['detail_order'] as $order_product) {
-            if($order_product['product_data']['stock'] <  $order_product['quantity'])
-            {
+            if ($order_product['product_data']['stock'] <  $order_product['quantity']) {
                 return redirect()->back()->with('toast_warning', 'Product stok tidak tersedia');
             }
         }
@@ -164,10 +156,10 @@ class PaymentOrderController extends Controller
             "description" => "Description",
         ]);
 
-        $reccord['description'] = '" '. $reccord['description'] .' "';
+        $reccord['description'] = '" ' . $reccord['description'] . ' "';
 
         //menghitung total
-        $total_price = ($data['shipping']['price'] + $data['app_fee']) + ( $data['order']['sub_total_price'] * (1 - $data['discount'] / 100));
+        $total_price = ($data['shipping']['price'] + $data['app_fee']) + ($data['order']['sub_total_price'] * (1 - $data['discount'] / 100));
 
         try {
             //membuat link
@@ -181,24 +173,23 @@ class PaymentOrderController extends Controller
                 'description' => $reccord['description'],
                 'success_redirect_url' => route('fo.home'),
             ]);
-            
+
             if ($response->failed()) {
                 // Log seluruh respons dari API untuk melihat error detail
                 \Log::error('Xendit API error response:', $response->json());
-            
+
                 // Opsional: Menampilkan pesan error yang lebih spesifik
                 $errorMessage = $response->json()['message'] ?? 'Failed to create invoice, please check your production setup.';
                 return redirect()->back()->with('toast_warning', $errorMessage);
             }
-            
+
             if (!isset($response->json()['invoice_url'])) {
                 \Log::error('Missing invoice_url in response:', $response->json());
                 return redirect()->back()->with('toast_warning', 'Invoice creation failed, please try again.');
             }
 
             //apply discount
-            if(isset($coupon['discountData']['is_active']))
-            {
+            if (isset($coupon['discountData']['is_active'])) {
                 $this->d_customer_repository->edit($coupon['id'], [
                     'is_used' => '1'
                 ]);
@@ -224,7 +215,7 @@ class PaymentOrderController extends Controller
             // Mengambil respons dari API Xendit
             return redirect($response->json()['invoice_url']);
         } catch (Exception $e) {
-            return redirect()->back()->with('toast_warning', 'Terjadi Kesahalahan'. $e);
+            return redirect()->back()->with('toast_warning', 'Terjadi Kesahalahan' . $e);
         }
     }
 
@@ -260,8 +251,5 @@ class PaymentOrderController extends Controller
         }
 
         return response()->json(['success' => true]);
-
-
     }
-
 }

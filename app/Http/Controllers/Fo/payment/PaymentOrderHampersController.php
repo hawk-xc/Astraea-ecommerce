@@ -55,8 +55,7 @@ class PaymentOrderHampersController extends Controller
 
     public function index(String $order)
     {
-        try 
-        {
+        try {
             $no_nota = Crypt::decryptString($order);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
@@ -66,16 +65,15 @@ class PaymentOrderHampersController extends Controller
         $ref = $this->data;
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
-        
+
         //order
         $data['order'] = $this->orderRepository->getByNota($no_nota);
 
         //jika sudah ada link pembayaran maka akan diarahkan
-        if(isset($data['order']['payment_link']))
-        {
+        if (isset($data['order']['payment_link'])) {
             return redirect()->route('shop-hampers.index')->with('toast_success', 'Selamat berbelanja kembali');
         }
-        
+
         //shiping
         $data['shipping'] = $this->shippingRepository->getById($data['order']['id']);
         $data['id_destination'] = auth()->guard('customer')->user()['district_id'];
@@ -83,23 +81,22 @@ class PaymentOrderHampersController extends Controller
 
         //app fee
         $data['app_fee'] = $this->appFeeRepository->getById(1)['fee_amount'];
-        
+
         //total price
-        $data['total_price'] = ($data['order']['shipping']  + $data['app_fee']) + ( $data['order']['sub_total_price'] * (1 - $data['order']['discount_amount'] / 100));
+        $data['total_price'] = ($data['order']['shipping']  + $data['app_fee']) + ($data['order']['sub_total_price'] * (1 - $data['order']['discount_amount'] / 100));
 
         $data['total_price'] = Helper::to_rupiah($data['total_price']);
         $data['app_fee'] = Helper::to_rupiah($data['app_fee']);
-        
+
         //variable yang digunakan selector
         $data['id_nota'] = $order;
         $data['id_order'] = Crypt::encryptString($data['order']['id']);
-        
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
-    public function create(Request $request,String $order)
+    public function create(Request $request, String $order)
     {
-        try 
-        {
+        try {
             $no_nota = Crypt::decryptString($order);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
@@ -108,8 +105,7 @@ class PaymentOrderHampersController extends Controller
         //data
         $data['order'] = $this->orderRepository->getByNota($no_nota);
 
-        if(isset($data['order']['payment_link']))
-        {
+        if (isset($data['order']['payment_link'])) {
             return redirect($data['order']['payment_link']);
         }
 
@@ -118,13 +114,12 @@ class PaymentOrderHampersController extends Controller
         $data['app_fee'] = $this->appFeeRepository->getById(1)['fee_amount'];
 
         //shipping checking
-        if(!isset($data['shipping']['price']))
-        {
-            return redirect()->back()->with('toast_warning', 'Shipping belum dimasukkan');
+        if (!isset($data['shipping']['price'])) {
+            return redirect()->back()->with('toast_warning', 'Cek ongkir terlebih dahulu');
         }
         //checking data discount
         $reccord['id_cutomer'] = Auth()->guard('customer')->user()->id;
-        
+
         $coupon = $this->d_customer_repository->getByCodePromo($reccord['id_cutomer'], $data['order']['code_discount']);
 
         //menggabungkan date dan time
@@ -133,11 +128,9 @@ class PaymentOrderHampersController extends Controller
         $currentDateTime = Carbon::now();
 
         //checking berlaku discount
-        if(isset($coupon['discountData']['is_active']))
-        {
-            if(($startDateTime >= $currentDateTime) || ($endDateTime <= $currentDateTime)  || ($coupon['discountData']['is_active'] != '1'))
-            {
-                if($coupon['discountData']['id'] != 'DIS-20240000000000000001'){
+        if (isset($coupon['discountData']['is_active'])) {
+            if (($startDateTime >= $currentDateTime) || ($endDateTime <= $currentDateTime)  || ($coupon['discountData']['is_active'] != '1')) {
+                if ($coupon['discountData']['id'] != 'DIS-20240000000000000001') {
                     return redirect()->back()->with('toast_warning', 'Coupon discount tidak tersedia');
                 }
             }
@@ -148,12 +141,11 @@ class PaymentOrderHampersController extends Controller
         //checking data product
         $data['detail_order'] = $this->orderDetailRepository->orderList($data['order']['id']);
         foreach ($data['detail_order'] as $order_product) {
-            if($order_product['hampers_data']['stock'] <  $order_product['quantity'])
-            {
+            if ($order_product['hampers_data']['stock'] <  $order_product['quantity']) {
                 return redirect()->back()->with('toast_warning', 'Product stok tidak tersedia');
             }
         }
-        
+
         //validasi description
         $reccord = $request->validate([
             "description" => ['nullable', 'string', 'max:255'],
@@ -161,10 +153,10 @@ class PaymentOrderHampersController extends Controller
             "description" => "Description",
         ]);
 
-        $reccord['description'] = '" '. $reccord['description'] .' "';
+        $reccord['description'] = '" ' . $reccord['description'] . ' "';
 
         //menghitung total
-        $total_price = ($data['shipping']['price'] + $data['app_fee']) + ( $data['order']['sub_total_price'] * (1 - $data['discount'] / 100));
+        $total_price = ($data['shipping']['price'] + $data['app_fee']) + ($data['order']['sub_total_price'] * (1 - $data['discount'] / 100));
 
         try {
             //membuat link
@@ -172,17 +164,16 @@ class PaymentOrderHampersController extends Controller
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Basic ' . base64_encode(env('XENDIT_SECRET_KEY') . ':'),
             ])
-            ->post('https://api.xendit.co/v2/invoices', [
-                'external_id' => $no_nota,
-                'amount' => $total_price,
-                'payer_email' => auth()->guard('customer')->user()->email,
-                'description' => $reccord['description'],
-                'success_redirect_url'=> route('fo.home'),
-            ]);
+                ->post('https://api.xendit.co/v2/invoices', [
+                    'external_id' => $no_nota,
+                    'amount' => $total_price,
+                    'payer_email' => auth()->guard('customer')->user()->email,
+                    'description' => $reccord['description'],
+                    'success_redirect_url' => route('fo.home'),
+                ]);
 
             //apply discount
-            if(isset($coupon['discountData']['is_active']))
-            {                
+            if (isset($coupon['discountData']['is_active'])) {
                 $this->d_customer_repository->edit($coupon['id'], [
                     'is_used' => '1'
                 ]);
@@ -208,8 +199,7 @@ class PaymentOrderHampersController extends Controller
             // Mengambil respons dari API Xendit
             return redirect($response->json()['invoice_url']);
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi Kesahalahan'. $e);
+            return redirect()->back()->with('error', 'Terjadi Kesahalahan' . $e);
         }
     }
-
 }
