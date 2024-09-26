@@ -11,8 +11,15 @@
 
 - ⁠Tambah watermark stok kosong pada product
 - ⁠Popup kupon tidak tampil
+- Event page disamakan service
 - ⁠Tampilan stok kosong dipaling bawah
 - [HARD] Update category (Tidak bisa hapus)
+- show password login/register
+- payment page title checkout -> catatan
+- menambahkan opsi pilihan pada all (product pages)
+- error message shipping belum dimasukkan -> cek ongkir terlebih dahulu
+- add to cart (error stock / tidak calculate stok)
+- ✅ Add to cart kembali ke login jika belum login
 - ✅ Integrasi Banner ke semua pages
 - ✅ Tambah fitur Ganti Banner
 - ✅ Merapikan Posisi Button
