@@ -15,7 +15,7 @@
 - show password login/register
 - menambahkan opsi pilihan pada all (product pages)
 - add to cart (error stock / tidak calculate stok)
-- ✅ Event page disamakan service
+- ✅ Event page disamakan service [dummy]
 - ✅ ⁠Popup kupon tidak tampil
 - ✅ payment page title checkout -> catatan
 - ✅ error message shipping belum dimasukkan -> cek ongkir terlebih dahulu
