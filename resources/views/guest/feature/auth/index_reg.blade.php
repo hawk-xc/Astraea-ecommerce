@@ -105,8 +105,8 @@
                                                         <label for="password">Password</label>
                                                     <div class="input-group">
                                                         <input type="password" id="password" name="password"
-                                                            placeholder="Password" class="form-control pass-inp-usr"
-                                                            required>
+                                                            style="padding: 24px;" placeholder="Password"
+                                                            class="form-control pass-inp-usr" required>
                                                         <span class="toggle-password input-group-text bi bi-eye"
                                                             onclick="togglePassword('password', this)"><i
                                                                 class="ri-eye-off-line"></i></span>
@@ -115,7 +115,7 @@
                                                     <p>
                                                         <label for="cofmpass">Confirm Password</label>
                                                     <div class="input-group">
-                                                        <input type="password" id="cofmpass"
+                                                        <input type="password" id="cofmpass" style="padding: 24px;"
                                                             class="form-control pass-inp-usr" name="password_confirmation"
                                                             placeholder="Confirm Password" required>
                                                         <span class="toggle-password input-group-text bi bi-eye"

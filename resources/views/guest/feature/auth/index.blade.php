@@ -40,13 +40,13 @@
                                             <p>
                                                 <label for="email">Email</label>
                                                 <input type="email" id="email" name="email" placeholder="Email"
-                                                    class="form-control">
+                                                    class="form-control" style="padding: 24px;">
                                             </p>
                                             <p>
                                                 <label for="passwordl">Password</label>
                                             <div class="input-group">
                                                 <input type="password" id="passwordl" name="password" placeholder="Password"
-                                                    class="form-control">
+                                                    class="form-control" style="padding: 24px;">
                                                 <span class="toggle-password input-group-text bi bi-eye"
                                                     onclick="togglePassword('passwordl', this)"><i
                                                         class="ri-eye-off-line"></i></span>
