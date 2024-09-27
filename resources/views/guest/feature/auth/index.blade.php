@@ -39,7 +39,8 @@
                                             @csrf
                                             <p>
                                                 <label for="email">Email</label>
-                                                <input type="email" id="email" name="email" placeholder="Email">
+                                                <input type="email" id="email" name="email" placeholder="Email"
+                                                    class="form-control">
                                             </p>
                                             <p>
                                                 <label for="passwordl">Password</label>
