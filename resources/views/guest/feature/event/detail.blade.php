@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="col-lg-8 offset-lg-2 text-center">
                     <div class="breadcrumb-text">
-                        <h1>{{ $data['event']->title }}</h1>
+                        <h1>{{ $data['event']->name }}</h1>
                     </div>
                 </div>
             </div>
@@ -38,11 +38,11 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                            <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
-            <img src="{{ asset($data['event']->cover_image) }}" alt="{{ $data['event']->cover_image . ' image' }}"
-                style="width: 100%;">
+            <img src="{{ asset('storage/' . $data['event']->cover_image) }}"
+                alt="{{ $data['event']->cover_image . ' image' }}" style="width: 100%;">
         </div>
         <div style="flex: 1;">
             <h2>{{ $data['event']->name }}</h2>

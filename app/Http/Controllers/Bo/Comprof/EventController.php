@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\File;
 
 class EventController extends Controller
 {
@@ -79,7 +80,7 @@ class EventController extends Controller
             "description" => ['required', 'string'],
             'cover_image' => ['required', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
             'tanggal_acara' => ['required', 'date'],
-        ],[
+        ], [
             "title.required" => "Nama event harus di isi",
             "tanggal_acara.required" => "Tanggal event harus di isi",
             "tanggal_acara.date" => "Tanggal event harus benar",
@@ -95,19 +96,15 @@ class EventController extends Controller
         $data['is_active'] = '1';
         $data['slug'] = $this->repository->sluggable($data['title']);
 
-        try
-        {
-            $image_path = $request->file('cover_image')->store('images', 'public'); 
+        try {
+            $image_path = $request->file('cover_image')->store('images', 'public');
             //save image
             $data["cover_image"] = $image_path;
             //proses save
             $this->repository->store($data);
             return redirect()->route('event.index')->with('success', 'Berhasil menambah event ' . $data["title"]);
-        }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
@@ -146,7 +143,7 @@ class EventController extends Controller
             "description" => ['required', 'string'],
             'cover_image' => ['nullable', 'image', 'mimes:png,jpg,jpeg', 'max:5120'],
             'tanggal_acara' => ['required', 'date'],
-        ],[
+        ], [
             "title.required" => "Nama event harus di isi",
             "tanggal_acara.required" => "Tanggal event harus di isi",
             "tanggal_acara.date" => "Tanggal event harus benar",
@@ -162,7 +159,9 @@ class EventController extends Controller
         try {
             if (isset($data["cover_image"])) {
                 $old_image = $this->repository->getById($id)->cover_image;
-                unlink(storage_path().'/app/public/'.$old_image);
+                if (File::exists(asset($old_image))) {
+                    unlink(storage_path() . '/app/public/' . $old_image);
+                }
                 $image_path = $request->file('cover_image')->store('images', 'public');
                 $data["cover_image"] =  $image_path;
             } else {
@@ -185,28 +184,21 @@ class EventController extends Controller
     {
         $id = Crypt::decryptString($id);
         $event = $this->repository->getById($id);
-        if ($event->is_active == '1')
-        {
+        if ($event->is_active == '1') {
             $record['is_active'] = '0';
             $activasi = 'menonaktifkan';
-        } 
-        else
-        {
+        } else {
             $record['is_active'] = '1';
             $activasi = 'mengaktifkan';
         }
-        
+
         $record['updated_by'] = auth()->user()->id;
 
-        try 
-        {
+        try {
             $this->repository->edit($id, $record);
             return redirect()->route('event.index')->with('success', 'Berhasil ' . $activasi . ' Event ' . $event->title);
-        }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('error', "Oops..!! Terjadi keesalahan saat " . $activasi . " event");
@@ -220,15 +212,12 @@ class EventController extends Controller
     {
         $id = Crypt::decryptString($id);
         $image = $this->repository->getById($id);
-        $image_path = storage_path().'/app/public/'.$image->cover_image;
-        try 
-        {
+        $image_path = storage_path() . '/app/public/' . $image->cover_image;
+        try {
             unlink($image_path);
             $this->repository->destroy($id);
             return redirect()->route('event.index')->with('success', 'Event berhasil dihapus');
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
