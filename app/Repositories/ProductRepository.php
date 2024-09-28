@@ -27,10 +27,10 @@ class ProductRepository implements ProductInterface
         //     ->groupBy('p.name', 'p.price', 'p.weight', 'p.b_layanan')
         //     ->get();
         return Products::with('categories', 'images')
-            ->select('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+            ->select('id', 'name', 'slug', 'price', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
             ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('name', 'ASC')
+            // ->orderBy('created_at', 'DESC')
+            ->orderBy('stock', 'DESC')
             ->paginate(15);
     }
 
@@ -63,11 +63,10 @@ class ProductRepository implements ProductInterface
     public function getAllCatgoryFo($idCategory)
     {
         return Products::with('categories', 'images', 'subCategories')
-            ->select('id', 'name', 'price', 'weight', 'subcategory_id', 'category_id', 'b_layanan', 'description', 'slug', DB::raw('MIN(name) as image_path'))
+            ->select('id', 'name', 'price', 'weight', 'stock', 'subcategory_id', 'category_id', 'b_layanan', 'description', 'slug', DB::raw('MIN(name) as image_path'))
             ->groupBy('id', 'name', 'price', 'weight', 'category_id', 'subcategory_id', 'b_layanan', 'description', 'slug')
-            ->orderBy('created_at', 'DESC')
             ->where('category_id', $idCategory)
-            ->orderBy('name', 'ASC')
+            ->orderBy('stock', 'DESC')
             ->paginate(9);
     }
 
@@ -79,7 +78,7 @@ class ProductRepository implements ProductInterface
     public function getById($id)
     {
         return Products::with('categories')
-            ->with('images','colors')
+            ->with('images', 'colors')
             ->where('id', $id)
             ->firstOrFail();
     }
@@ -111,7 +110,7 @@ class ProductRepository implements ProductInterface
         //     ->orderBy('name', 'ASC')
         //     ->firstOrFail();
 
-        $product_name = Products::with(['categories', 'subCategories', 'images','colors'])
+        $product_name = Products::with(['categories', 'subCategories', 'images', 'colors'])
             ->where('slug',  $name)
             ->orderBy('name', 'ASC')
             ->firstOrFail();

@@ -9,11 +9,11 @@
 
 ## Task Lists
 
-- ⁠Tambah watermark stok kosong pada product
-- ⁠Tampilan stok kosong dipaling bawah
 - [HARD] Update category (Tidak bisa hapus)
 - menambahkan opsi pilihan pada all (product pages)
 - add to cart (error stock / tidak calculate stok)
+- ✅ ⁠Tampilan stok kosong dipaling bawah
+- ✅ ⁠Tambah watermark stok kosong pada product
 - ✅ show password login/register
 - ✅ Event page disamakan service [dummy]
 - ✅ ⁠Popup kupon tidak tampil

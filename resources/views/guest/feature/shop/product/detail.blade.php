@@ -131,38 +131,54 @@
 
                 <div class="col-md-7">
                     <div class="single-product-content">
-                        <h3>{{ $data['product']['name'] }}</h3>
+                        <h3>{{ $data['product']['name'] }}
+                            @if ($data['product']['stock'] == 0)
+                                <span class="badge badge-danger">Stok Habis</span>
+                            @else
+                                <span class="badge badge-danger">Tersedia</span>
+                            @endif
+                        </h3>
                         <p class="single-product-pricing">{{ $data['product']->fPrice() }}</p>
                         {!! isset($data['avgrat'])
                             ? '<p class="star-ratingt"><span class="star full">&#9733;</span> ' . $data['avgrat'] . '  </p>'
                             : '' !!}
-                        <strong>Stok:</strong> {{ $data['product']['stock'] }}</p>
-                        <div class="single-product-form margin-left">
-                            <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <div class="row mb-3">
-                                    <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
-                                        value="1" min="1" required>
-                                    <select name="color" id="color" class="mr-3 color-selectore">
-                                        {{-- <option value="">Pilih warna</option> --}}
-                                        @foreach ($data['product']['colors'] as $color)
-                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="row d-flex mb-3">
-                                    <button type="submit" class="boxed-btn float-right">
-                                        <i class="fas fa-shopping-cart">
-                                        </i> Add to Cart
-                                    </button>
-                                </div>
-                            </form>
-                            <div class="row">
-                                <p><strong>Categories: </strong>{{ $data['product']->categories['name'] }},
-                                    {{ $data['product']->subCategories['name'] }}</p>
+                        @if ($data['product']['stock'] == 0)
+                            <div class="row d-flex mb-3">
+                                <a href="https://wa.me/+6285932966345?text=Hallo%20Astraea%20Leather%20Craft"
+                                    class="boxed-btn float-right">
+                                    <i class="ri-phone-line"></i> Hubungi penjual
+                                </a>
                             </div>
-                        </div>
+                        @else
+                            <strong>Stok:</strong> {{ $data['product']['stock'] }}</p>
+                            <div class="single-product-form margin-left">
+                                <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}"
+                                    method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="row mb-3">
+                                        <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
+                                            value="1" min="1" required>
+                                        <select name="color" id="color" class="mr-3 color-selectore">
+                                            {{-- <option value="">Pilih warna</option> --}}
+                                            @foreach ($data['product']['colors'] as $color)
+                                                <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="row d-flex mb-3">
+                                        <button type="submit" class="boxed-btn float-right">
+                                            <i class="fas fa-shopping-cart">
+                                            </i> Add to Cart
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="row">
+                                    <p><strong>Categories: </strong>{{ $data['product']->categories['name'] }},
+                                        {{ $data['product']->subCategories['name'] }}</p>
+                                </div>
+                            </div>
+                        @endif
                         <p>{!! nl2br(e($data['product']['description'])) !!}</p>
                     </div>
                 </div>
@@ -446,4 +462,3 @@
     }
     ?>
 @endpush
-
