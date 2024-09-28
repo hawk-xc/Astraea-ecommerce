@@ -50,6 +50,7 @@ class ProductRepository implements ProductInterface
     {
         return Products::with('categories')
             ->with('images')
+            ->orderBy('stock', 'DESC')
             ->orderBy('created_at', 'DESC')
             ->orderBy('name', 'ASC')
             ->limit(3)->get();

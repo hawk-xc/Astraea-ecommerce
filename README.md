@@ -9,8 +9,8 @@
 
 ## Task Lists
 
-- [HARD] Update category (Tidak bisa hapus)
 - menambahkan opsi pilihan pada all (product pages)
+- [HARD] Update category (Tidak bisa hapus)
 - add to cart (error stock / tidak calculate stok)
 - ✅ ⁠Tampilan stok kosong dipaling bawah
 - ✅ ⁠Tambah watermark stok kosong pada product
