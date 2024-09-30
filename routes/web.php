@@ -100,6 +100,7 @@ Route::resource("certificate", FoCertificateController::class, ['as' => 'fo'], [
 //product shop
 Route::resource("shop-product", ShopProductController::class, ['only' => ['index', 'show']]);
 Route::get("/shop-product-category/{id}", [ShopProductController::class, 'categoryShow'])->name('shop-product.category');
+Route::get("/shop-product-subcategory/{id}", [ShopProductController::class, 'filterBySubcategory'])->name('shop-product.subcategory');
 
 //product hampers
 Route::resource("shop-hampers", ShopHampersController::class, ['only' => ['index', 'show']]);

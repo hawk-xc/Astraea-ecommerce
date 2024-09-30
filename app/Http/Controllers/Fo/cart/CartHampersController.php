@@ -37,8 +37,6 @@ class CartHampersController extends Controller
         $this->shippingRepository = $shippingRepository;
         $this->data['title'] = 'Cart Hampers';
         $this->data['view_directory'] = "guest.feature.cart.hampres";
-
-
     }
     /**
      * Display a listing of the resource.
@@ -51,10 +49,9 @@ class CartHampersController extends Controller
         $data['about'] = $this->aboutUsRepository->getById('1');
         $data['order'] = $this->repository->searchId($cart);
         $data['orders'] = $this->detail_repository->orderList($cart);
-        
+
         //lempar ke shop karena belum terisi
-        if(!isset($data['order']['no_nota']))
-        {
+        if (!isset($data['order']['no_nota'])) {
             return redirect()->route('shop-hampers.index')->with('toast_success', 'Cart masih kosong silahkan pilih product terlebih dahulu');
         }
 
@@ -118,46 +115,40 @@ class CartHampersController extends Controller
 
         // dd($dtl_product);
 
-        if (isset($dtl_product['quantity'], $data['product']['stock'])) 
-        {
-            if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock']) 
-            {
-                return back()->with('toast_warning', 'stok tidak mencukupi');
+        if (isset($dtl_product['quantity'], $data['product']['stock'])) {
+            if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock']) {
+                return back()->with('toast_warning', 'Produk sudah dicheckout!');
             }
         }
 
         try {
             //mendeteksi apakah cart sudah ada
-            if($this->repository->searchId($cart))
-            {
+            if ($this->repository->searchId($cart)) {
                 //cart yang sudah ada
                 $price_total = $this->repository->getById($cart)['sub_total_price'];
                 //mendeteksi product dalam cart apakah sudah ada atau belum
-                if(isset($dtl_product))
-                {
+                if (isset($dtl_product)) {
                     $quantity_product = $dtl_product['quantity'] + $quantity_product;
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
                         'quantity'        => $quantity_product,
                         'price'           => $data['product']['price'],
                         'sub_total_price' => $add_price,
-                        ];
+                    ];
                     $this->detail_repository->updateDetailCart($dtl_product['id'], $update_dtl);
-                }
-                else
-                {
+                } else {
                     //memasukkan produk yang belum ada dengan quantity satu
                     $add_price = $data['product']['price'];
                     $order_detail = [
                         'id'        => 'DTL-CRH-' . Helper::table_id(),
                         'order_id'  => $cart,
-                        'hampers_id'=> $data['product']['id'],
+                        'hampers_id' => $data['product']['id'],
                         'quantity'  => $quantity_product,
                         'price'     => $add_price,
                         'sub_total_price' => $data['product']['price'],
                         'created_by' => 'pelanggan',
-                     ];
-                     $this->detail_repository->store($order_detail);
+                    ];
+                    $this->detail_repository->store($order_detail);
                 }
                 //menghitung sub total
                 $sub_total = $this->detail_repository->subTotalOrder($cart);
@@ -165,13 +156,11 @@ class CartHampersController extends Controller
                 $this->shippingRepository->destroy($cart);
                 //mengupdate cart
                 $this->repository->edit($cart, [
-                        'shipping' => 0,
-                        'shipping_status' => 'PENDING',
-                        'sub_total_price' => $sub_total
-                    ]);
-            }
-            else
-            {
+                    'shipping' => 0,
+                    'shipping_status' => 'PENDING',
+                    'sub_total_price' => $sub_total
+                ]);
+            } else {
                 $order_data = [
                     'id'          => $cart,
                     'order_date'  => $waktuSekarang,
@@ -184,23 +173,22 @@ class CartHampersController extends Controller
                     'address'     => '',
                     'created_by'  => 'pelanggan',
                     'updated_by'  => 'pelanggan',
-                    ];
-                if(isset(Auth()->guard('customer')->user()->id))
-                {
-                        $order_data['costumer_id'] = Auth()->guard('customer')->user()->id;
+                ];
+                if (isset(Auth()->guard('customer')->user()->id)) {
+                    $order_data['costumer_id'] = Auth()->guard('customer')->user()->id;
                 }
                 $this->repository->store($order_data);
-                 
-                 $order_detail = [
+
+                $order_detail = [
                     'id'        => 'DTL-CRH-' . Helper::table_id(),
                     'order_id'  => $cart,
-                    'hampers_id'=> $data['product']['id'],
+                    'hampers_id' => $data['product']['id'],
                     'quantity'  => $quantity_product,
                     'price'     => $data['product']['price'],
                     'sub_total_price' => $data['product']['price'],
                     'created_by' => 'pelanggan',
-                 ];
-                 $this->detail_repository->store($order_detail);
+                ];
+                $this->detail_repository->store($order_detail);
             }
             return back()->with('toast_success', 'Berhasil menambah produk');
         } catch (Exception $e) {
@@ -240,8 +228,8 @@ class CartHampersController extends Controller
 
         $dtl_order = $this->detail_repository->orderDtll($orderDetailId);
         //check stock dan harga
-         $price = $dtl_order['hampers_data']['price'];
-         $price = $dtl_order['hampers_data']['stock'];
+        $price = $dtl_order['hampers_data']['price'];
+        $price = $dtl_order['hampers_data']['stock'];
         //masukkan price
 
         $order = true;
@@ -253,29 +241,28 @@ class CartHampersController extends Controller
                 'quantity'        => $quantity,
                 'price'           => $dtl_order['hampers_data']['price'],
                 'sub_total_price' => $add_price,
-                ];
+            ];
             $this->detail_repository->updateDetailCart($orderDetailId, $update_dtl);
 
             //add ke keranjang
 
-                //menghitung sub total
-                $sub_total = $this->detail_repository->subTotalOrder($dtl_order['order_id']);
-                //menghapus  data shipping atau ongkir pengiriman
-                $this->shippingRepository->destroy($dtl_order['order_id']);
-                //mengupdate cart
-                $this->repository->edit($dtl_order['order_id'], [
-                        'shipping' => 0,
-                        'shipping_status' => 'PENDING',
-                        'sub_total_price' => $sub_total
-                ]);
+            //menghitung sub total
+            $sub_total = $this->detail_repository->subTotalOrder($dtl_order['order_id']);
+            //menghapus  data shipping atau ongkir pengiriman
+            $this->shippingRepository->destroy($dtl_order['order_id']);
+            //mengupdate cart
+            $this->repository->edit($dtl_order['order_id'], [
+                'shipping' => 0,
+                'shipping_status' => 'PENDING',
+                'sub_total_price' => $sub_total
+            ]);
 
             return response()->json([
-                    'price' => Helper::to_rupiah($dtl_order['hampers_data']['price']),
-                    'price_sub_total_product' => Helper::to_rupiah($add_price),
-                    'price_sub_total' => Helper::to_rupiah($sub_total),
-                    'success' => true
-                ]);
-            
+                'price' => Helper::to_rupiah($dtl_order['hampers_data']['price']),
+                'price_sub_total_product' => Helper::to_rupiah($add_price),
+                'price_sub_total' => Helper::to_rupiah($sub_total),
+                'success' => true
+            ]);
         } else {
             return response()->json(['success' => false, 'message' => 'Order not found'], 404);
         }

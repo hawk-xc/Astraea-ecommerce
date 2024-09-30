@@ -51,18 +51,21 @@
                                         <td class="product-price" id="price_{{ $order['id'] }}">Rp.
                                             {{ number_format($order['hampers_data']['price'], 0, ',', '.') }}</td>
                                         <td class="product-quantity">
-                                        <form action="#">
-                                            <div class="form-group" data-order-id="{{ $order['id'] }}">
-                                                <a class="boxed-btn-minus"
-                                                    onclick="updateQuantity('{{ $order['id'] }}', -1, {{ $order['hampers_data']['stock'] }})"> - </a>
-                                                <input type="text" name="quantity"
-                                                    id="quantity-input-{{ $order['id'] }}" placeholder="0"
-                                                    value="{{ $order['quantity'] }}" class="input-angka cart-input-quantity" maxlength="6"
-                                                    oninput="updateQuantity('{{ $order['id'] }}', 0, {{ $order['hampers_data']['stock'] }})">
-                                                <a class="boxed-btn-plus"
-                                                    onclick="updateQuantity('{{ $order['id'] }}', 1, {{ $order['hampers_data']['stock'] }})"> + </a>
-                                            </div>
-                                        </form>
+                                            <form action="#">
+                                                <div class="form-group" data-order-id="{{ $order['id'] }}">
+                                                    <a class="boxed-btn-minus"
+                                                        onclick="updateQuantity('{{ $order['id'] }}', -1, {{ $order['hampers_data']['stock'] }})">
+                                                        - </a>
+                                                    <input type="text" name="quantity"
+                                                        id="quantity-input-{{ $order['id'] }}" placeholder="0"
+                                                        value="{{ $order['quantity'] }}"
+                                                        class="input-angka cart-input-quantity" maxlength="6"
+                                                        oninput="updateQuantity('{{ $order['id'] }}', 0, {{ $order['hampers_data']['stock'] }})">
+                                                    <a class="boxed-btn-plus"
+                                                        onclick="updateQuantity('{{ $order['id'] }}', 1, {{ $order['hampers_data']['stock'] }})">
+                                                        + </a>
+                                                </div>
+                                            </form>
                                         </td>
                                         <td class="product-total" id="price_sub_total_product_{{ $order['id'] }}">Rp.
                                             {{ number_format($order['sub_total_price'], 0, ',', '.') }}</td>
@@ -105,7 +108,6 @@
         </div>
     </div>
     <!-- end cart -->
-
 @endsection
 @push('footer_script')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -150,7 +152,7 @@
 
             if (quantity > maximal) {
                 quantity = maximal;
-                alert('stok tidak mencukupi');
+                alert('produk sudah dicheckout');
             }
 
             input.value = quantity;

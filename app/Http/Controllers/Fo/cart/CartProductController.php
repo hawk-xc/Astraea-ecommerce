@@ -125,7 +125,7 @@ class CartProductController extends Controller
 
         if (isset($dtl_product['quantity'], $data['product']['stock'])) {
             if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock']) {
-                return back()->with('toast_warning', 'stok tidak mencukupi');
+                return back()->with('toast_warning', 'produk sudah dicheckout!');
             }
         }
 
