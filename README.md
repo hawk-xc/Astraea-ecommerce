@@ -11,7 +11,7 @@
 
 - menambahkan opsi pilihan pada all (product pages)
 - [HARD] Update category (Tidak bisa hapus)
-- add to cart (error stock / tidak calculate stok)
+- ✅ [HARD] [ubah error alerting] add to cart (error stock / tidak calculate stok)
 - ✅ ⁠Tampilan stok kosong dipaling bawah
 - ✅ ⁠Tambah watermark stok kosong pada product
 - ✅ show password login/register
