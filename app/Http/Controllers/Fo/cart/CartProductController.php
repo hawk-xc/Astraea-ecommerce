@@ -202,7 +202,8 @@ class CartProductController extends Controller
                 ];
                 $this->detail_repository->store($order_detail);
             }
-            return back()->with('toast_success', 'Berhasil menambah produk');
+            // return back()->with('toast_success', 'Berhasil menambah produk');
+            return redirect()->route('fo.cart-product.index')->with('toast_success', 'Berhasil menambah produk');
         } catch (Exception $e) {
             if (env('APP_DEBUG')) {
                 return $e->getMessage();
