@@ -9,8 +9,12 @@
 
 ## Task Lists
 
+- hampers add to cart button langsung megnarahkan ke halaman cart
+- product add to cart button langsung mengarahkan ke halaman cart
 - menambahkan opsi pilihan pada all (product pages)
 - [HARD] Update category (Tidak bisa hapus)
+- ✅ merapikan about us pada footer (belum responsive)
+- ✅ menambahkan informasi stakeholder & tanggal pada detail service
 - ✅ [HARD] [ubah error alerting] add to cart (error stock / tidak calculate stok)
 - ✅ ⁠Tampilan stok kosong dipaling bawah
 - ✅ ⁠Tambah watermark stok kosong pada product
