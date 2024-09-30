@@ -38,13 +38,17 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
             <img src="{{ asset('storage/' . $data['event']->cover_image) }}"
                 alt="{{ $data['event']->cover_image . ' image' }}" style="width: 100%;">
         </div>
         <div style="flex: 1;">
+            <p class="blog-meta">
+                <span class="author"><i class="fas fa-user"></i>{{ $data['event']->name }}</span>
+                <span class="date"><i class="fas fa-calendar"></i>{{ $data['event']->updated_at }}</span>
+            </p>
             <h2>{{ $data['event']->name }}</h2>
             <p>{!! nl2br(e($data['event']->description)) !!}</p>
         </div>
