@@ -151,7 +151,7 @@
                             </div>
                         @else
                             <strong>Stok:</strong> {{ $data['product']['stock'] }}</p>
-                            <div class="single-product-form margin-left">
+                            <div class="single-product-form" style="margin-left: 1rem;">
                                 <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}"
                                     method="post">
                                     @csrf
