@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-6">
-                <div class="footer-box about-widget">
+                <div class="footer-box about-widget" style="width: 100%;">
                     <h2 class="widget-title">About us</h2>
                     @php
                         $description = $data['about']['description'];
@@ -12,12 +12,13 @@
                         $shortDescription = implode(' ', array_slice($words, 0, $wordLimit));
                         $isLongText = count($words) > $wordLimit;
                     @endphp
-                    <p id="description">
-                        {{ $shortDescription }}@if($isLongText)...
-                        <a href="javascript:void(0)" onclick="toggleDescription()" id="seeMoreLink">See More</a>
+                    <p id="description" style="text-align: justify;">
+                        {{ $shortDescription }}@if ($isLongText)
+                            ...
+                            <a href="javascript:void(0)" onclick="toggleDescription()" id="seeMoreLink">See More</a>
                         @endif
                     </p>
-                    <p id="fullDescription" style="display: none;">
+                    <p id="fullDescription" style="display: none; text-align: justify;">
                         {{ $description }}
                         <a href="javascript:void(0)" onclick="toggleDescription()" id="seeLessLink">See Less</a>
                     </p>
@@ -83,7 +84,8 @@
 </div>
 <!-- end copyright -->
 
-<a class="wafixed" href="https://wa.me/{{ $data['contact']['whatsapp'] }}?text=Hallo%20Astraea%20Leather%20Craft" target="_blank">
+<a class="wafixed" href="https://wa.me/{{ $data['contact']['whatsapp'] }}?text=Hallo%20Astraea%20Leather%20Craft"
+    target="_blank">
     <span class="fa-stack fa-lg">
         <img src="{{ asset('guest/img/wa.png') }}" class="wafixed-imag">
     </span>

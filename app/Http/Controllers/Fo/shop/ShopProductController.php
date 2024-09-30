@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BannerView as BannerModel;
+use App\Models\SubCategories;
 
 class ShopProductController extends Controller
 {
@@ -28,15 +29,16 @@ class ShopProductController extends Controller
     private OrderDetailRepository $orderDetailRepository;
     protected $data = array();
 
-    public function __construct(ContactUsRepository $contactUsRepository,
-    PartnerRepository $partnerRepository,
-    AboutUsRepository $aboutUsRepository,
-    CategoriesRepository $categoriesRepository,
-    SubCategoriesRepository $subCategoriesRepository,
-    ProductRepository $productRepository,
-    UlasanRepository $ulasanRepository,
-    OrderDetailRepository $orderDetailRepository)
-    {
+    public function __construct(
+        ContactUsRepository $contactUsRepository,
+        PartnerRepository $partnerRepository,
+        AboutUsRepository $aboutUsRepository,
+        CategoriesRepository $categoriesRepository,
+        SubCategoriesRepository $subCategoriesRepository,
+        ProductRepository $productRepository,
+        UlasanRepository $ulasanRepository,
+        OrderDetailRepository $orderDetailRepository
+    ) {
         $this->contactUsRepository = $contactUsRepository;
         $this->aboutUsRepository = $aboutUsRepository;
         $this->partnerRepository = $partnerRepository;
@@ -49,7 +51,6 @@ class ShopProductController extends Controller
         $this->data['view_directory'] = "guest.feature.shop.product";
 
         $this->data['banner'] = BannerModel::first()->pluck('images');
-
     }
     /**
      * Display a listing of the resource.
@@ -62,17 +63,19 @@ class ShopProductController extends Controller
         $data['partners'] = $this->partnerRepository->getImage()
             ->map(function ($item) {
                 $item['id'] = encrypt($item['id']);
-            return $item;
+                return $item;
             });
         $data['categories'] = $this->categoriesRepository->getAllFo();
         $data['products'] = $this->productRepository->getAllFo();
+        $data['subcategories'] = SubCategories::select('name')->distinct()->get();
 
         $data['banner'] = BannerModel::first()->pluck('images');
-        
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
-    public function refresh(Request $request) {
+    public function refresh(Request $request)
+    {
         $data = $this->productRepository->get_by_color(decrypt($request->name), $request->color_id);
         return response()->json([
             'status' => 'success',
@@ -98,6 +101,24 @@ class ShopProductController extends Controller
         $data['banner'] = BannerModel::first()->pluck('images');
 
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
+    }
+
+    public function showsubcategories(string $name)
+    { {
+            $ref = $this->data;
+            $data['about'] = $this->aboutUsRepository->getById('1');
+            $data['contact'] = $this->contactUsRepository->getById('1');
+            $data['partners'] = $this->partnerRepository->getImage()
+                ->map(function ($item) {
+                    $item['id'] = encrypt($item['id']);
+                    return $item;
+                });
+            $data['categories'] = $this->categoriesRepository->getAllFo();
+            // dd($data);
+            $data['banner'] = BannerModel::first()->pluck('images');
+
+            return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
+        }
     }
 
     public function show(string $name)
