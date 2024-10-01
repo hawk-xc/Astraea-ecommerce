@@ -43,11 +43,11 @@
                                     <li data-filter=".{{ $subcategory['id'] }}">{{ $subcategory['name'] }}</li>
                                 @endforeach
                             @endif
-                            @if (Route::is('shop-product.index'))
+                            {{-- @if (Route::is('shop-product.index'))
                                 @foreach ($data['subcategories'] as $subcategories)
                                     <li data-filter=".{{ $subcategories['name'] }}">{{ $subcategories['name'] }}</li>
                                 @endforeach
-                            @endif
+                            @endif --}}
                         </ul>
                     </div>
                 </div>
