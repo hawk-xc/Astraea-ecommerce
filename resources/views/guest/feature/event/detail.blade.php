@@ -38,7 +38,7 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
             <img src="{{ asset('storage/' . $data['event']->cover_image) }}"
@@ -60,6 +60,12 @@
             flex-direction: row;
             padding: 5rem;
             gap: 2.4rem;
+        }
+
+        @media (max-width: 768px) {
+            .service-detail {
+                flex-direction: column;
+            }
         }
 
         .container-sn {
