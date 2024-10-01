@@ -2424,6 +2424,31 @@ ul.social-link-team li a {
   margin-bottom: 80px;
 }
 
+/* Change the background color of active and hover pagination items */
+.pagination .page-item .page-link {
+  background-color: transparent;
+  color: orange;
+  /* border: 1px solid orange; */
+}
+
+.pagination .page-item.active .page-link {
+  background-color: orange;
+  border-color: orange;
+  color: white;
+}
+
+.pagination .page-item:hover .page-link {
+  background-color: orange;
+  color: white;
+  border-color: orange;
+}
+
+/* Optional: Customize disabled state */
+/* .pagination .page-item.disabled .page-link {
+  background-color: #f1f1f1;
+  color: #6c757d;
+} */
+
 .product-filters ul {
   margin: 0;
   padding: 0;

@@ -11,6 +11,7 @@
 
 - menambahkan opsi pilihan pada all (product pages)
 - [HARD] Update category (Tidak bisa hapus)
+- ✅ mengubah warna pada nav links button
 - ✅ hampers add to cart button langsung megnarahkan ke halaman cart
 - ✅ product add to cart button langsung mengarahkan ke halaman cart
 - ✅ merapikan about us pada footer (belum responsive)
