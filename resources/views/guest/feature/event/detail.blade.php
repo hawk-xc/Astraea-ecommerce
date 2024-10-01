@@ -38,7 +38,7 @@
     </div>
     <!-- end breadcrumb section --
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <!-- featured section -->
     <div class="service-detail">
         <div style="flex: 1;">
             <img src="{{ asset('storage/' . $data['event']->cover_image) }}"
@@ -50,7 +50,7 @@
                 <span class="date"><i class="fas fa-calendar"></i>{{ $data['event']->updated_at }}</span>
             </p>
             <h2>{{ $data['event']->name }}</h2>
-            <p>{!! nl2br(e($data['event']->description)) !!}</p>
+            <p>{!! $data['event']->description !!}</p>
         </div>
     </div>
 
