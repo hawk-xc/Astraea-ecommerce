@@ -1,4 +1,3 @@
-
 @extends('guest.layouts.app')
 
 @push('header_script')
@@ -97,6 +96,19 @@
                 .card-style:hover {
                     animation-duration: 2ms;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .page-item.active .page-link {
+                    background-color: orange;
+                    border: 1px solid darkorange;
+                }
+
+                .page-link {
+                    color: darkorange;
+                }
+
+                .page-link:hover {
+                    color: darkorange;
                 }
             </style>
         </div>

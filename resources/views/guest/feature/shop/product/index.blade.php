@@ -110,6 +110,21 @@
             </div>
         </div>
     </div>
+
+    <style>
+        .page-item.active .page-link {
+            background-color: orange;
+            border: 1px solid darkorange;
+        }
+
+        .page-link {
+            color: darkorange;
+        }
+
+        .page-link:hover {
+            color: darkorange;
+        }
+    </style>
     <!-- end products -->
 
     <!-- logo carousel -->
@@ -130,6 +145,5 @@
             </div>
         </div>
     </div>
-    <!-- end logo carousel -->
 
 @endsection

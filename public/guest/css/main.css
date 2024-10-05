@@ -504,6 +504,19 @@ button.cart-btn {
   background-image: url(../img/breadcrumb-bg.jpg);
 }
 
+.page-item.active .page-link {
+  background-color: orange;
+  border: 1px solid darkorange;
+}
+
+.page-link {
+  color: darkorange;
+}
+
+.page-link:hover {
+  color: darkorange;
+}
+
 .breadcrumb-text p {
   color: #f28123;
   font-weight: 700;
@@ -2429,6 +2442,19 @@ ul.social-link-team li a {
   background-color: transparent;
   color: orange;
   /* border: 1px solid orange; */
+}
+
+.page-item.active .page-link {
+  background-color: orange;
+  border: 1px solid darkorange;
+}
+
+.page-link {
+  color: darkorange;
+}
+
+.page-link:hover {
+  color: darkorange;
 }
 
 .pagination .page-item.active .page-link {
