@@ -9,8 +9,8 @@
 
 ## Task Lists
 
-- menambahkan opsi pilihan pada all (product pages)
 - [HARD] Update category (Tidak bisa hapus)
+- ✅ menambahkan opsi pilihan pada all (product pages)
 - ✅ mengubah warna pada nav links button
 - ✅ hampers add to cart button langsung megnarahkan ke halaman cart
 - ✅ product add to cart button langsung mengarahkan ke halaman cart

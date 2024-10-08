@@ -43,11 +43,14 @@
                                     <li data-filter=".{{ $subcategory['id'] }}">{{ $subcategory['name'] }}</li>
                                 @endforeach
                             @endif
-                            {{-- @if (Route::is('shop-product.index'))
+                            @if (Route::is('shop-product.index'))
+                                <li class="{{ Route::is('shop-product.index') ? 'active' : '' }}" data-filter="*">All</li>
                                 @foreach ($data['subcategories'] as $subcategories)
-                                    <li data-filter=".{{ $subcategories['name'] }}">{{ $subcategories['name'] }}</li>
+                                    <a href="{{ route('shop-product.subcategory', $subcategories['name']) }}">
+                                        <li data-filter=".{{ $subcategories['name'] }}">{{ $subcategories['name'] }}</li>
+                                    </a>
                                 @endforeach
-                            @endif --}}
+                            @endif
                         </ul>
                     </div>
                 </div>

@@ -114,10 +114,37 @@ class ShopProductController extends Controller
                     return $item;
                 });
             $data['categories'] = $this->categoriesRepository->getAllFo();
-            // dd($data);
+
+            $data['products'] = [];
+
+            $data['subcategories'] = SubCategories::select('name')->distinct()->get();
+            $data['subcategoriesid'] = SubCategories::select('id')->distinct()->get();
+
+            $data['subcategoriesitem'] = SubCategories::where('name', 'like', '%' . $name . '%')->get();
+
+            // dd($data['subcategoriesitem']);
+            foreach ($data['subcategoriesitem'] as $productcategories) {
+                if ($productcategories !== null) {
+                    // $data['products'][] = $productcategories->product()->get();
+                    foreach ($productcategories->product()->get() as $productitem) {
+                        $data['products'][] = $productitem;
+                    }
+                }
+            }
+
+            // foreach ($data['subcategoriesitem'] as $productcategories) {
+            //     if ($productcategories !== null) {
+            //         foreach ($productcategories->product as $product) {
+            //             $data['products'][] = $product; // Tambahkan produk ke array tanpa menimpa
+            //         }
+            //     }
+            // }
+
+            // dd($data['products']);
+
             $data['banner'] = BannerModel::first()->pluck('images');
 
-            return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
+            return view($this->data['view_directory'] . '.subcategoryindex', compact('ref', 'data'));
         }
     }
 

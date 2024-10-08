@@ -46,18 +46,22 @@ class Products extends Model
 
     public function categories()
     {
-        return $this->belongsTo(Categories::class,'category_id','id');
+        return $this->belongsTo(Categories::class, 'category_id', 'id');
     }
 
     public function subCategories()
     {
-        return $this->belongsTo(SubCategories::class,'subcategory_id','id');
+        return $this->belongsTo(SubCategories::class, 'subcategory_id', 'id');
+    }
+
+    public function subcategory()
+    {
+        return $this->hasMany(SubCategories::class, 'product_id', 'id');
     }
 
     public function colors()
     {
         return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id');
-
     }
 
     // public function color()
@@ -67,12 +71,12 @@ class Products extends Model
 
     public function colorAtr()
     {
-        return $this->belongsTo(Color::class,'color','id');
+        return $this->belongsTo(Color::class, 'color', 'id');
     }
 
     public function colorFo()
     {
-        return $this->hasMany(Color::class,'id', 'color');
+        return $this->hasMany(Color::class, 'id', 'color');
     }
 
     public function images()
@@ -84,6 +88,4 @@ class Products extends Model
     {
         return Helper::to_rupiah($this->price);
     }
-
-   
 }
