@@ -88,4 +88,9 @@ class Products extends Model
     {
         return Helper::to_rupiah($this->price);
     }
+
+    public function sku()
+    {
+        return $this->belongsTo(Sku::class, 'sku_id', 'id');
+    }
 }

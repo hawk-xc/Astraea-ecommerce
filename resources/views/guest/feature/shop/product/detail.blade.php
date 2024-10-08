@@ -179,6 +179,7 @@
                                 </div>
                             </div>
                         @endif
+                        <p>SKU : {{ $data['product']['sku']->code }}</p>
                         <p>{!! nl2br(e($data['product']['description'])) !!}</p>
                     </div>
                 </div>
@@ -306,6 +307,7 @@
                                     @endif
                                 </div>
                                 <h3>{{ $related_product['name'] }}</h3>
+                                <span>sku : {{ $related_product['sku']->code }}</span>
                                 <p class="p-4">{!! nl2br(e($related_product->description)) !!}</p>
                                 <p class="product-price">{{ $related_product->fPrice() }}</p>
                             </a>

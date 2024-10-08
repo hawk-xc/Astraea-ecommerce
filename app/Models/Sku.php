@@ -15,4 +15,10 @@ class Sku extends Model
         'created_by',
         'updated_by'
     ];
+
+
+    public function product()
+    {
+        return $this->hasOne(Products::class, 'id', 'sku_id');
+    }
 }

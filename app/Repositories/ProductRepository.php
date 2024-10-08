@@ -26,8 +26,8 @@ class ProductRepository implements ProductInterface
         //     ->select('p.name', 'p.price', 'p.weight', 'p.b_layanan', DB::raw('MIN(pi.name) as image_path'))
         //     ->groupBy('p.name', 'p.price', 'p.weight', 'p.b_layanan')
         //     ->get();
-        return Products::with('categories', 'images')
-            ->select('id', 'name', 'slug', 'price', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+        return Products::with('categories', 'images', 'sku')
+            ->select('id', 'name', 'slug', 'price', 'sku_id', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
             ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
             // ->orderBy('created_at', 'DESC')
             ->orderBy('stock', 'DESC')
@@ -63,8 +63,8 @@ class ProductRepository implements ProductInterface
 
     public function getAllCatgoryFo($idCategory)
     {
-        return Products::with('categories', 'images', 'subCategories')
-            ->select('id', 'name', 'price', 'weight', 'stock', 'subcategory_id', 'category_id', 'b_layanan', 'description', 'slug', DB::raw('MIN(name) as image_path'))
+        return Products::with('categories', 'images', 'subCategories', 'sku')
+            ->select('id', 'name', 'price', 'weight', 'stock', 'subcategory_id', 'sku_id', 'category_id', 'b_layanan', 'description', 'slug', DB::raw('MIN(name) as image_path'))
             ->groupBy('id', 'name', 'price', 'weight', 'category_id', 'subcategory_id', 'b_layanan', 'description', 'slug')
             ->where('category_id', $idCategory)
             ->orderBy('stock', 'DESC')
@@ -129,7 +129,7 @@ class ProductRepository implements ProductInterface
     public function getRelatedProductFo($idCategory, $slug)
     {
         return Products::with('categories')
-            ->with('images')
+            ->with('images', 'sku')
             ->where('category_id', $idCategory)
             ->where('slug', '!=', $slug)
             ->inRandomOrder()
