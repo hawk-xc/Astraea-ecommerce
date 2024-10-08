@@ -67,7 +67,7 @@
                                         </div>
 
                                         <div class="mb-3-select" id="role">
-                                            <label class="form-label">Seri</label>
+                                            <label class="form-label">Sku</label>
                                             <div class="input-group">
                                                 {{-- <select name="sku_id" id="sku_id" class="form-control sku">
                                                 </select> --}}
@@ -76,7 +76,7 @@
                                                     @foreach ($ref['sku'] as $item)
                                                         <option value="{{ $item->id }}" id="{{ $item->id }}"
                                                             {{ isset($data['sku_id']) ? ($item->id == $data['sku_id'] ? 'selected' : '') : '' }}>
-                                                            {{ $item->name }}</option>
+                                                            {{ $item->code }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
