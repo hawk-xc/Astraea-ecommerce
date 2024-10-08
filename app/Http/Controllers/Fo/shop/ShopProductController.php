@@ -126,7 +126,7 @@ class ShopProductController extends Controller
             foreach ($data['subcategoriesitem'] as $productcategories) {
                 if ($productcategories !== null) {
                     // $data['products'][] = $productcategories->product()->get();
-                    foreach ($productcategories->product()->get() as $productitem) {
+                    foreach ($productcategories->product()->orderBy('stock', 'DESC')->get() as $productitem) {
                         $data['products'][] = $productitem;
                     }
                 }
