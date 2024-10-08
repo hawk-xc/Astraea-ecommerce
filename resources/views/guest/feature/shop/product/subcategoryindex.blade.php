@@ -86,7 +86,7 @@
                                         @endif
                                     </div>
                                     <h2 class="">{{ $product['name'] }}</h2>
-                                    <span>sku : {{ $product['sku']->code }}</span>
+                                    <span style="color: black;">SKU : {{ $product['sku']->code }}</span>
                                     {{-- <p class="p-4">{{ $product->description }}</p> --}}
                                     <p class="p-4">{!! nl2br(e($product->description)) !!}</p>
                                     <p class="product-price">{{ $product->fPrice() }}</p>

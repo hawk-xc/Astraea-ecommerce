@@ -307,7 +307,7 @@
                                     @endif
                                 </div>
                                 <h3>{{ $related_product['name'] }}</h3>
-                                <span>sku : {{ $related_product['sku']->code }}</span>
+                                <span style="color: black;">SKU : {{ $related_product['sku']->code }}</span>
                                 <p class="p-4">{!! nl2br(e($related_product->description)) !!}</p>
                                 <p class="product-price">{{ $related_product->fPrice() }}</p>
                             </a>
