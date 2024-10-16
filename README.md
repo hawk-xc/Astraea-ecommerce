@@ -9,7 +9,8 @@
 
 ## Task Lists
 
-- card product ditambahi sku : code-sku
+- menambahkan search product pada halaman product & hampers
+- ✅ card product ditambahi sku : code-sku
 - ✅ ubah showcase nama menjadi sku dan option value menjadi kode sku
 - ✅ menambahkan opsi pilihan pada all (product pages)
 - ✅ mengubah warna pada nav links button
