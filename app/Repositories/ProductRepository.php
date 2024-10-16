@@ -34,6 +34,16 @@ class ProductRepository implements ProductInterface
             ->paginate(15);
     }
 
+    public function getSerachProducts($name)
+    {
+        return Products::with('categories', 'images', 'sku')
+            ->select('id', 'name', 'slug', 'price', 'sku_id', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+            ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
+            ->where('name', 'LIKE', '%' . $name . '%')
+            ->orderBy('stock', 'DESC')
+            ->paginate(15);
+    }
+
     public function get_by_color($name, $color_id)
     {
         return Products::with('categories', 'images')

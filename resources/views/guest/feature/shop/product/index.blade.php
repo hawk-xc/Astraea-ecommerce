@@ -18,17 +18,19 @@
     <!-- products -->
     <div class="product-section mt-150 mb-150">
         <div class="container">
-            <div class="searchbar">
+            <form class="searchbar" method="get" action="{{ route('shop-product.search') }}">
                 <div class="form-outline" data-mdb-input-init>
-                    <input type="search" style="border-radius: 100px; height: 40px;" id="form1" class="form-control"
-                        placeholder="search product" />
+                    <input type="search" name="name" style="border-radius: 100px; height: 40px;" id="form1"
+                        class="form-control" placeholder="search product"
+                        value="{{ isset($data['searchparameter']) ? $data['searchparameter'] : '' }}" />
                 </div>
-                <button type="button" id="searchbutton" class="btn"
+                <button type="submit" id="searchbutton" class="btn"
                     style="color: white; height: 40px; width: 40px; border-radius: 100px; background-color: darkorange;"
                     data-mdb-ripple-init>
                     <i class="fas fa-search"></i>
                 </button>
-            </div>
+            </form>
+
             <style>
                 .form-outline {
                     width: 50%;

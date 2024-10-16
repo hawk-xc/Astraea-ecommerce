@@ -51,6 +51,7 @@ use App\Http\Controllers\Fo\shipping\ShippingHampersController;
 use App\Http\Controllers\Fo\shipping\ShippingProductController;
 use App\Http\Controllers\Fo\shop\ShopHampersController;
 use App\Http\Controllers\Fo\shop\ShopProductController;
+use App\Http\Controllers\Fo\shop\SearchController;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -98,6 +99,10 @@ Route::resource("partner", FoPartnerController::class, ['as' => 'fo'], ['only' =
 Route::resource("certificate", FoCertificateController::class, ['as' => 'fo'], ['only' => ['show']]);
 
 //product shop
+
+Route::get('/search-product', [SearchController::class, 'index'])->name('shop-product.search');
+
+// Route::get('/shop-products/{name}', [SearchController::class, 'index'])->name('shop-product.search');
 Route::resource("shop-product", ShopProductController::class, ['only' => ['index', 'show']]);
 Route::get("/shop-product-category/{id}", [ShopProductController::class, 'categoryShow'])->name('shop-product.category');
 Route::get("/shop-product-subcategory/{name}", [ShopProductController::class, 'showsubcategories'])->name('shop-product.subcategory');

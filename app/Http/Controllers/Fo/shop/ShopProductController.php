@@ -74,6 +74,27 @@ class ShopProductController extends Controller
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
+    public function search(string $name)
+    {
+        dd($name);
+        // search all product
+        $ref = $this->data;
+        $data['about'] = $this->aboutUsRepository->getById('1');
+        $data['contact'] = $this->contactUsRepository->getById('1');
+        $data['partners'] = $this->partnerRepository->getImage()
+            ->map(function ($item) {
+                $item['id'] = encrypt($item['id']);
+                return $item;
+            });
+        $data['categories'] = $this->categoriesRepository->getAllFo();
+        $data['products'] = $this->productRepository->getAllFo();
+        $data['subcategories'] = SubCategories::select('name')->distinct()->get();
+
+        $data['banner'] = BannerModel::first()->pluck('images');
+
+        return view($this->data['view_directory'] . '.search', compact('ref', 'data'));
+    }
+
     public function refresh(Request $request)
     {
         $data = $this->productRepository->get_by_color(decrypt($request->name), $request->color_id);
