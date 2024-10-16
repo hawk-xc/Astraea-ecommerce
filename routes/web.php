@@ -52,6 +52,7 @@ use App\Http\Controllers\Fo\shipping\ShippingProductController;
 use App\Http\Controllers\Fo\shop\ShopHampersController;
 use App\Http\Controllers\Fo\shop\ShopProductController;
 use App\Http\Controllers\Fo\shop\SearchController;
+use App\Http\Controllers\Fo\shop\HampersSearchController;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -101,6 +102,7 @@ Route::resource("certificate", FoCertificateController::class, ['as' => 'fo'], [
 //product shop
 
 Route::get('/search-product', [SearchController::class, 'index'])->name('shop-product.search');
+Route::get('/search-hampers', [HampersSearchController::class, 'index'])->name('shop-hampers.search');
 
 // Route::get('/shop-products/{name}', [SearchController::class, 'index'])->name('shop-product.search');
 Route::resource("shop-product", ShopProductController::class, ['only' => ['index', 'show']]);

@@ -30,29 +30,6 @@
                     <i class="fas fa-search"></i>
                 </button>
             </form>
-
-            <style>
-                .form-outline {
-                    width: 50%;
-                }
-
-                @media only screen and (max-width: 600px) {
-                    .form-outline {
-                        width: 100%;
-                    }
-                }
-
-                .searchbar {
-                    width: 100%;
-                    height: 30px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 10px;
-                    margin-bottom: 2rem;
-                    flex-direction: row;
-                }
-            </style>
             <div class="row">
                 <div class="col-md-12">
                     <div class="category-product-filters">
@@ -150,6 +127,27 @@
     </div>
 
     <style>
+        .form-outline {
+            width: 50%;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .form-outline {
+                width: 100%;
+            }
+        }
+
+        .searchbar {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-direction: row;
+        }
+
         .page-item.active .page-link {
             background-color: orange;
             border: 1px solid darkorange;

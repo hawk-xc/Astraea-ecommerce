@@ -18,7 +18,19 @@
     <!-- products -->
     <div class="product-section mt-150 mb-150">
         <div class="container">
-
+            {{-- search hampers --}}
+            <form class="searchbar" method="get" action="{{ route('shop-hampers.search') }}">
+                <div class="form-outline" data-mdb-input-init>
+                    <input type="search" name="name" style="border-radius: 100px; height: 40px;" id="form1"
+                        class="form-control" placeholder="search hampers"
+                        value="{{ isset($data['searchparameter']) ? $data['searchparameter'] : '' }}" />
+                </div>
+                <button type="submit" id="searchbutton" class="btn"
+                    style="color: white; height: 40px; width: 40px; border-radius: 100px; background-color: darkorange;"
+                    data-mdb-ripple-init>
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
             <div class="row">
                 <div class="col-md-12">
                     <div class="category-product-filters">
@@ -111,6 +123,27 @@
     </div>
 
     <style>
+        .form-outline {
+            width: 50%;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .form-outline {
+                width: 100%;
+            }
+        }
+
+        .searchbar {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+            flex-direction: row;
+        }
+
         .page-item.active .page-link {
             background-color: orange;
             border: 1px solid darkorange;

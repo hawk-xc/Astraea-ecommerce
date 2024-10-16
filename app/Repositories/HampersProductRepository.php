@@ -6,45 +6,57 @@ use App\Interfaces\HampersProductInterface;
 use App\Models\HampersProduct;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 
+use Illuminate\Support\Facades\DB;
+
 class HampersProductRepository implements HampersProductInterface
 {
     public function getAll()
     {
         return HampersProduct::with('categories')
-                ->with('color')
-                ->with('images')
-                ->orderBy('name', 'ASC')
-                ->get();
+            ->with('color')
+            ->with('images')
+            ->orderBy('name', 'ASC')
+            ->get();
     }
 
     public function getAllFo()
     {
         return HampersProduct::with('categories')
-                ->with('images')
-                ->orderBy('name', 'ASC')
-                ->paginate(15);
+            ->with('images')
+            ->orderBy('name', 'ASC')
+            ->paginate(15);
+    }
+
+    public function getSearchHampers($name)
+    {
+        return HampersProduct::with('categories', 'images')
+            ->select('id', 'name', 'slug', 'price', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+            ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
+            ->where('name', 'LIKE', '%' . $name . '%')
+            ->orderBy('stock', 'DESC')
+            ->paginate(15);
     }
 
     public function getAllCatgoryFo($idCategory)
     {
         return HampersProduct::with('categories')
-                ->with('images')
-                ->where('category_id', $idCategory)
-                ->orderBy('name', 'ASC')
-                ->paginate(15);
+            ->with('images')
+            ->where('category_id', $idCategory)
+            ->orderBy('name', 'ASC')
+            ->paginate(15);
     }
 
     public function getSearch($s)
     {
-        return HampersProduct::where('name', 'like', '%'.$s.'%')->get();
+        return HampersProduct::where('name', 'like', '%' . $s . '%')->get();
     }
 
     public function getById($id)
     {
         return HampersProduct::with('categories')
-                ->with('images')
-                ->where('id', $id)
-                ->firstOrFail();
+            ->with('images')
+            ->where('id', $id)
+            ->firstOrFail();
     }
 
     public function store($data)
@@ -69,19 +81,19 @@ class HampersProductRepository implements HampersProductInterface
     public function getBySlugFo($slug)
     {
         return HampersProduct::with(['categories', 'subCategories', 'images'])
-                ->where('slug', $slug)
-                ->orderBy('name', 'ASC')
-                ->firstOrFail();
+            ->where('slug', $slug)
+            ->orderBy('name', 'ASC')
+            ->firstOrFail();
     }
 
     public function getRelatedProductFo($idCategory, $slug)
     {
         return HampersProduct::with('categories')
-                ->with('images')
-                ->where('category_id', $idCategory)
-                ->where('slug', '!=', $slug)
-                ->orderBy('name', 'ASC')
-                ->limit(3)
-                ->get();
+            ->with('images')
+            ->where('category_id', $idCategory)
+            ->where('slug', '!=', $slug)
+            ->orderBy('name', 'ASC')
+            ->limit(3)
+            ->get();
     }
 }
