@@ -140,12 +140,15 @@ class ShippingProductController extends Controller
         $weight = $data_layanan['weight'];
         $courier = $data_layanan['name'];
 
+
+        
+
         $response = Http::asForm()->post('https://pro.rajaongkir.com/api/cost', [
             'key' => $apiKey,
             'origin' => $origin,
             'originType' => 'city',
             'destination' => $destination,
-            'destinationType' => 'subdistrict',
+            'destinationType' => 'city',
             'weight' => $weight,
             'courier' => $courier,
         ]);
@@ -179,7 +182,7 @@ class ShippingProductController extends Controller
                 'origin' => $origin,
                 'originType' => 'city',
                 'destination' => $destination,
-                'destinationType' => 'subdistrict',
+                'destinationType' => 'city',
                 'weight' => $weight,
                 'courier' => $courier,
             ]);

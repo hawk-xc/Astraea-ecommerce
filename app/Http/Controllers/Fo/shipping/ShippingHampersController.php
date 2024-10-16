@@ -145,7 +145,7 @@ class ShippingHampersController extends Controller
             'origin' => $origin,
             'originType' => 'city',
             'destination' => $destination,
-            'destinationType' => 'subdistrict',
+            'destinationType' => 'city',
             'weight' => $weight,
             'courier' => $courier,
         ]);
@@ -178,7 +178,7 @@ class ShippingHampersController extends Controller
                 'origin' => $origin,
                 'originType' => 'city',
                 'destination' => $destination,
-                'destinationType' => 'subdistrict',
+                'destinationType' => 'city',
                 'weight' => $weight,
                 'courier' => $courier,
             ]);
