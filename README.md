@@ -9,7 +9,8 @@
 
 ## Task Lists
 
-- menambahkan search product pada halaman product & hampers
+- menambahkan link refferal marketplace pada footer
+- ✅ menambahkan search product pada halaman product & hampers
 - ✅ card product ditambahi sku : code-sku
 - ✅ ubah showcase nama menjadi sku dan option value menjadi kode sku
 - ✅ menambahkan opsi pilihan pada all (product pages)

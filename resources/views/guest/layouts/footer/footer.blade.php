@@ -32,6 +32,20 @@
                         <li>Phone : {{ $data['contact']['phone_number'] }}</li>
                         <li>Whatsapp : {{ $data['contact']['whatsapp'] }}</li>
                         <li>Email : {{ $data['contact']['email'] }}</li>
+                        <li style="margin-top: 2rem; display: flex; flex-direction: column;">
+                            <span>Kunjungi kami juga di :</span>
+                            <div>
+                                <a href="http://shopee.co.id/astraealeathercraft">
+                                    <img class="ref-icon" src="{{ asset('storage/images/shopee-logo.png') }}"
+                                        alt="">
+                                </a>
+                                <a href="https://tr.ee/OMbt_kWvux">
+                                    <img class="ref-icon" src="{{ asset('storage/images/linktree-logo.png') }}"
+                                        alt="">
+                                </a>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -90,6 +104,14 @@
         <img src="{{ asset('guest/img/wa.png') }}" class="wafixed-imag">
     </span>
 </a>
+
+<style type="text/css">
+    .ref-icon {
+        width: 50px;
+        margin: 8px;
+        border-radius: 10px;
+    }
+</style>
 
 <script>
     function toggleDescription() {
