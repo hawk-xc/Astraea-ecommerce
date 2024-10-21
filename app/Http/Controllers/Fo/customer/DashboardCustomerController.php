@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Controllers\Controller;
 
+use \App\Models\BannerView as BannerModel;
+
 class DashboardCustomerController extends Controller
 {
     private ContactUsRepository $contactUsRepository;
@@ -50,15 +52,17 @@ class DashboardCustomerController extends Controller
         $data['orders'] = $this->userOrderRepository->getAll($s);
         $data['orderspa'] = $data['orders']->links();
         $data['orders'] = $data['orders']->map(function ($pesanan) {
-                    $pesanan->id = Crypt::encrypt($pesanan->id);
-                    $pesanan->no_nota = Crypt::encrypt($pesanan->no_nota);
-                    return $pesanan;
-                });
+            $pesanan->id = Crypt::encrypt($pesanan->id);
+            $pesanan->no_nota = Crypt::encrypt($pesanan->no_nota);
+            return $pesanan;
+        });
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
         $data['district'] =  $this->districtRepository->getById(auth()->guard('customer')->user()['district_id']);
         $data['testimoni'] = $this->testimoniRepository->getById($s);
         $data['s'] = Crypt::encryptString($s);
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 
@@ -68,6 +72,7 @@ class DashboardCustomerController extends Controller
         $ref['title'] = 'Edit Profile';
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+        $data['banner'] = BannerModel::first()->pluck('images');
         return view($this->data['view_directory'] . '.form', compact('ref', 'data'));
     }
 
@@ -76,33 +81,31 @@ class DashboardCustomerController extends Controller
 
         $id = auth()->guard('customer')->user()->id;
         $data = $request->validate([
-                "name" => ['required', 'string', 'max:100'],
-                "username" => ['required', 'string', Rule::unique('customers')->ignore($id)],
-                "email" => ['required', 'email', Rule::unique('customers')->ignore($id)],
-                "phone" => ['required', 'string'],
-                "wa" => ['required', 'string'],
-                "tgl_lahir" => ['required', 'string'],
-                "jenis_kelamin" => ['required', 'string'],
-                "district_id" => ['required'],
-                "address" => ['required', 'string'],
-            ], [], [
-                "name" => "Nama",
-                "username" => "Nama pengguna",
-                "email" => "Email ",
-                "phone" => "No Telepon",
-                "wa" => "No Whatsapp",
-                "tgl_lahir" => "Tanggal Lahir",
-                "jenis_kelamin" => "Jenis Kelamin",
-                "district_id" => "Kabupaten / Kota",
-                "address" => "Alamat",
-            ]);
-        
-        try
-        {
+            "name" => ['required', 'string', 'max:100'],
+            "username" => ['required', 'string', Rule::unique('customers')->ignore($id)],
+            "email" => ['required', 'email', Rule::unique('customers')->ignore($id)],
+            "phone" => ['required', 'string'],
+            "wa" => ['required', 'string'],
+            "tgl_lahir" => ['required', 'string'],
+            "jenis_kelamin" => ['required', 'string'],
+            "district_id" => ['required'],
+            "address" => ['required', 'string'],
+        ], [], [
+            "name" => "Nama",
+            "username" => "Nama pengguna",
+            "email" => "Email ",
+            "phone" => "No Telepon",
+            "wa" => "No Whatsapp",
+            "tgl_lahir" => "Tanggal Lahir",
+            "jenis_kelamin" => "Jenis Kelamin",
+            "district_id" => "Kabupaten / Kota",
+            "address" => "Alamat",
+        ]);
+
+        try {
             $data['updated_by']     = $id;
 
-            if(auth()->guard('customer')->user()->email != $data['email'])
-            {
+            if (auth()->guard('customer')->user()->email != $data['email']) {
                 $token = sha1($data['email'] . now());
                 Mail::to($data['email'])->send(new VerifyEmail($token));
                 $data['verification_token']     = $token;
@@ -113,45 +116,36 @@ class DashboardCustomerController extends Controller
 
             $this->repository->edit($id, $data);
             return redirect()->route('dashboard.customer')->with('toast_success', "Berhasil Mengupdate Profile");
-        }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('toast_warning', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
         }
-
     }
 
     public function upassword(Request $request)
     {
         $id = auth()->guard('customer')->user()->id;
         $data = $request->validate([
-                "password" => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'],
-                "password_confirmation" => ['required', 'same:password'],                
-            ], [], [
-                "password" => "Password",
-                "password_confirmation" => "Konfirmasi Password",
-            ]);
-        
-        try
-        {
+            "password" => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'],
+            "password_confirmation" => ['required', 'same:password'],
+        ], [], [
+            "password" => "Password",
+            "password_confirmation" => "Konfirmasi Password",
+        ]);
+
+        try {
             $data['updated_by']     = $id;
             unset($data['password_confirmation']);
             $data['password']       = Hash::make($data['password']);
             $this->repository->edit($id, $data);
             return redirect()->route('dashboard.customer')->with('success', "Berhasil Mengupdate Profile");
-        }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
         }
     }
-
 }

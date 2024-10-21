@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 
 use Helper;
-
+use \App\Models\BannerView as BannerModel;
 
 class PaymentOrderHampersController extends Controller
 {
@@ -67,6 +67,7 @@ class PaymentOrderHampersController extends Controller
         $data['about'] = $this->aboutUsRepository->getById('1');
 
         //order
+        $data['banner'] = BannerModel::first()->pluck('images');
         $data['order'] = $this->orderRepository->getByNota($no_nota);
 
         //jika sudah ada link pembayaran maka akan diarahkan
@@ -101,6 +102,8 @@ class PaymentOrderHampersController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
         }
+
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         //data
         $data['order'] = $this->orderRepository->getByNota($no_nota);

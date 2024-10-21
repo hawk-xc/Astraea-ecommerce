@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Http\Controllers\Controller;
 
+use \App\Models\BannerView as BannerModel;
+
 class CouponListController extends Controller
 {
 
@@ -30,12 +32,14 @@ class CouponListController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
         $ref = $this->data;
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
         $data['coupon'] = $this->discountCostumerRepository->getUser(auth()->guard('customer')->user()->id);
         // dd($data);
+        $data['banner'] = BannerModel::first()->pluck('images');
+
         return view($this->data['view_directory'] . '.index', compact('ref', 'data'));
     }
 

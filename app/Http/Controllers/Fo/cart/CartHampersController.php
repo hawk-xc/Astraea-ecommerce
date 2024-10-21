@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Helper;
 use Illuminate\Support\Facades\Crypt;
 
+use \App\Models\BannerView as BannerModel;
+
 class CartHampersController extends Controller
 {
     private OrderHampersRepository $repository;
@@ -50,6 +52,7 @@ class CartHampersController extends Controller
         $data['order'] = $this->repository->searchId($cart);
         $data['orders'] = $this->detail_repository->orderList($cart);
 
+        $data['banner'] = BannerModel::first()->pluck('images');
         //lempar ke shop karena belum terisi
         if (!isset($data['order']['no_nota'])) {
             return redirect()->route('shop-hampers.index')->with('toast_success', 'Cart masih kosong silahkan pilih product terlebih dahulu');

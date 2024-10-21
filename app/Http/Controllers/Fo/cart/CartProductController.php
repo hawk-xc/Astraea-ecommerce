@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Exception;
 use Helper;
+use \App\Models\BannerView as BannerModel;
 use Illuminate\Support\Facades\Crypt;
 
 class CartProductController extends Controller
@@ -51,6 +52,7 @@ class CartProductController extends Controller
         $data['order'] = $this->repository->searchId($cart);
         $data['orders'] = $this->detail_repository->orderList($cart);
 
+        $data['banner'] = BannerModel::first()->pluck('images');
         // dd($data);
 
         //lempar ke shop karena belum terisi

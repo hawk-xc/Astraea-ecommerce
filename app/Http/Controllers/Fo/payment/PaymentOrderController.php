@@ -23,6 +23,8 @@ use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use \App\Models\BannerView as BannerModel;
+
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 
@@ -69,6 +71,7 @@ class PaymentOrderController extends Controller
         $ref = $this->data;
         $data['contact'] = $this->contactUsRepository->getById('1');
         $data['about'] = $this->aboutUsRepository->getById('1');
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         //order
         $data['order'] = $this->orderRepository->getByNota($no_nota);
@@ -105,6 +108,7 @@ class PaymentOrderController extends Controller
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
         }
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         //data
         $data['order'] = $this->orderRepository->getByNota($no_nota);

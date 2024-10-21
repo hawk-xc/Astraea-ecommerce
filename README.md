@@ -9,7 +9,7 @@
 
 ## Task Lists
 
-- ubah gambar buah pada order
+- ✅ ubah gambar buah pada order
 - ✅ ubah linktree -> tokopedia
 - ✅ Solve order payment gateway
 - ✅ menambahkan link refferal marketplace pada footer

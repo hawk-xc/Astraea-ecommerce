@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
 
+use \App\Models\BannerView as BannerModel;
 
 
 class ShippingProductController extends Controller
@@ -40,10 +41,7 @@ class ShippingProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-
-    }
+    public function index() {}
 
     /**
      * Show the form for creating a new resource.
@@ -75,8 +73,7 @@ class ShippingProductController extends Controller
 
     public function storeCek(Request $request, string $id)
     {
-        try
-        {
+        try {
             $no_nota = Crypt::decryptString($id);
         } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
             $no_nota = null;
@@ -86,17 +83,17 @@ class ShippingProductController extends Controller
         $eIdOrder = Crypt::encryptString($idOrder);
 
 
-         $record = $request->validate([
+        $record = $request->validate([
             'district_id' => 'required|exists:districts,id', // Asumsikan ada tabel districts
             'expedisi' => 'required|in:jne,pos,tiki,jnt',
             'address' => 'required|string|max:255',
         ]);
 
         //menghitung jumlah berat
-         $totalWeight = $this->orderDetailRepository->sumWeight($idOrder)
-                ->reduce(function ($carry, $detail) {
-                    return $carry + ($detail->quantity * $detail->productData->weight);
-                }, 0);
+        $totalWeight = $this->orderDetailRepository->sumWeight($idOrder)
+            ->reduce(function ($carry, $detail) {
+                return $carry + ($detail->quantity * $detail->productData->weight);
+            }, 0);
 
         try {
             //update order
@@ -112,12 +109,10 @@ class ShippingProductController extends Controller
                 'name'      =>  $record['expedisi'],
                 'destination'  => $record['district_id'],
                 'weight'    => $totalWeight,
-                ]);
+            ]);
             //redirect
             return redirect()->route('fo.shipping-product.edit', $eIdOrder);
-
         } catch (Exception $e) {
-
         }
     }
 
@@ -131,6 +126,7 @@ class ShippingProductController extends Controller
         $data['about']  = $this->aboutUsRepository->getById('1');
         $id             = Crypt::decryptString($id);
         $data['id_order'] = Crypt::encryptString($id);
+        $data['banner'] = BannerModel::first()->pluck('images');
 
         $data_layanan = $this->shippingRepository->getById($id);
         $apiKey = env('RAJA_ONGKIR_API_KEY'); // Ganti dengan API key Anda dari Raja Ongkir
@@ -189,25 +185,22 @@ class ShippingProductController extends Controller
             // dd($record['ongkir']);
             $data_ongkir = $data['rajaongkir'][0]['costs'][$record['ongkir']];
             $input = [
-                'service'   => $data_ongkir['service'] .' ('.  $data_ongkir['description'] .')',
+                'service'   => $data_ongkir['service'] . ' (' .  $data_ongkir['description'] . ')',
                 'price'     => $data_ongkir['cost'][0]['value'],
                 'days'      => $data_ongkir['cost'][0]['etd']
             ];
             //update shiping
             $this->orderRepository->edit($id, [
-                    'shipping' => $input['price'],
-                    'shipping_status' => 'PENDING',
-                ]);
+                'shipping' => $input['price'],
+                'shipping_status' => 'PENDING',
+            ]);
             $this->shippingRepository->edit($id, $input);
             //redirect dan melempar no nota
             $nota = $this->orderRepository->searchId($id)['no_nota'];
             $nota = Crypt::encryptString($nota);
             return redirect()->route('product-payment', $nota);
-
         } catch (Exception $e) {
-
         }
-
     }
 
     /**
