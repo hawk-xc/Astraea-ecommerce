@@ -39,8 +39,8 @@
                                     <img class="ref-icon" src="{{ asset('storage/images/shopee-logo.png') }}"
                                         alt="">
                                 </a>
-                                <a href="https://tr.ee/OMbt_kWvux">
-                                    <img class="ref-icon" src="{{ asset('storage/images/linktree-logo.png') }}"
+                                <a href="https://www.tokopedia.com/astraealeather">
+                                    <img class="ref-icon" src="{{ asset('storage/images/tokopedia-logo.png') }}"
                                         alt="">
                                 </a>
                             </div>
