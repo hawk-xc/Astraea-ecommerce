@@ -9,7 +9,8 @@
 
 ## Task Lists
 
-- menambahkan link refferal marketplace pada footer
+- ✅ Solve order payment gateway
+- ✅ menambahkan link refferal marketplace pada footer
 - ✅ menambahkan search product pada halaman product & hampers
 - ✅ card product ditambahi sku : code-sku
 - ✅ ubah showcase nama menjadi sku dan option value menjadi kode sku

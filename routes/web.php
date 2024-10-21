@@ -119,6 +119,7 @@ Route::get('login', [AuthCustomerController::class, 'index'])->name('loginf.cust
 Route::post('login', [AuthCustomerController::class, 'login'])->name('login.customer');
 Route::get('register', [AuthCustomerController::class, 'registerf'])->name('registerf.customer');
 Route::post('register', [AuthCustomerController::class, 'register'])->name('register.customer');
+Route::post('payment-callback', [PaymentOrderController::class, 'handleCallback']);
 
 Route::get('verify/{token}', [AuthCustomerController::class, 'verify'])->name('verify');
 Route::resource("change-password", PasswordChangeContoller::class);

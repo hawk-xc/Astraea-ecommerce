@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\Fo\payment;
 
-use App\Repositories\ContactUsRepository;
+use App\Http\Controllers\Controller;
 use App\Repositories\AboutUsRepository;
-use App\Repositories\PaymentDetailRepository;
+use App\Repositories\AppFeeRepository;
+
+use App\Repositories\ContactUsRepository;
+use App\Repositories\DiscountCostumerRepository;
+use App\Repositories\OrderDetailRepository;
+use App\Repositories\OrderHampersRepository;
 
 use App\Repositories\OrderRepository;
-use App\Repositories\OrderHampersRepository;
-use App\Repositories\OrderDetailRepository;
-use App\Repositories\ShippingRepository;
 
-use App\Repositories\DiscountCostumerRepository;
+use App\Repositories\PaymentDetailRepository;
 
 use App\Repositories\ProductRepository;
 
-use App\Repositories\AppFeeRepository;
-
-use Illuminate\Http\Request;
+use App\Repositories\ShippingRepository;
 use Carbon\Carbon;
-use App\Http\Controllers\Controller;
+use Helper;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
-
-use Helper;
 
 
 class PaymentOrderController extends Controller
@@ -221,6 +222,17 @@ class PaymentOrderController extends Controller
 
     public function handleCallback(Request $request)
     {
+        $getToken = $request->headers->get('x-callback-token');
+        $callbackToken = env('XENDIT_CALLBACK_TOKEN');
+
+        // try {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Callback success',
+        //         'token' => $getToken,
+        //     ], Response::HTTP_OK);
+        // } catch (\Throwable $e) {
+        // }
         $data = $request->all();
 
         //create detail payment
@@ -234,6 +246,8 @@ class PaymentOrderController extends Controller
             'payment_method' => $data['payment_method'],
             'payment_channel' => $data['payment_channel'],
         ];
+
+        // dd($data);
         $this->paymentDetailRepository->store($record);
 
         //update order
@@ -245,7 +259,7 @@ class PaymentOrderController extends Controller
             ]);
         } else {
             // update hampers order table
-            $this->orderHRepository->editByNota($data["external_id"], [
+            $this->orderRepository->editByNota($data["external_id"], [
                 'status' => $data['status'],
             ]);
         }
