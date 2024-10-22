@@ -12,6 +12,13 @@ class HampersImageProductRepository implements HampersImageProductInterface
         return HampersProductImages::with('categories')->with('images')->orderBy('name', 'ASC')->get();
     }
 
+    public function getByPosition($productId, $position)
+    {
+        return HampersProductImages::where('product_id', $productId)
+            ->where('position', $position)
+            ->first();
+    }
+
     public function getById($id)
     {
         return HampersProductImages::with('categories')->with('images')->where('id', $id)->firstOrFail(['id', 'name', 'description']);

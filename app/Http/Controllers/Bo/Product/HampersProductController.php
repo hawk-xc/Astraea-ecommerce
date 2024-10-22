@@ -48,10 +48,9 @@ class HampersProductController extends Controller
                 ->editColumn(
                     "price",
                     function ($inquiry) {
-                        $r_price = $inquiry["hpp"] / (1 - ( $inquiry["margin"] / 100 + $inquiry["b_layanan"] / 100));
+                        $r_price = $inquiry["hpp"] / (1 - ($inquiry["margin"] / 100 + $inquiry["b_layanan"] / 100));
                         $res_price = '';
-                        if ($r_price > $inquiry["price"])
-                        {
+                        if ($r_price > $inquiry["price"]) {
                             $res_price = ' <span class="badge bg-danger">Update Harga</span>';
                         }
                         return Helper::to_rupiah($inquiry["price"]) . $res_price;
@@ -78,10 +77,11 @@ class HampersProductController extends Controller
         }
     }
 
-    public function sDatas(Request $request) {
+    public function sDatas(Request $request)
+    {
         $searchTerm = $request->input('q');
         $filteredProducts = $this->repository->getSearch($searchTerm);
-        $formattedData = $filteredProducts->map(function($product) {
+        $formattedData = $filteredProducts->map(function ($product) {
             return [
                 'id' => $product->id,
                 'text' => $product->name
@@ -116,7 +116,7 @@ class HampersProductController extends Controller
             "subcategory_id" => ['required', 'string', 'max:250'],
             "weight" => ['required', 'string', 'max:6'],
             "description" => ['required', 'string'],
-        ],[],[
+        ], [], [
             "name" => "Nama produk",
             "price" => "Harga jual produk",
             "color" => "Warna barang",
@@ -139,7 +139,7 @@ class HampersProductController extends Controller
             'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-        ],[],[
+        ], [], [
             'front' => "Gambar Depan",
             'back' => "Gambar Belakang",
             'left' => "Gambar Kanan",
@@ -150,31 +150,27 @@ class HampersProductController extends Controller
             'detail4' => "Gambar detail 4",
         ]);
 
-        try
-        {
+        try {
             $data['id'] = 'HPR-' . Helper::table_id();
             $data['created_by'] = auth()->user()->id;
             $data['updated_by'] = auth()->user()->id;
             $data['slug'] = $this->repository->sluggable($data['name']);
             $this->repository->store($data);
             foreach ($request->file() as $key => $img) {
-                    $image_path = $request->file($key)->store('images', 'public');
-                    //save image
-                    $image_record['id'] = 'IHS-' . Helper::table_id();
-                    $image_record["product_id"] = $data['id'];
-                    $image_record["position"] = $key;
-                    $image_record["name"] = $image_path;
-                    $image_record['created_by'] = auth()->user()->id;
-                    $image_record['updated_by'] = auth()->user()->id;
-                    //proses save
-                    $this->images_repository->store($image_record);
+                $image_path = $request->file($key)->store('images', 'public');
+                //save image
+                $image_record['id'] = 'IHS-' . Helper::table_id();
+                $image_record["product_id"] = $data['id'];
+                $image_record["position"] = $key;
+                $image_record["name"] = $image_path;
+                $image_record['created_by'] = auth()->user()->id;
+                $image_record['updated_by'] = auth()->user()->id;
+                //proses save
+                $this->images_repository->store($image_record);
             }
-             return redirect()->route('hampers.index')->with('success', 'Berhasil menambah produk ' . $data["name"]);
-        }
-        catch (Exception $e)
-        {
-            if (env('APP_DEBUG'))
-            {
+            return redirect()->route('hampers.index')->with('success', 'Berhasil menambah produk ' . $data["name"]);
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
             return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
@@ -206,100 +202,217 @@ class HampersProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // public function update(Request $request, string $id)
+    // {
+    //     $id = Crypt::decryptString($id);
+    //      $data = $request->validate([
+    //             "name" => ['required', 'string', 'max:100'],
+    //             "price" => ['required', 'string', 'max:25'],
+    //             "color" => ['required', 'string', 'max:250'],
+    //             "stock" => ['required', 'string', 'max:4'],
+    //             "hpp" => ['required', 'string', 'max:25'],
+    //             "margin" => ['required', 'string', 'max:3'],
+    //             "b_layanan" => ['required', 'string', 'max:3'],
+    //             "category_id" => ['required', 'string', 'max:250'],
+    //             "subcategory_id" => ['required', 'string', 'max:250'],
+    //             "description" => ['required', 'string'],
+    //             "pos-front" => ['nullable'],
+    //             "pos-back" => ['nullable'],
+    //             "pos-right" => ['nullable'],
+    //             "pos-left" => ['nullable'],
+    //         ],[],[
+    //             "name" => "Nama produk",
+    //             "price" => "Harga produk",
+    //             "color" => "Warna barang",
+    //             "stock" => "Jumlah barang",
+    //             "margin" => "Margin barang",
+    //             "b_layanan" => "Biaya layanan barang",
+    //             "hpp" => "Harga Pokok Penjualan barang",
+    //             "category_id" => "Kategori barang",
+    //             "subcategory_id" => "Subkategori barang",
+    //             "description" => "Deskripsi barang",
+    //         ]);
+
+    //        $request->validate([
+    //             'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'left' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'right' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'detail1' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //             'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         ],[],[
+    //             'front' => "Gambar Depan",
+    //             'back' => "Gambar Belakang",
+    //             'left' => "Gambar Kanan",
+    //             'right' => "Gambar Kiri",
+    //             'detail1' => "Gambar Detail 1",
+    //             'detail2' => "Gambar Detail 2",
+    //             'detail3' => "Gambar Detail 3",
+    //             'detail4' => "Gambar detail 4",
+    //         ]);
+
+    //         $images = $this->images_repository->getByIdProduct($id);
+    //         $posisi = ['front', 'back', 'right', 'left'];
+
+    //         try
+    //         {
+    //             foreach ($posisi as $key => $value) {
+    //                 if($data['pos-' . $value] != 'old_true')
+    //                 {
+    //                     if(isset($images[$value][0]))
+    //                     {
+    //                         $image_path = storage_path().'/app/public/'.$images[$value][0]->name;
+    //                         unlink($image_path);
+    //                         $this->images_repository->destroy($images[$value][0]->id);
+    //                     }
+
+    //                     if($data['pos-' . $value] == $value)
+    //                     {
+    //                         $image_path = $request->file($value)->store('images', 'public');
+    //                         //save image
+    //                         $image_record['id'] = 'IHS-' . Helper::table_id();
+    //                         $image_record["product_id"] = $id;
+    //                         $image_record["position"] = $value;
+    //                         $image_record["name"] = $image_path;
+    //                         $image_record['created_by'] = auth()->user()->id;
+    //                         $image_record['updated_by'] = auth()->user()->id;
+    //                         //proses save
+    //                         $this->images_repository->store($image_record);
+    //                     }
+    //                 }
+    //                 unset($data['pos-' . $value]);
+    //             }
+    //             $this->repository->edit($id, $data);
+    //             return redirect()->route('hampers.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
+    //         }
+    //         catch (Exception $e)
+    //         {
+    //             if (env('APP_DEBUG'))
+    //             {
+    //                 return $e->getMessage();
+    //             }
+    //             return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
+    //         }
+    // }
+
     public function update(Request $request, string $id)
     {
         $id = Crypt::decryptString($id);
-         $data = $request->validate([
-                "name" => ['required', 'string', 'max:100'],
-                "price" => ['required', 'string', 'max:25'],
-                "color" => ['required', 'string', 'max:250'],
-                "stock" => ['required', 'string', 'max:4'],
-                "hpp" => ['required', 'string', 'max:25'],
-                "margin" => ['required', 'string', 'max:3'],
-                "b_layanan" => ['required', 'string', 'max:3'],
-                "category_id" => ['required', 'string', 'max:250'],
-                "subcategory_id" => ['required', 'string', 'max:250'],
-                "description" => ['required', 'string'],
-                "pos-front" => ['nullable'],
-                "pos-back" => ['nullable'],
-                "pos-right" => ['nullable'],
-                "pos-left" => ['nullable'],
-            ],[],[
-                "name" => "Nama produk",
-                "price" => "Harga produk",
-                "color" => "Warna barang",
-                "stock" => "Jumlah barang",
-                "margin" => "Margin barang",
-                "b_layanan" => "Biaya layanan barang",
-                "hpp" => "Harga Pokok Penjualan barang",
-                "category_id" => "Kategori barang",
-                "subcategory_id" => "Subkategori barang",
-                "description" => "Deskripsi barang",
-            ]);
 
-           $request->validate([
-                'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'left' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'right' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'detail1' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-                'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-            ],[],[
-                'front' => "Gambar Depan",
-                'back' => "Gambar Belakang",
-                'left' => "Gambar Kanan",
-                'right' => "Gambar Kiri",
-                'detail1' => "Gambar Detail 1",
-                'detail2' => "Gambar Detail 2",
-                'detail3' => "Gambar Detail 3",
-                'detail4' => "Gambar detail 4",
-            ]);
+        // Validasi input form
+        $data = $request->validate([
+            "name" => ['required', 'string', 'max:100'],
+            "price" => ['required', 'string', 'max:25'],
+            "color" => ['required', 'string', 'max:250'],
+            "stock" => ['required', 'string', 'max:4'],
+            "hpp" => ['required', 'string', 'max:25'],
+            "margin" => ['required', 'string', 'max:3'],
+            "b_layanan" => ['required', 'string', 'max:3'],
+            "category_id" => ['required', 'string', 'max:250'],
+            "subcategory_id" => ['required', 'string', 'max:250'],
+            "description" => ['required', 'string'],
+            // "pos-front" => ['nullable'],
+            // "pos-back" => ['nullable'],
+            // "pos-right" => ['nullable'],
+            // "pos-left" => ['nullable'],
+        ], [], [
+            "name" => "Nama produk",
+            "price" => "Harga produk",
+            "color" => "Warna barang",
+            "stock" => "Jumlah barang",
+            "margin" => "Margin barang",
+            "b_layanan" => "Biaya layanan barang",
+            "hpp" => "Harga Pokok Penjualan barang",
+            "category_id" => "Kategori barang",
+            "subcategory_id" => "Subkategori barang",
+            "description" => "Deskripsi barang",
+        ]);
 
-            $images = $this->images_repository->getByIdProduct($id);
-            $posisi = ['front', 'back', 'right', 'left'];
+        // Validasi gambar baru (jika ada)
+        $request->validate([
+            'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'left' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'right' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'detail1' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+            'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+        ], [], [
+            'front' => "Gambar Depan",
+            'back' => "Gambar Belakang",
+            'left' => "Gambar Kanan",
+            'right' => "Gambar Kiri",
+            'detail1' => "Gambar Detail 1",
+            'detail2' => "Gambar Detail 2",
+            'detail3' => "Gambar Detail 3",
+            'detail4' => "Gambar Detail 4",
+        ]);
 
-            try
-            {
-                foreach ($posisi as $key => $value) {
-                    if($data['pos-' . $value] != 'old_true')
-                    {
-                        if(isset($images[$value][0]))
-                        {
-                            $image_path = storage_path().'/app/public/'.$images[$value][0]->name;
-                            unlink($image_path);
-                            $this->images_repository->destroy($images[$value][0]->id);
+        // Ambil gambar yang sudah ada
+        $images = $this->images_repository->getByIdProduct($id);
+
+        // Posisi gambar yang akan dicek
+        $positions = [
+            'front' => 'pos-front',
+            'back' => 'pos-back',
+            'left' => 'pos-left',
+            'right' => 'pos-right',
+            'detail1' => 'pos-detail1',
+            'detail2' => 'pos-detail2',
+            'detail3' => 'pos-detail3',
+            'detail4' => 'pos-detail4',
+        ];
+
+        try {
+            foreach ($positions as $position => $pos_request_key) {
+                // Ambil gambar lama dari database
+                $existingImage = $this->images_repository->getByPosition($id, $position);
+
+                // Hapus gambar jika tidak ada gambar baru atau pos_request_key === null
+                if ($request->$pos_request_key === null || $request->hasFile($position)) {
+                    if ($existingImage) {
+                        // Hapus file gambar dari folder
+                        $oldImagePath = storage_path('app/public/' . $existingImage->name);
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
                         }
 
-                        if($data['pos-' . $value] == $value)
-                        {
-                            $image_path = $request->file($value)->store('images', 'public');
-                            //save image
-                            $image_record['id'] = 'IHS-' . Helper::table_id();
-                            $image_record["product_id"] = $id;
-                            $image_record["position"] = $value;
-                            $image_record["name"] = $image_path;
-                            $image_record['created_by'] = auth()->user()->id;
-                            $image_record['updated_by'] = auth()->user()->id;
-                            //proses save
-                            $this->images_repository->store($image_record);
-                        }
+                        // Hapus data gambar dari database
+                        $this->images_repository->destroy($existingImage->id);
                     }
-                    unset($data['pos-' . $value]);
+
+                    // Jika ada gambar baru, simpan gambar tersebut
+                    if ($request->hasFile($position)) {
+                        $imagePath = $request->file($position)->store('images', 'public');
+                        $imageRecord = [
+                            'id' => 'IPT-' . Helper::table_id(),
+                            'product_id' => $id,
+                            'position' => $position,
+                            'name' => $imagePath,
+                            'created_by' => auth()->user()->id,
+                            'updated_by' => auth()->user()->id,
+                        ];
+                        // Simpan gambar baru ke database
+                        $this->images_repository->store($imageRecord);
+                    }
                 }
-                $this->repository->edit($id, $data);
-                return redirect()->route('hampers.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
             }
-            catch (Exception $e)
-            {
-                if (env('APP_DEBUG'))
-                {
-                    return $e->getMessage();
-                }
-                return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
+
+            // Update data produk
+            $this->repository->edit($id, $data);
+
+            return redirect()->route('hampers.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
+        } catch (Exception $e) {
+            if (env('APP_DEBUG')) {
+                return $e->getMessage();
             }
+            return back()->with('error', "Oops..!! Terjadi kesalahan saat menyimpan data")->withInput($request->input());
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -307,20 +420,16 @@ class HampersProductController extends Controller
     public function destroy(string $id)
     {
         $id = Crypt::decryptString($id);
-        try 
-        {
+        try {
             $images = $this->images_repository->getByIdProducts($id);
-            foreach ($images as $image) 
-            {
-                $image_path = storage_path().'/app/public/'.$image->name;
+            foreach ($images as $image) {
+                $image_path = storage_path() . '/app/public/' . $image->name;
                 unlink($image_path);
                 $this->images_repository->destroy($image->id);
             }
             $this->repository->destroy($id);
             return redirect()->route('hampers.index')->with('success', 'Produk berhasil dihapus');
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
