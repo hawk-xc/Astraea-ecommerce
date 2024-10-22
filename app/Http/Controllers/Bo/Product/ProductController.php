@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers\Bo\Product;
 
-use App\Repositories\ProductRepository;
-use App\Repositories\ImageProductRepository;
-use Exception;
-use Helper;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\Controller;
 use App\Models\Color;
 use App\Models\ProductColor;
+use App\Models\ProductImages;
 use App\Models\Products;
 use App\Models\Sku;
+use App\Repositories\ImageProductRepository;
+use App\Repositories\ProductRepository;
+use Exception;
+use Helper;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\URL;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -528,11 +529,130 @@ class ProductController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
+    // public function update(Request $request, string $id)
+    // {
+    //     // dd($request);
+
+    //     $id = Crypt::decryptString($id);
+    //     $data = $request->validate([
+    //         "name" => ['required', 'string', 'max:100'],
+    //         "price" => ['required', 'string', 'max:25'],
+    //         "stock" => ['required', 'string', 'max:4'],
+    //         "weight" => ['required', 'string', 'max:6'],
+    //         "color" => ['required', 'max:250'],
+    //         "sku_id" => ['required', 'string', 'max:250'],
+    //         "hpp" => ['required', 'string', 'max:25'],
+    //         "margin" => ['required', 'string', 'max:3'],
+    //         "b_layanan" => ['required', 'string', 'max:3'],
+    //         "category_id" => ['required', 'string', 'max:250'],
+    //         "subcategory_id" => ['required', 'string', 'max:250'],
+    //         "description" => ['required', 'string'],
+    //         "pos-front" => ['nullable'],
+    //         "pos-back" => ['nullable'],
+    //         "pos-right" => ['nullable'],
+    //         "pos-left" => ['nullable'],
+    //     ], [], [
+    //         "name" => "Nama produk",
+    //         "price" => "Harga produk",
+    //         "stock" => "Jumlah barang",
+    //         "color" => "Warna barang",
+    //         "sku_id" => "Seri barang",
+    //         "weight" => "Berat barang",
+    //         "margin" => "Margin barang",
+    //         "b_layanan" => "Biaya layanan barang",
+    //         "hpp" => "Harga Pokok Penjualan barang",
+    //         "category_id" => "Kategori barang",
+    //         "subcategory_id" => "Subkategori barang",
+    //         "description" => "Deskripsi barang",
+    //     ]);
+
+    //     $request->validate([
+    //         'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'left' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'right' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'detail1' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //         'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
+    //     ], [], [
+    //         'front' => "Gambar Depan",
+    //         'back' => "Gambar Belakang",
+    //         'left' => "Gambar Kanan",
+    //         'right' => "Gambar Kiri",
+    //         'detail1' => "Gambar Detail 1",
+    //         'detail2' => "Gambar Detail 2",
+    //         'detail3' => "Gambar Detail 3",
+    //         'detail4' => "Gambar detail 4",
+    //     ]);
+
+    //     $images = $this->images_repository->getByIdProduct($id);
+    //     $posisi = ['front', 'back', 'right', 'left'];
+
+    //     try {
+    //         foreach ($posisi as $key => $value) {
+    //             if ($data['pos-' . $value] != 'old_true') {
+    //                 if (isset($images[$value][0])) {
+    //                     $image_path = storage_path() . '/app/public/' . $images[$value][0]->name;
+    //                     unlink($image_path);
+    //                     $this->images_repository->destroy($images[$value][0]->id);
+    //                 }
+
+    //                 if ($data['pos-' . $value] == $value) {
+    //                     $image_path = $request->file($value)->store('images', 'public');
+    //                     //save image
+    //                     $image_record['id'] = 'IPT-' . Helper::table_id();
+    //                     $image_record["product_id"] = $id;
+    //                     $image_record["position"] = $value;
+    //                     $image_record["name"] = $image_path;
+    //                     $image_record['created_by'] = auth()->user()->id;
+    //                     $image_record['updated_by'] = auth()->user()->id;
+    //                     //proses save
+    //                     $this->images_repository->store($image_record);
+    //                 }
+    //             }
+    //             unset($data['pos-' . $value]);
+    //         }
+    //         // dd($data);
+    //         $this->repository->edit($id, $data);
+
+    //         $produk = Products::find($id);
+
+    //         $produk->name = $request->name;
+    //         $produk->slug = $this->repository->sluggable($data['name']);
+    //         $produk->description = $request->description;
+    //         $produk->category_id = $request->category_id;
+    //         $produk->subcategory_id = $request->subcategory_id;
+    //         $produk->weight = $request->weight;
+    //         $produk->price = $request->price;
+    //         $produk->color = '';
+    //         $produk->stock = $request->stock;
+    //         $produk->hpp = $request->hpp;
+    //         $produk->margin = $request->margin;
+    //         $produk->b_layanan = $request->b_layanan;
+    //         $produk->created_by = auth()->user()->id;
+    //         $produk->updated_by = auth()->user()->id;
+    //         $produk->sku_id = $request->sku_id;
+
+    //         $produk->save();
+
+    //         $produk->colors()->sync($request->color);
+
+    //         return redirect()->route('product.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
+    //     } catch (Exception $e) {
+    //         if (env('APP_DEBUG')) {
+    //             return $e->getMessage();
+    //         }
+    //         return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
+    //     }
+    // }
     public function update(Request $request, string $id)
     {
-        // dd($request);
-
+        dd($request->all());
+        // Dekripsi ID produk
         $id = Crypt::decryptString($id);
+
+        // Validasi data input produk
         $data = $request->validate([
             "name" => ['required', 'string', 'max:100'],
             "price" => ['required', 'string', 'max:25'],
@@ -546,10 +666,6 @@ class ProductController extends Controller
             "category_id" => ['required', 'string', 'max:250'],
             "subcategory_id" => ['required', 'string', 'max:250'],
             "description" => ['required', 'string'],
-            "pos-front" => ['nullable'],
-            "pos-back" => ['nullable'],
-            "pos-right" => ['nullable'],
-            "pos-left" => ['nullable'],
         ], [], [
             "name" => "Nama produk",
             "price" => "Harga produk",
@@ -565,6 +681,7 @@ class ProductController extends Controller
             "description" => "Deskripsi barang",
         ]);
 
+        // Validasi gambar (jika ada gambar baru)
         $request->validate([
             'front' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'back' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
@@ -574,77 +691,104 @@ class ProductController extends Controller
             'detail2' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'detail3' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
             'detail4' => ['nullable', 'mimes:png,jpg,jpeg', 'max:5120'],
-        ], [], [
-            'front' => "Gambar Depan",
-            'back' => "Gambar Belakang",
-            'left' => "Gambar Kanan",
-            'right' => "Gambar Kiri",
-            'detail1' => "Gambar Detail 1",
-            'detail2' => "Gambar Detail 2",
-            'detail3' => "Gambar Detail 3",
-            'detail4' => "Gambar detail 4",
         ]);
 
-        $images = $this->images_repository->getByIdProduct($id);
-        $posisi = ['front', 'back', 'right', 'left'];
-
         try {
-            foreach ($posisi as $key => $value) {
-                if ($data['pos-' . $value] != 'old_true') {
-                    if (isset($images[$value][0])) {
-                        $image_path = storage_path() . '/app/public/' . $images[$value][0]->name;
-                        unlink($image_path);
-                        $this->images_repository->destroy($images[$value][0]->id);
-                    }
+            // Ambil produk berdasarkan ID
+            $produk = Products::findOrFail($id);
 
-                    if ($data['pos-' . $value] == $value) {
-                        $image_path = $request->file($value)->store('images', 'public');
-                        //save image
-                        $image_record['id'] = 'IPT-' . Helper::table_id();
-                        $image_record["product_id"] = $id;
-                        $image_record["position"] = $value;
-                        $image_record["name"] = $image_path;
-                        $image_record['created_by'] = auth()->user()->id;
-                        $image_record['updated_by'] = auth()->user()->id;
-                        //proses save
-                        $this->images_repository->store($image_record);
-                    }
-                }
-                unset($data['pos-' . $value]);
-            }
-            // dd($data);
-            $this->repository->edit($id, $data);
-
-            $produk = Products::find($id);
-
+            // Update data produk
             $produk->name = $request->name;
-            $produk->slug = $this->repository->sluggable($data['name']);
+            $produk->slug = $this->repository->sluggable($request->name);
             $produk->description = $request->description;
             $produk->category_id = $request->category_id;
             $produk->subcategory_id = $request->subcategory_id;
             $produk->weight = $request->weight;
             $produk->price = $request->price;
-            $produk->color = '';
+            $produk->color = $request->color;
             $produk->stock = $request->stock;
             $produk->hpp = $request->hpp;
             $produk->margin = $request->margin;
             $produk->b_layanan = $request->b_layanan;
-            $produk->created_by = auth()->user()->id;
-            $produk->updated_by = auth()->user()->id;
             $produk->sku_id = $request->sku_id;
-
+            $produk->updated_by = auth()->user()->id;
             $produk->save();
 
-            $produk->colors()->sync($request->color);
+            // Proses gambar baru jika ada
+            $positions = ['front', 'back', 'left', 'right', 'detail1', 'detail2', 'detail3', 'detail4'];
 
-            return redirect()->route('product.index')->with('success', 'Berhasil memperbarui produk ' . $data["name"]);
+            foreach ($positions as $position) {
+                if ($request->hasFile($position)) {
+                    // Hapus gambar lama (jika ada)
+                    $existingImage = $this->images_repository->getByPosition($id, $position);
+                    if ($existingImage) {
+                        $oldImagePath = storage_path('app/public/' . $existingImage->name);
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+                        $this->images_repository->destroy($existingImage->id);
+                    }
+
+                    // Simpan gambar baru
+                    $imagePath = $request->file($position)->store('images', 'public');
+                    $imageRecord = [
+                        'id' => 'IPT-' . Helper::table_id(),
+                        'product_id' => $id,
+                        'position' => $position,
+                        'name' => $imagePath,
+                        'created_by' => auth()->user()->id,
+                        'updated_by' => auth()->user()->id,
+                    ];
+                    $this->images_repository->store($imageRecord);
+                }
+            }
+
+            return redirect()->route('product.index')->with('success', 'Produk berhasil diperbarui.');
         } catch (Exception $e) {
             if (env('APP_DEBUG')) {
                 return $e->getMessage();
             }
-            return back()->with('error', "Oops..!! Terjadi keesalahan saat menyimpan data")->withInput($request->input);
+            return back()->with('error', 'Terjadi kesalahan saat memperbarui produk.')->withInput();
         }
     }
+    // public function update(Request $request, $id)
+    // {
+    //     // Validasi input
+    //     $validated = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'description' => 'nullable|string',
+    //         'category_id' => 'required',
+    //         'subcategory_id' => 'nullable',
+    //         'sku_id' => 'required',
+    //         'stock' => 'required|integer',
+    //         'weight' => 'required|numeric',
+    //         'price' => 'required|numeric',
+    //         'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // Validasi gambar
+    //     ]);
+
+    //     // Temukan data produk berdasarkan ID
+    //     $product = ProductImages::findOrFail($id);
+
+    //     // Proses upload gambar baru jika ada
+    //     if ($request->hasFile('image')) {
+    //         // Hapus gambar lama jika ada
+    //         if ($product->image && file_exists(public_path('uploads/' . $product->image))) {
+    //             unlink(public_path('uploads/' . $product->image));
+    //         }
+
+    //         // Simpan gambar baru
+    //         $imageName = time() . '.' . $request->image->extension();
+    //         $request->image->move(public_path('uploads'), $imageName);
+    //         $validated['image'] = $imageName;
+    //     }
+
+    //     // Update data produk
+    //     $product->update($validated);
+
+    //     return redirect()->back()->with('success', 'Produk berhasil diperbarui!');
+    // }
+
+
 
     /**
      * Remove the specified resource from storage.

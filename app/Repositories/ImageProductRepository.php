@@ -12,6 +12,14 @@ class ImageProductRepository implements ImageProductInterface
         return ProductImages::with('categories')->with('images')->orderBy('name', 'ASC')->get();
     }
 
+    public function getByPosition($productId, $position)
+    {
+        return ProductImages::where('product_id', $productId)
+            ->where('position', $position)
+            ->first();
+    }
+
+
     public function getById($id)
     {
         return ProductImages::with('categories')->with('images')->where('id', $id)->firstOrFail(['id', 'name', 'description']);

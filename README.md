@@ -9,6 +9,7 @@
 
 ## Task Lists
 
+- memperbaiki add foto detail
 - ✅ ubah gambar buah pada order
 - ✅ ubah linktree -> tokopedia
 - ✅ Solve order payment gateway
