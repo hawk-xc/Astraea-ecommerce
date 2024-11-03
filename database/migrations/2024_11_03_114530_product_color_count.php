@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('banner_views', function (Blueprint $table) {
-            $table->id();
-            $table->string('images')->default('D:\laragon\www\astraea-ecommerce\app\Models\BannerView.php');
-            $table->timestamps();
+        Schema::table('product_colors', function (Blueprint $table) {
+            $table->integer('count')->default(0);
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('banner_views');
+        Schema::table('product_colors', function (Blueprint $table) {
+            $table->dropColumn('count');
+        });
     }
 };
