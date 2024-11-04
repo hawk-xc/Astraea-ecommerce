@@ -40,13 +40,6 @@
                                                 <select name="category_id" id="category_id"
                                                     class="form-control categories-data">
                                                 </select>
-                                                {{-- <select class="form-select" aria-label="Default select example"
-                                                    name="category_id">
-                                                    @foreach ($ref['category'] as $item)
-                                                        <option value="{{ $item->id }}" id="{{ $item->id }}">
-                                                            {{ $item->name }}</option>
-                                                    @endforeach
-                                                </select> --}}
                                             </div>
                                         </div>
 
@@ -56,13 +49,6 @@
                                                 <select name="subcategory_id" id="subcategory_id"
                                                     class="form-control subcategories-data">
                                                 </select>
-                                                {{-- <select class="form-select" aria-label="Default select example"
-                                                    name="subcategory_id">
-                                                    @foreach ($ref['sub_category'] as $item)
-                                                        <option value="{{ $item->id_category }}" id="{{ $item->id }}">
-                                                            {{ $item->name }}</option>
-                                                    @endforeach
-                                                </select> --}}
                                             </div>
                                         </div>
 
@@ -84,46 +70,72 @@
 
                                         <div class="mb-3-select" id="role">
                                             <label class="form-label">Warna</label>
-
                                             <div class="">
-
                                                 <div class="row">
-
                                                     @foreach ($colorList as $item)
                                                         <div class="col-12 col-md-4">
-                                                            <div class="form-check mb-3">
+                                                            <div class="form-check">
                                                                 <input
-                                                                    {{ array_key_exists($item->id, $array_color) ? 'checked' : '' }}
-                                                                    class="form-check-input" type="checkbox"
+                                                                    {{ array_key_exists($item->id, $modifiedArrayColor) ? 'checked' : '' }}
+                                                                    class="form-check-input color-checkbox" type="checkbox"
                                                                     value="{{ $item->id }}" name="color[]"
-                                                                    id="customRadio{{ $item->id }}">
+                                                                    id="customCheckbox{{ $item->id }}">
                                                                 <label class="custom-control-label"
-                                                                    for="customRadio{{ $item->id }}">{{ $item->name }}</label>
+                                                                    for="customCheckbox{{ $item->id }}">{{ $item->name }}</label>
                                                             </div>
-
+                                                            <!-- Container for ProductCountByColor input field -->
+                                                            <div id="productCountContainer{{ $item->id }}"
+                                                                style="display: {{ array_key_exists($item->id, $modifiedArrayColor) ? 'block' : 'none' }}; margin-bottom: 16px">
+                                                                <input type="string" class="form-control"
+                                                                    name="{{ $item->id . '-count' }}"
+                                                                    id="productCountByColor{{ $item->id }}"
+                                                                    min="0" placeholder="Count" inputmode="numeric"
+                                                                    value="{{ $modifiedArrayColor[$item->id] ?? 0 }}">
+                                                            </div>
                                                         </div>
                                                     @endforeach
-
-
-
-
-
                                                 </div>
-
                                             </div>
-
-                                            {{-- <div class="input-group">
-                                                <select name="color[]"  multiple="multiple" id="color_id" class="form-control color-data">
-                                                </select>
-                                            </div> --}}
                                         </div>
 
-                                        <div class="mb-3">
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                                const colorCheckboxes = document.querySelectorAll('.color-checkbox');
+
+                                                colorCheckboxes.forEach(checkbox => {
+                                                    toggleProductCountInput(checkbox);
+
+                                                    checkbox.addEventListener('change', function() {
+                                                        toggleProductCountInput(this);
+                                                    });
+                                                });
+
+                                                function toggleProductCountInput(checkbox) {
+                                                    const productCountContainer = document.getElementById('productCountContainer' + checkbox.value);
+                                                    const productCountInput = document.getElementById('productCountByColor' + checkbox.value);
+
+                                                    if (checkbox.checked) {
+                                                        productCountContainer.style.display = 'block';
+                                                        if (productCountInput.value == 0) {
+                                                            productCountInput.value = 1; // Set default value jika belum ada
+                                                        }
+                                                    } else {
+                                                        productCountContainer.style.display = 'none';
+                                                        productCountInput.value = 0; // Reset ke 0 saat tidak terpilih
+                                                    }
+                                                }
+                                            });
+                                        </script>
+
+
+
+                                        {{-- update patch remove the stock form --}}
+                                        {{-- <div class="mb-3">
                                             <label class="form-label">Jumlah Barang</label>
                                             <input id="text" name="stock" class="input-angka form-control bg-white"
                                                 type="text" placeholder="Jumlah Barang"
                                                 value="{{ old('stock', isset($data) ? $data['stock'] : '') }}">
-                                        </div>
+                                        </div> --}}
 
                                         <div class="mb-3">
                                             <label class="form-label">Berat Barang</label>

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\ProductInterface;
 use App\Models\Products;
+use App\Models\ProductColor;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\DB;
 
@@ -145,5 +146,15 @@ class ProductRepository implements ProductInterface
             ->inRandomOrder()
             ->limit(3)
             ->get();
+    }
+
+    public function getProductColor($id)
+    {
+        return ProductColor::where('product_id', $id)->get();
+    }
+
+    public function getProductColorSum($id)
+    {
+        return ProductColor::select('count')->where('product_id', $id)->sum('count');
     }
 }

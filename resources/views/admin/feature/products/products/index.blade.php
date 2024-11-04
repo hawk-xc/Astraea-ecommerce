@@ -24,7 +24,7 @@
                                     <th class="font-weight-bold text-primary">Kategori</th>
                                     <th class="font-weight-bold text-primary">Warna</th>
                                     <th class="font-weight-bold text-primary">Harga</th>
-                                    <th class="font-weight-bold text-primary">Jumlah Stok</th>
+                                    <th class="font-weight-bold text-primary">Total Stok</th>
                                     <th class="text-center w-1 font-weight-bold text-primary">action</th>
                                 </tr>
                             </thead>
