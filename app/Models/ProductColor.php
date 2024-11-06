@@ -10,5 +10,10 @@ class ProductColor extends Model
     use HasFactory;
 
 
-    protected $guarded = [];
+    protected $fillable = ['color_id', 'count'];
+
+    public function products()
+    {
+        return $this->belongsTo(Products::class, 'product_id', 'id');
+    }
 }
