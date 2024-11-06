@@ -38,15 +38,29 @@ class ProductRepository implements ProductInterface
             ->paginate(15);
     }
 
+    // public function getSerachProducts($name)
+    // {
+    //     return Products::with('categories', 'images', 'sku')
+    //         ->select('id', 'name', 'slug', 'price', 'sku_id', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
+    //         ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
+    //         ->where('name', 'LIKE', '%' . $name . '%')
+    //         ->orderBy('stock', 'DESC')
+    //         ->paginate(15);
+    // }
+
+    // pemberian nama dari programmer lama
     public function getSerachProducts($name)
     {
-        return Products::with('categories', 'images', 'sku')
-            ->select('id', 'name', 'slug', 'price', 'sku_id', 'stock', 'weight', 'b_layanan', 'description', DB::raw('MIN(name) as image_path'))
-            ->groupBy('id', 'name', 'slug', 'price', 'weight', 'b_layanan', 'description')
-            ->where('name', 'LIKE', '%' . $name . '%')
-            ->orderBy('stock', 'DESC')
+        return Products::with('categories', 'images', 'sku', 'product_colors')
+            ->select('products.id', 'products.name', 'products.slug', 'products.price', 'products.sku_id', 'products.stock', 'products.weight', 'products.b_layanan', 'products.description', DB::raw('MIN(products.name) as image_path'))
+            ->leftJoin('product_colors', 'products.id', '=', 'product_colors.product_id')
+            ->selectRaw('(SELECT SUM(count) FROM product_colors WHERE product_colors.product_id = products.id) as total_count') // Calculate total count of product colors
+            ->where('products.name', 'LIKE', '%' . $name . '%') // Search filter for product name
+            ->groupBy('products.id', 'products.name', 'products.slug', 'products.price', 'products.weight', 'products.b_layanan', 'products.description')
+            ->orderBy('total_count', 'DESC') // Order by total count of product colors
             ->paginate(15);
     }
+
 
     public function get_by_color($name, $color_id)
     {
@@ -62,13 +76,37 @@ class ProductRepository implements ProductInterface
 
     public function getBeranda()
     {
-        return Products::with('categories')
-            ->with('images')
-            ->orderBy('stock', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('name', 'ASC')
-            ->limit(3)->get();
+        return Products::with('categories', 'images', 'sku', 'product_colors')
+            ->select(
+                'products.id',
+                'products.name',
+                'products.slug',
+                'products.price',
+                'products.sku_id',
+                'products.stock',
+                'products.weight',
+                'products.b_layanan',
+                'products.description',
+                DB::raw('MIN(products.name) as image_path')
+            )
+            ->leftJoin('product_colors', 'products.id', '=', 'product_colors.product_id')
+            ->selectRaw('(SELECT SUM(count) FROM product_colors WHERE product_colors.product_id = products.id) as total_count')
+            ->groupBy(
+                'products.id',
+                'products.name',
+                'products.slug',
+                'products.price',
+                'products.sku_id',
+                'products.stock',
+                'products.weight',
+                'products.b_layanan',
+                'products.description'
+            )
+            ->orderByDesc('total_count') // Ensure the order is descending based on total_count
+            ->limit(3)
+            ->get();
     }
+
 
     public function GetTotal()
     {
