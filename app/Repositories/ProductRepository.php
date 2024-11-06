@@ -178,16 +178,31 @@ class ProductRepository implements ProductInterface
         return $product_name;
     }
 
+    // public function getRelatedProductFo($idCategory, $slug)
+    // {
+    //     return Products::with('categories', 'product_colors')
+    //         ->with('images', 'sku')
+    //         ->where('category_id', $idCategory)
+    //         ->where('slug', '!=', $slug)
+    //         ->inRandomOrder()
+    //         ->limit(3)
+    //         ->get();
+    // }
+
     public function getRelatedProductFo($idCategory, $slug)
     {
-        return Products::with('categories')
-            ->with('images', 'sku')
+        return Products::with('categories', 'product_colors', 'images', 'sku')
+            ->leftJoin('product_colors', 'products.id', '=', 'product_colors.product_id')
+            ->select('products.id', 'products.name', 'products.slug', 'products.price', 'products.sku_id', 'products.stock', 'products.weight', 'products.b_layanan', 'products.description', DB::raw('MIN(products.name) as image_path'))
+            ->selectRaw('(SELECT SUM(count) FROM product_colors WHERE product_colors.product_id = products.id) as total_count') // Calculate total count of product colors
             ->where('category_id', $idCategory)
             ->where('slug', '!=', $slug)
+            ->groupBy('products.id', 'products.name', 'products.slug', 'products.price', 'products.weight', 'products.b_layanan', 'products.description')
             ->inRandomOrder()
             ->limit(3)
             ->get();
     }
+
 
     public function getProductColor($id)
     {

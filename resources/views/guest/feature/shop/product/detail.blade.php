@@ -357,6 +357,12 @@
                         <div class="single-product-item">
                             <a href="{{ route('shop-product.show', $related_product['name']) }}">
                                 <div class="product-image">
+                                    @if ($related_product['product_total_count'] == 0)
+                                        <div
+                                            style="position: absolute; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; width: 100px; height: 100px; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center;">
+                                            Sold Out
+                                        </div>
+                                    @endif
                                     @if (isset($related_product['images'][0]['name']))
                                         <img src="{{ asset('storage/' . $related_product['images'][0]['name']) }}"
                                             class="product-img" alt="">
