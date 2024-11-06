@@ -169,6 +169,31 @@ class ShopProductController extends Controller
         }
     }
 
+    // public function show(string $name)
+    // {
+    //     $ref = $this->data;
+    //     $data['about'] = $this->aboutUsRepository->getById('1');
+    //     $data['contact'] = $this->contactUsRepository->getById('1');
+    //     $data['partners'] = $this->partnerRepository->getImage()
+    //         ->map(function ($item) {
+    //             $item['id'] = encrypt($item['id']);
+    //             return $item;
+    //         });
+    //     $data['product'] = $this->productRepository->getBySlugFo($name);
+    //     $data['product_total_count'] = $data['product']->product_colors->sum('count');
+    //     $data['related_products'] = $this->productRepository->getRelatedProductFo($data['product']['category_id'], $name);
+
+    //     $data['cek_beli'] = $this->orderDetailRepository->getCekBuy($data['product']['id']);
+    //     $data['ulasans'] = $this->ulasanRepository->getAllFo($data['product']['id']);
+    //     $data['avgrat'] = $this->ulasanRepository->getAvgRat($data['product']['id']);
+    //     $data['product']['id'] = Crypt::encryptString($data['product']['id']);
+
+    //     $data['banner'] = BannerModel::first()->pluck('images');
+
+    //     // dd($data["product"]);
+    //     return view($this->data['view_directory'] . '.detail', compact('ref', 'data'));
+    // }
+
     public function show(string $name)
     {
         $ref = $this->data;
@@ -179,17 +204,32 @@ class ShopProductController extends Controller
                 $item['id'] = encrypt($item['id']);
                 return $item;
             });
-        $data['product'] = $this->productRepository->getBySlugFo($name);
-        $data['related_products'] = $this->productRepository->getRelatedProductFo($data['product']['category_id'], $name);
 
+        // Mendapatkan produk dari repository
+        $data['product'] = $this->productRepository->getBySlugFo($name);
+
+        // Menghitung total count dari relasi product_colors di controller
+        $data['product_total_count'] = $data['product']->product_colors->sum('count');
+
+        // Mendapatkan daftar warna dari relasi product_colors
+        $data['product_colors'] = $data['product']->product_colors->map(function ($productColor) {
+            $color = \App\Models\Color::find('COL-' . $productColor->color_id);
+
+            return [
+                'id' => $productColor->color_id,
+                'name' => $color ? $color->name : 'Tidak diketahui',
+                // 'name' => optional($productColor->color)->name, // Pastikan Anda memiliki relasi 'color' di ProductColor
+                'count' => $productColor->count,
+            ];
+        });
+
+        $data['related_products'] = $this->productRepository->getRelatedProductFo($data['product']['category_id'], $name);
         $data['cek_beli'] = $this->orderDetailRepository->getCekBuy($data['product']['id']);
         $data['ulasans'] = $this->ulasanRepository->getAllFo($data['product']['id']);
         $data['avgrat'] = $this->ulasanRepository->getAvgRat($data['product']['id']);
         $data['product']['id'] = Crypt::encryptString($data['product']['id']);
-
         $data['banner'] = BannerModel::first()->pluck('images');
 
-        // dd($data["product"]);
         return view($this->data['view_directory'] . '.detail', compact('ref', 'data'));
     }
 }

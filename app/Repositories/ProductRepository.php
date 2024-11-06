@@ -125,7 +125,7 @@ class ProductRepository implements ProductInterface
         //     ->orderBy('name', 'ASC')
         //     ->firstOrFail();
 
-        $product_name = Products::with(['categories', 'subCategories', 'images', 'colors'])
+        $product_name = Products::with(['categories', 'subCategories', 'images', 'colors', 'product_colors'])
             ->where('slug',  $name)
             ->orderBy('name', 'ASC')
             ->firstOrFail();

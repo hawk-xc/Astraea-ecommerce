@@ -132,7 +132,8 @@
                 <div class="col-md-7">
                     <div class="single-product-content">
                         <h3>{{ $data['product']['name'] }}
-                            @if ($data['product']['stock'] == 0)
+                            {{-- @if ($data['product']['stock'] == 0) --}}
+                            @if ($data['product_total_count'] == 0)
                                 <span class="badge badge-danger">Stok Habis</span>
                             @else
                                 <span class="badge badge-danger">Tersedia</span>
@@ -142,7 +143,8 @@
                         {!! isset($data['avgrat'])
                             ? '<p class="star-ratingt"><span class="star full">&#9733;</span> ' . $data['avgrat'] . '  </p>'
                             : '' !!}
-                        @if ($data['product']['stock'] == 0)
+                        {{-- @if ($data['product']['stock'] == 0) --}}
+                        @if ($data['product_total_count'] == 0)
                             <div class="row d-flex mb-3">
                                 <a href="https://wa.me/+6285932966345?text=Hallo%20Astraea%20Leather%20Craft"
                                     class="boxed-btn float-right">
@@ -150,22 +152,79 @@
                                 </a>
                             </div>
                         @else
-                            <strong>Stok:</strong> {{ $data['product']['stock'] }}</p>
+                            <strong>Stok:</strong> {{ $data['product_total_count'] }}</p>
                             <div class="single-product-form" style="margin-left: 1rem;">
                                 <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}"
                                     method="post">
                                     @csrf
                                     @method('PUT')
+
                                     <div class="row mb-3">
                                         <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
                                             value="1" min="1" required>
                                         <select name="color" id="color" class="mr-3 color-selectore">
-                                            {{-- <option value="">Pilih warna</option> --}}
-                                            @foreach ($data['product']['colors'] as $color)
-                                                <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                            @foreach ($data['product_colors'] as $color)
+                                                <option value="{{ $color['id'] }}" data-count="{{ $color['count'] }}">
+                                                    {{ $color['name'] }} tersedia {{ $color['count'] }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
+
+                                    <script>
+                                        // Ambil elemen color dan input quantity
+                                        const colorSelect = document.getElementById('color');
+                                        const quantityInput = document.querySelector('[name="quantity"]');
+
+                                        // Event listener ketika ada perubahan pada pilihan warna
+                                        colorSelect.addEventListener('change', function() {
+                                            // Ambil opsi yang dipilih
+                                            const selectedOption = colorSelect.options[colorSelect.selectedIndex];
+
+                                            // Reset input quantity menjadi 0
+                                            quantityInput.value = 1;
+
+                                            // Cek apakah opsi dipilih
+                                            if (selectedOption.value) {
+                                                // Ambil jumlah stok (data-count) dari opsi yang dipilih
+                                                const availableCount = selectedOption.getAttribute('data-count');
+
+                                                // Set atribut max pada input quantity sesuai dengan data-count
+                                                quantityInput.setAttribute('max', availableCount);
+
+                                                // Jika value quantity lebih besar dari max, reset ke max
+                                                if (quantityInput.value > availableCount) {
+                                                    quantityInput.value = availableCount;
+                                                }
+                                            } else {
+                                                // Jika tidak ada warna yang dipilih, set max ke 1
+                                                quantityInput.setAttribute('max', 1);
+                                            }
+                                        });
+
+                                        // Memastikan input quantity hanya menerima angka
+                                        quantityInput.addEventListener('input', function(event) {
+                                            const maxCount = parseInt(quantityInput.getAttribute('max'));
+
+                                            // Jika nilai input lebih besar dari max, reset ke max
+                                            if (parseInt(quantityInput.value) > maxCount) {
+                                                quantityInput.value = maxCount;
+                                            }
+                                        });
+
+                                        quantityInput.addEventListener('keypress', function(event) {
+                                            // Mendapatkan kode tombol dari event
+                                            var key = event.which || event.keyCode;
+
+                                            // Mengizinkan input hanya jika tombol yang ditekan adalah angka atau tombol kontrol
+                                            if (key < 48 || key > 57) {
+                                                event.preventDefault();
+                                            }
+                                        });
+                                    </script>
+
+
+
                                     <div class="row d-flex mb-3">
                                         <button type="submit" class="boxed-btn float-right">
                                             <i class="fas fa-shopping-cart">
@@ -352,20 +411,12 @@
 
 @push('footer_script')
     <script>
-        var smallImages = document.querySelectorAll('.single-product-sub-img');
-        smallImages.forEach(function(img) {
-            img.addEventListener('click', function() {
-                var newSrc = img.querySelector('img').getAttribute('src');
-                document.getElementById('single-product-img').setAttribute('src', newSrc);
-            });
-        });
-
         document.getElementById('color').addEventListener('change', (event) => {
-            const selectedValue = event.target.value;
+            const selectedColorId = event.target.value;
 
             // Data yang akan dikirim di body
             const dataToSend = {
-                color_id: selectedValue,
+                color_id: selectedColorId,
                 name: "{{ encrypt($data['product']['name']) }}" // Ganti dengan parameter tambahan yang diinginkan
             };
 
@@ -410,46 +461,26 @@
                                 `{{ asset('storage') }}/${image.name}`);
                         });
                     });
+
+                    // Update input quantity max dengan count warna yang dipilih
+                    let selectedColor = data.product_colors.find(color => color.id == selectedColorId);
+                    if (selectedColor) {
+                        let maxCount = selectedColor.count;
+                        let quantityInput = document.querySelector('[name="quantity"]');
+                        quantityInput.setAttribute('max', maxCount);
+                        // Reset value jika lebih dari max
+                        if (quantityInput.value > maxCount) {
+                            quantityInput.value = maxCount;
+                        }
+                    }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     document.getElementById('result').innerHTML = 'Error fetching data';
                 });
         });
-
-        document.querySelectorAll('.input-angka').forEach(function(input) {
-            input.addEventListener('input', function(event) {
-                var value = this.value;
-                var newValue = '';
-                var maximal = {{ $data['product']['stock'] }};
-
-                // Hapus karakter yang bukan angka dari input
-                for (var i = 0; i < value.length; i++) {
-                    if (!isNaN(parseInt(value[i])) && value[i] !== ' ') {
-                        newValue += value[i];
-                    }
-                }
-
-                // Ubah nilai input menjadi hanya angka
-                this.value = newValue;
-
-                if (this.value > maximal) {
-                    this.value = maximal;
-                    alert('produk sudah dicheckout');
-                }
-            });
-
-            input.addEventListener('keypress', function(event) {
-                // Mendapatkan kode tombol dari event
-                var key = event.which || event.keyCode;
-
-                // Mengizinkan input hanya jika tombol yang ditekan adalah angka atau tombol kontrol
-                if (key < 48 || key > 57) {
-                    event.preventDefault();
-                }
-            });
-        });
     </script>
+
     <?php
     function displayStars($rating)
     {
