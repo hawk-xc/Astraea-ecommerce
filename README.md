@@ -9,6 +9,7 @@
 
 ## Task Lists
 
+- update integrasi jumlah stok berdasar warna (banyak yang harus diintegrasikan)
 - ✅ memperbaiki add foto detail hampers/product
 - ✅ ubah gambar buah pada order
 - ✅ ubah linktree -> tokopedia
