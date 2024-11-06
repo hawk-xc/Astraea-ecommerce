@@ -73,7 +73,8 @@
                         <div class="single-product-item">
                             <a href="{{ route('shop-product.show', $product['slug']) }}">
                                 <div class="product-image">
-                                    @if ($product['stock'] == 0)
+                                    {{-- @if ($product['stock'] == 0) --}}
+                                    @if ($product['total_count'] == 0)
                                         <div
                                             style="position: absolute; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; width: 100px; height: 100px; padding: 20px; text-align: center; display: flex; justify-content: center; align-items: center;">
                                             Sold Out
@@ -93,7 +94,8 @@
                                 <p class="p-4">{!! nl2br(e($product->description)) !!}</p>
                                 <p class="product-price">{{ $product->fPrice() }}</p>
                             </a>
-                            @if ($product['stock'] == 0)
+                            {{-- @if ($product['stock'] == 0) --}}
+                            @if ($product['total_count'] == 0)
                                 <a class="boxed-btn"
                                     href="https://wa.me/+6285932966345?text=Hallo%20Astraea%20Leather%20Craft">Hubungi
                                     Penjual</a>
