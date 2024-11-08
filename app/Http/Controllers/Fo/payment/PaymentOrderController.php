@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Fo\payment;
 
+use App\Models\ProductColor;
+
 use App\Http\Controllers\Controller;
 use App\Repositories\AboutUsRepository;
 use App\Repositories\AppFeeRepository;
@@ -146,13 +148,65 @@ class PaymentOrderController extends Controller
             $data['discount'] = $coupon['discountData']['discount_amount'];
         }
 
+
         //checking data product
         $data['detail_order'] = $this->orderDetailRepository->orderList($data['order']['id']);
-        foreach ($data['detail_order'] as $order_product) {
-            if ($order_product['product_data']['stock'] <  $order_product['quantity']) {
-                return redirect()->back()->with('toast_warning', 'Product stok tidak tersedia');
+
+        // Assuming $data['detail_order'] can either be an array with multiple items or a single item
+
+        if (is_array($data['detail_order']) && count($data['detail_order']) > 1) {
+            // Case when there are multiple products in the order (using foreach)
+            foreach ($data['detail_order'] as $order_product) {
+                // Ensure 'color' and 'id' are set before using them
+                if (isset($order_product['color']['id'])) {
+                    $color_id = str_replace("COL-", "", $order_product['color']['id']);
+
+                    // Check for product color stock
+                    $productColor = ProductColor::select('count')
+                        ->where('product_id', $order_product['product_data']['id'])
+                        ->where('color_id', $color_id)
+                        ->first();
+
+                    if (!$productColor) {
+                        return redirect()->back()->with('toast_warning', 'Product warna tidak ditemukan');
+                    }
+
+                    $productColorCount = $productColor->count;
+
+                    if ($productColorCount < $order_product['quantity']) {
+                        return redirect()->back()->with('toast_warning', 'Product stok tidak tersedia');
+                    }
+                } else {
+                    return redirect()->back()->with('toast_warning', 'Warna produk tidak valid');
+                }
+            }
+        } else {
+            // Case when there is only one product in the order (no need for foreach)
+            $order_product = $data['detail_order']; // Since it's a single product, we don't need to loop
+
+            if (isset($order_product['color']['id'])) {
+                $color_id = str_replace("COL-", "", $order_product['color']['id']);
+
+                // Check product color stock
+                $productColor = ProductColor::select('count')
+                    ->where('product_id', $order_product['product_data']['id'])
+                    ->where('color_id', $color_id)
+                    ->first();
+
+                if (!$productColor) {
+                    return redirect()->back()->with('toast_warning', 'Product warna tidak ditemukan');
+                }
+
+                $productColorCount = $productColor->count;
+
+                if ($productColorCount < $order_product['quantity']) {
+                    return redirect()->back()->with('toast_warning', 'Product stok tidak tersedia');
+                }
+            } else {
+                return redirect()->back()->with('toast_warning', 'Warna produk tidak valid');
             }
         }
+
 
         //validasi description
         $reccord = $request->validate([
@@ -210,11 +264,20 @@ class PaymentOrderController extends Controller
                 'status' => 'UNPAID',
                 'payment_link' => $response->json()['invoice_url'],
             ]);
+
             //update stok barang
             foreach ($data['detail_order'] as $order_product) {
-                $this->productRepository->edit($order_product['product_data']['id'], [
-                    'stock' => $order_product['product_data']['stock'] - $order_product['quantity']
-                ]);
+                $productColor = ProductColor::where('product_id', $order_product['product_data']['id'])
+                    ->where('color_id', $color_id)
+                    ->first();
+
+                if ($productColor) {
+                    // Kurangi count dengan jumlah yang dipesan
+                    $newCount = $productColor->count - $order_product['quantity'];
+
+                    // Update count di ProductColor
+                    $productColor->update(['count' => $newCount]);
+                }
             }
 
             // Mengambil respons dari API Xendit
