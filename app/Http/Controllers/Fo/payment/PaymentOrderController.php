@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 use \App\Models\BannerView as BannerModel;
 
@@ -154,7 +155,8 @@ class PaymentOrderController extends Controller
 
         // Assuming $data['detail_order'] can either be an array with multiple items or a single item
 
-        if (is_array($data['detail_order']) && count($data['detail_order']) > 1) {
+        // dd(count($data['detail_order']));
+        if (count($data['detail_order']) > 1) {
             // Case when there are multiple products in the order (using foreach)
             foreach ($data['detail_order'] as $order_product) {
                 // Ensure 'color' and 'id' are set before using them
@@ -182,7 +184,7 @@ class PaymentOrderController extends Controller
             }
         } else {
             // Case when there is only one product in the order (no need for foreach)
-            $order_product = $data['detail_order']; // Since it's a single product, we don't need to loop
+            $order_product = $data['detail_order'][0]; // Since it's a single product, we don't need to loop
 
             if (isset($order_product['color']['id'])) {
                 $color_id = str_replace("COL-", "", $order_product['color']['id']);
@@ -206,7 +208,6 @@ class PaymentOrderController extends Controller
                 return redirect()->back()->with('toast_warning', 'Warna produk tidak valid');
             }
         }
-
 
         //validasi description
         $reccord = $request->validate([
@@ -267,16 +268,33 @@ class PaymentOrderController extends Controller
 
             //update stok barang
             foreach ($data['detail_order'] as $order_product) {
-                $productColor = ProductColor::where('product_id', $order_product['product_data']['id'])
-                    ->where('color_id', $color_id)
-                    ->first();
+                try {
+                    // Hilangkan "COL-" dari color_id jika ada
+                    $color_id = str_replace("COL-", "", $order_product['color']['id']);
 
-                if ($productColor) {
-                    // Kurangi count dengan jumlah yang dipesan
-                    $newCount = $productColor->count - $order_product['quantity'];
+                    // Pastikan color_id tidak null atau kosong
+                    if ($color_id) {
+                        $productColor = ProductColor::where('product_id', $order_product['product_data']['id'])
+                            ->where('color_id', $color_id)
+                            ->first();
 
-                    // Update count di ProductColor
-                    $productColor->update(['count' => $newCount]);
+                        if ($productColor) {
+                            // Kurangi count dengan jumlah yang dipesan
+                            $newCount = $productColor->count - $order_product['quantity'];
+
+                            // Update count di ProductColor jika hasil pengurangan valid
+                            if ($newCount >= 0) {
+                                $productColor->update(['count' => $newCount]);
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    // Abaikan kesalahan dan lanjutkan iterasi berikutnya
+                    // Anda bisa menambahkan log error jika ingin memonitor kesalahan
+                    Log::warning('Terjadi error saat memproses detail order', [
+                        'order_product' => $order_product,
+                        'error' => $e->getMessage()
+                    ]);
                 }
             }
 

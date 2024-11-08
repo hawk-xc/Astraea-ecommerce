@@ -165,6 +165,7 @@
                                         <input type="number" name="quantity" placeholder="0" class="mr-3 input-angka"
                                             value="1" min="1" required>
                                         <select name="color" id="color" class="mr-3 color-selectore">
+                                            <option value="" disabled selected>pilih warna</option>
                                             @foreach ($data['product_colors'] as $color)
                                                 <option value="{{ $color['id'] }}" data-count="{{ $color['count'] }}">
                                                     {{ $color['name'] }} tersedia {{ $color['count'] }}

@@ -142,6 +142,7 @@ class CartProductController extends Controller
             if ($this->repository->searchId($cart)) {
                 //cart yang sudah ada
                 $price_total = $this->repository->getById($cart)['sub_total_price'];
+
                 //mendeteksi product dalam cart apakah sudah ada atau belum
                 if (isset($dtl_product)) {
                     $quantity_product = $dtl_product['quantity'] + $quantity_product;
@@ -157,6 +158,7 @@ class CartProductController extends Controller
                 } else {
                     //memasukkan produk yang belum ada dengan quantity satu
                     $add_price = $data['product']['price'];
+                    // dd($quantity_product);
                     $order_detail = [
                         'id'        => 'DTL-CRP-' . Helper::table_id(),
                         'order_id'  => $cart,
@@ -164,7 +166,7 @@ class CartProductController extends Controller
                         'quantity'  => $quantity_product,
                         'color'     => 'COL-' . $request->color,
                         'price'     => $add_price,
-                        'sub_total_price' => $data['product']['price'],
+                        'sub_total_price' => $data['product']['price'] * $quantity_product,
                         'created_by' => 'pelanggan',
 
                     ];
