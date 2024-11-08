@@ -16,6 +16,7 @@ use Exception;
 use Helper;
 use \App\Models\BannerView as BannerModel;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\ProductColor;
 
 class CartProductController extends Controller
 {
@@ -111,6 +112,8 @@ class CartProductController extends Controller
             "color" => "Color"
         ]);
 
+        $record['color'] = 'COL-' . $request->get('color');
+
         $quantity_product = isset($record['quantity']) ? $record['quantity'] : 1;
 
         $cart = $this->repository->cartCheckLogin();
@@ -120,7 +123,9 @@ class CartProductController extends Controller
 
         $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'], $request->color, $cart);
 
-        if ($data['product']['stock'] <= 0) {
+        $stock = ProductColor::where('product_id', $data['product']['id'])->where('color_id', $request->color)->select('count')->first()->count;
+
+        if ($stock <= 0) {
             // Jika stok kosong, alihkan ke halaman home dengan pesan error
             return redirect()->route('fo.home')->with('toast_warning', 'Maaf, stok sedang kosong.');
         }
@@ -132,6 +137,7 @@ class CartProductController extends Controller
         }
 
         try {
+            // update
             //mendeteksi apakah cart sudah ada
             if ($this->repository->searchId($cart)) {
                 //cart yang sudah ada
@@ -142,7 +148,7 @@ class CartProductController extends Controller
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
                         'quantity'        => $quantity_product,
-                        'color'           => $request->color,
+                        'color'           => 'COL-' . $request->color,
                         'price'           => $data['product']['price'],
                         'sub_total_price' => $add_price,
 
@@ -156,7 +162,7 @@ class CartProductController extends Controller
                         'order_id'  => $cart,
                         'product_id' => $data['product']['id'],
                         'quantity'  => $quantity_product,
-                        'color'     => $request->color,
+                        'color'     => 'COL-' . $request->color,
                         'price'     => $add_price,
                         'sub_total_price' => $data['product']['price'],
                         'created_by' => 'pelanggan',

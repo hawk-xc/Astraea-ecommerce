@@ -156,6 +156,8 @@
                             <div class="single-product-form" style="margin-left: 1rem;">
                                 <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}"
                                     method="post">
+                                    <input type="text" name="id" value="{{ $data['product']['id'] }}" hidden>
+
                                     @csrf
                                     @method('PUT')
 
