@@ -56,7 +56,7 @@ class BerandaController extends Controller
         $data['etotal'] = $this->eventRepository->getTotal();
         $data['testimonis'] = $this->testimoniRepository->getAllFo();
         $data['etetotal'] = $this->testimoniRepository->getTotal();
-        $data['discount_new'] = $this->discountRepository->getDiscNewCostumer()->toArray()['image_banner'];
+        // $data['discount_new'] = $this->discountRepository->getDiscNewCostumer()->toArray()['image_banner'];
 
         $data['desktop_sliders'] = \App\Models\Slider::where('view', 'desktop')->get();
         $data['smartphone_sliders'] = \App\Models\Slider::where('view', 'smartphone')->get();

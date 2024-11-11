@@ -194,8 +194,13 @@ class ProductController extends Controller
             $array_color = [];
         }
 
+        $modifiedArrayColor = [];
+        foreach ($array_color as $key => $value) {
+            $modifiedArrayColor['COL-' . $key] = $value;
+        }
+
         $ref["url"] = route("product.store");
-        return view($this->data['view_directory'] . '.form', compact('ref', 'colorList', 'array_color', 'data'));
+        return view($this->data['view_directory'] . '.form', compact('ref', 'colorList', 'array_color', 'data', 'modifiedArrayColor'));
     }
 
 
