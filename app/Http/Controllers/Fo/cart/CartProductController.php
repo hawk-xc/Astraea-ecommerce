@@ -118,7 +118,6 @@ class CartProductController extends Controller
 
                 //mendeteksi product dalam cart apakah sudah ada atau belum
                 if (isset($dtl_product)) {
-                    dd('sudah ada');
                     $quantity_product = $dtl_product['quantity'] + $quantity_product;
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
