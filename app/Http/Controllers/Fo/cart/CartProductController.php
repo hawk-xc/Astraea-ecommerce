@@ -11,6 +11,7 @@ use App\Repositories\ProductRepository;
 use App\Repositories\ShippingRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\PesananDetail;
 use Carbon\Carbon;
 use Exception;
 use Helper;
@@ -68,38 +69,6 @@ class CartProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
@@ -107,9 +76,6 @@ class CartProductController extends Controller
         $record = $request->validate([
             "quantity" => ['nullable', 'numeric'],
             "color" => ['required'],
-        ], [], [
-            "quantity" => "Quantity",
-            "color" => "Color"
         ]);
 
         $record['color'] = 'COL-' . $request->get('color');
@@ -117,18 +83,25 @@ class CartProductController extends Controller
         $quantity_product = isset($record['quantity']) ? $record['quantity'] : 1;
 
         $cart = $this->repository->cartCheckLogin();
+
         $waktuSekarang = Carbon::now()->toDateTimeString();
         // $data['product'] = $this->productRepository->getBySlugFo($slug);
         $data['product'] = $this->productRepository->getById(app('encrypter')->decrypt($id, false));
-
+        
         $dtl_product = $this->detail_repository->getByIdProduct($data['product']['id'], $request->color, $cart);
-
+        
         $stock = ProductColor::where('product_id', $data['product']['id'])->where('color_id', $request->color)->select('count')->first()->count;
 
         if ($stock <= 0) {
             // Jika stok kosong, alihkan ke halaman home dengan pesan error
             return redirect()->route('fo.home')->with('toast_warning', 'Maaf, stok sedang kosong.');
         }
+
+        if(PesananDetail::where('order_id', 'CRP-20241112121343457306')->where('product_id', $data['product']['id'])->get()->count() > 0) {
+            return back()->with('toast_warning', 'anda sudah menambahkan produk ke cart!');
+        }
+
+        // dd(PesananDetail::where('order_id', $this->repository->searchId($cart)['id']));
 
         if (isset($dtl_product['quantity'], $data['product']['stock'])) {
             if (($dtl_product['quantity'] + $quantity_product) > $data['product']['stock']) {
@@ -145,6 +118,7 @@ class CartProductController extends Controller
 
                 //mendeteksi product dalam cart apakah sudah ada atau belum
                 if (isset($dtl_product)) {
+                    dd('sudah ada');
                     $quantity_product = $dtl_product['quantity'] + $quantity_product;
                     $add_price =  $quantity_product * $data['product']['price'];
                     $update_dtl = [
@@ -168,9 +142,8 @@ class CartProductController extends Controller
                         'price'     => $add_price,
                         'sub_total_price' => $data['product']['price'] * $quantity_product,
                         'created_by' => 'pelanggan',
-
                     ];
-                    $this->detail_repository->store($order_detail);
+                    \App\Models\PesananDetail::create($order_detail);
                 }
                 //menghitung sub total
                 $sub_total = $this->detail_repository->subTotalOrder($cart);
