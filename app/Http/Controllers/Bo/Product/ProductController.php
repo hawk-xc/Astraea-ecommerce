@@ -120,17 +120,35 @@ class ProductController extends Controller
                 ->editColumn(
                     "stock",
                     function ($inquiry) {
-                        $productColors = $this->repository->getProductColorSum($inquiry->id);
-
+                        $id = Crypt::decryptString($inquiry['id']);
+                        $productColors = $this->repository->getProductColorSum($id);
+                        // return $productColors . " Pcs";
                         return $productColors . " Pcs";
                     }
                 )
                 ->editColumn(
                     "color",
                     function ($inquiry) {
-                        return $inquiry->colors->pluck('name')->implode(', ');
+                        // Decode JSON menjadi array
+                        $colorIds = json_decode($inquiry['color'], true);
+                
+                        // Pastikan hasil decode adalah array, jika tidak, kembalikan pesan error atau data kosong
+                        if (!is_array($colorIds)) {
+                            return 'Warna belum ditetapkan!';
+                        }
+                
+                        $colorData = [];
+                
+                        // Iterasi setiap ID warna untuk mendapatkan nama
+                        foreach ($colorIds as $key) {
+                            $colorName = \App\Models\Color::where('id', $key)->value('name');
+                            $colorData[] = $colorName;
+                        }
+                
+                        // Gabungkan nama warna menjadi string dengan koma sebagai pemisah
+                        return implode(', ', $colorData);
                     }
-                )
+                )                
                 ->addColumn('action', function ($row) {
                     $row["id"] = Crypt::encryptString($row["id"]);
                     $btn = '<form method="POST" action="' . route('product.destroy', $row["id"]) . '">
@@ -203,230 +221,6 @@ class ProductController extends Controller
         return view($this->data['view_directory'] . '.form', compact('ref', 'colorList', 'array_color', 'data', 'modifiedArrayColor'));
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-
-    // v3 {final}
-    // public function store(Request $request)
-    // {
-    //     dd($request->all());
-    //     $data = $request->validate([
-    //         "name" => ['required', 'string', 'max:100'],
-    //         "price" => ['required', 'string', 'max:25'],
-    //         "hpp" => ['required', 'string', 'max:25'],
-    //         "margin" => ['required', 'string', 'max:3'],
-    //         "b_layanan" => ['required', 'string', 'max:3'],
-    //         // "stock" => ['required', 'string', 'max:4'],
-    //         "weight" => ['required', 'string', 'max:6'],
-    //         "category_id" => ['required', 'string', 'max:250'],
-    //         "color" => ['required', 'max:250'],
-    //         "sku_id" => ['required', 'string', 'max:250'],
-    //         "subcategory_id" => ['required', 'string', 'max:250'],
-    //         "description" => ['required', 'string'],
-    //     ], [], [
-    //         "name" => "Nama produk",
-    //         "price" => "Harga jual produk",
-    //         // "stock" => "Jumlah barang",
-    //         "weight" => "Berat barang",
-    //         "margin" => "Margin barang",
-    //         "b_layanan" => "Biaya layanan barang",
-    //         "hpp" => "Harga Pokok Penjualan barang",
-    //         "category_id" => "Kategori barang",
-    //         "color" => "Warna barang",
-    //         "sku_id" => "Seri barang",
-    //         "subcategory_id" => "Subkategori barang",
-    //         "description" => "Deskripsi barang",
-    //     ]);
-
-    //     $request->validate([
-    //         'front' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'back' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'left' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'right' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail1' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail2' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail3' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail4' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //     ], [], [
-    //         'front' => "Gambar Depan",
-    //         'back' => "Gambar Belakang",
-    //         'left' => "Gambar Kanan",
-    //         'right' => "Gambar Kiri",
-    //         'detail1' => "Gambar Detail 1",
-    //         'detail2' => "Gambar Detail 2",
-    //         'detail3' => "Gambar Detail 3",
-    //         'detail4' => "Gambar Detail 4",
-    //     ]);
-
-
-    //     try {
-    //         // dd($request->all());
-    //         $produk = new Products();
-    //         $produk->id = 'PDT-' . Helper::table_id();
-    //         $produk->name = $request->name;
-    //         $produk->slug = $this->repository->sluggable($request->name);
-    //         $produk->description = $request->description;
-    //         $produk->category_id = $request->category_id;
-    //         $produk->subcategory_id = $request->subcategory_id;
-    //         $produk->weight = $request->weight;
-    //         $produk->price = $request->price;
-    //         $produk->color = '';
-    //         $produk->stock = $request->stock;
-    //         $produk->hpp = $request->hpp;
-    //         $produk->margin = $request->margin;
-    //         $produk->b_layanan = $request->b_layanan;
-    //         $produk->created_by = auth()->user()->id;
-    //         $produk->updated_by = auth()->user()->id;
-    //         $produk->sku_id = $request->sku_id;
-    //         $produk->save(); // Pastikan produk disimpan terlebih dahulu
-
-    //         // Attach colors
-    //         $produk->colors()->attach($request->color);
-
-    //         // Menyimpan gambar
-    //         foreach ($request->file() as $key => $img) {
-    //             $image_path = $img->store('images', 'public');
-
-    //             // Menyimpan data gambar ke database
-    //             $image_record = [
-    //                 'id' => 'IPT-' . Helper::table_id(),
-    //                 "product_id" => $produk->id, // Menggunakan ID dari produk yang baru saja disimpan
-    //                 "position" => $key,
-    //                 "name" => $image_path,
-    //                 'created_by' => auth()->user()->id,
-    //                 'updated_by' => auth()->user()->id
-    //             ];
-    //             $this->images_repository->store($image_record); // Simpan record gambar ke database
-    //         }
-
-    //         return redirect()->route('product.index')->with('success', 'Berhasil menambah produk ' . $produk->name);
-    //     } catch (Exception $e) {
-    //         if (env('APP_DEBUG')) {
-    //             return $e->getMessage();
-    //         }
-    //         return back()->with('error', "Oops..!! Terjadi kesalahan saat menyimpan data")->withInput($request->input);
-    //     }
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     // Ambil daftar warna berdasarkan id
-    //     $allData = $request->all();
-
-    //     // digunakan untuk menfilter data color yang lebih dari 0
-    //     $countData = array_filter($allData, function ($value, $key) {
-    //         return str_ends_with($key, '-count') && (int)$value > 0;
-    //     }, ARRAY_FILTER_USE_BOTH);
-
-
-    //     $colorList = Color::select('id')->orderBy('name')->get();
-
-    //     $colorCountRules = [];
-    //     foreach ($colorList as $color) {
-    //         $colorCountRules["COL-{$color->id}-count"] = ['integer', 'min:0'];
-    //     }
-
-    //     // Validasi input utama
-    //     $data = $request->validate(array_merge([
-    //         "name" => ['required', 'string', 'max:100'],
-    //         "price" => ['required', 'string', 'max:25'],
-    //         "hpp" => ['required', 'string', 'max:25'],
-    //         "margin" => ['required', 'string', 'max:3'],
-    //         "b_layanan" => ['required', 'string', 'max:3'],
-    //         "weight" => ['required', 'string', 'max:6'],
-    //         "category_id" => ['required', 'string', 'max:250'],
-    //         "color" => ['required', 'max:250'],
-    //         "sku_id" => ['required', 'string', 'max:250'],
-    //         "subcategory_id" => ['required', 'string', 'max:250'],
-    //         "description" => ['required', 'string'],
-    //     ], $colorCountRules), [], [
-    //         "name" => "Nama produk",
-    //         "price" => "Harga jual produk",
-    //         "weight" => "Berat barang",
-    //         "margin" => "Margin barang",
-    //         "b_layanan" => "Biaya layanan barang",
-    //         "hpp" => "Harga Pokok Penjualan barang",
-    //         "category_id" => "Kategori barang",
-    //         "color" => "Warna barang",
-    //         "sku_id" => "Seri barang",
-    //         "subcategory_id" => "Subkategori barang",
-    //         "description" => "Deskripsi barang",
-    //     ]);
-
-    //     $request->validate([
-    //         'front' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'back' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'left' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'right' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail1' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail2' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail3' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //         'detail4' => ['nullable', 'mimes:png,jpg,jpeg,JPG', 'max:3072'],
-    //     ], [], [
-    //         'front' => "Gambar Depan",
-    //         'back' => "Gambar Belakang",
-    //         'left' => "Gambar Kanan",
-    //         'right' => "Gambar Kiri",
-    //         'detail1' => "Gambar Detail 1",
-    //         'detail2' => "Gambar Detail 2",
-    //         'detail3' => "Gambar Detail 3",
-    //         'detail4' => "Gambar Detail 4",
-    //     ]);
-
-    //     dd($data);
-
-    //     try {
-    //         // Simpan produk
-    //         $produk = new Products();
-    //         $produk->id = 'PDT-' . Helper::table_id();
-    //         $produk->name = $request->name;
-    //         $produk->slug = $this->repository->sluggable($request->name);
-    //         $produk->description = $request->description;
-    //         $produk->category_id = $request->category_id;
-    //         $produk->subcategory_id = $request->subcategory_id;
-    //         $produk->weight = $request->weight;
-    //         $produk->price = $request->price;
-    //         $produk->color = '';
-    //         $produk->stock = 0;
-    //         $produk->hpp = $request->hpp;
-    //         $produk->margin = $request->margin;
-    //         $produk->b_layanan = $request->b_layanan;
-    //         $produk->created_by = auth()->user()->id;
-    //         $produk->updated_by = auth()->user()->id;
-    //         $produk->sku_id = $request->sku_id;
-    //         $produk->save();
-
-    //         // Attach colors
-    //         $produk->colors()->attach($request->color);
-
-    //         // Menyimpan gambar
-    //         foreach ($request->file() as $key => $img) {
-    //             $image_path = $img->store('images', 'public');
-
-    //             $image_record = [
-    //                 'id' => 'IPT-' . Helper::table_id(),
-    //                 "product_id" => $produk->id,
-    //                 "position" => $key,
-    //                 "name" => $image_path,
-    //                 'created_by' => auth()->user()->id,
-    //                 'updated_by' => auth()->user()->id
-    //             ];
-    //             $this->images_repository->store($image_record);
-    //         }
-
-    //         return redirect()->route('product.index')->with('success', 'Berhasil menambah produk ' . $produk->name);
-    //     } catch (Exception $e) {
-    //         if (env('APP_DEBUG')) {
-    //             return $e->getMessage();
-    //         }
-    //         return back()->with('error', "Oops..!! Terjadi kesalahan saat menyimpan data")->withInput($request->input);
-    //     }
-    // }
 
     public function store(Request $request)
     {
@@ -546,90 +340,6 @@ class ProductController extends Controller
         }
     }
 
-
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Products  $products
-     * @return \Illuminate\Http\Response
-     */
-    public function show($products)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Products  $products
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit(string $id)
-    // {
-    //     $id = Crypt::decryptString($id);
-    //     $ref = $this->data;
-    //     $ref['sku'] = \App\Models\Sku::all();
-
-    //     $data = $this->repository->getById($id);
-    //     $data_gambar = $this->images_repository->getByIdProduct($id);
-    //     $id = Crypt::encryptString($id);
-    //     $ref["url"] = route("product.update", $id);
-
-    //     $colorList = Color::orderBy('name')->get();
-
-
-
-    //     if (old('color')) {
-
-    //         if (old('color')) {
-    //             $array_color = array_flip(old('color'));
-    //         } else {
-    //             $array_color = [];
-    //         }
-    //     } else {
-
-    //         if ($data['colors']) {
-    //             $array_color = $data['colors']->pluck('name', 'id')->toArray();
-    //         } else {
-    //             $array_color = [];
-    //         }
-    //     }
-
-
-
-
-    //     return view($this->data['view_directory'] . '.form', compact('ref', "data", 'data_gambar', 'colorList', 'array_color'));
-    // }
-    // public function edit(string $id)
-    // {
-    //     $id = Crypt::decryptString($id);
-    //     $ref = $this->data;
-    //     $ref['sku'] = \App\Models\Sku::all();
-
-    //     $data = $this->repository->getById($id);
-    //     $data_gambar = $this->images_repository->getByIdProduct($id);
-    //     $id = Crypt::encryptString($id);
-    //     $ref["url"] = route("product.update", $id);
-
-    //     $colorList = Color::orderBy('name')->get();
-
-    //     if (old('color')) {
-    //         $array_color = array_flip(old('color'));
-    //     } else {
-    //         if ($data['colors']) {
-    //             // Menggabungkan warna dengan jumlah warna terkait
-    //             $array_color = $data['colors']->pluck('pivot.count', 'id')->toArray();
-    //         } else {
-    //             $array_color = [];
-    //         }
-    //     }
-
-    //     $product_color = $this->repository->getProductColor($data->id);
-
-    //     return view($this->data['view_directory'] . '.form', compact('ref', "data", 'data_gambar', 'colorList', 'array_color', 'product_color'));
-    // }
     public function edit(string $id)
     {
         $id = Crypt::decryptString($id);
