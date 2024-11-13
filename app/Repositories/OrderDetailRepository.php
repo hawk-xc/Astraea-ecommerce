@@ -89,7 +89,7 @@ class OrderDetailRepository implements OrderDetailInterface
     public function orderDtll($idDtl)
     {
         return PesananDetail::where('id', $idDtl)
-            ->with(['productData'])
+            ->with(['productData', 'color'])
             ->first()->toArray();
     }
 }

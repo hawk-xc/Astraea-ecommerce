@@ -55,15 +55,15 @@
                                             <form action="#">
                                                 <div class="form-group" data-order-id="{{ $order['id'] }}">
                                                     <a class="boxed-btn-minus"
-                                                        onclick="updateQuantity('{{ $order['id'] }}', -1, {{ $order['product_data']['stock'] }})">
+                                                        onclick="updateQuantity('{{ $order['id'] }}', -1, {{ \App\Models\ProductColor::where('product_id', $order['product_id'])->where('color_id', $order['color']['id'])->value('count') }})">
                                                         - </a>
                                                     <input type="text" name="quantity"
                                                         id="quantity-input-{{ $order['id'] }}" placeholder="0"
                                                         value="{{ $order['quantity'] }}"
                                                         class="input-angka cart-input-quantity" maxlength="6"
-                                                        oninput="updateQuantity('{{ $order['id'] }}', 0, {{ $order['product_data']['stock'] }})">
+                                                        oninput="updateQuantity('{{ $order['id'] }}', 0, {{ \App\Models\ProductColor::where('product_id', $order['product_id'])->where('color_id', $order['color']['id'])->value('count') }})">
                                                     <a class="boxed-btn-plus"
-                                                        onclick="updateQuantity('{{ $order['id'] }}', 1, {{ $order['product_data']['stock'] }})">
+                                                        onclick="updateQuantity('{{ $order['id'] }}', 1, {{ \App\Models\ProductColor::where('product_id', $order['product_id'])->where('color_id', $order['color']['id'])->value('count') }})">
                                                         + </a>
                                                 </div>
                                             </form>
@@ -184,19 +184,33 @@
                         $('#hsubtotal').text(response.price_sub_total);
                     } else {
                         console.error('Failed to update price:', response.message);
+
+                        // Jika respons gagal dan kuantitas stok tersedia dikirim, reset ke jumlah stok
+                        if (input.value > response.available_quantity) {
+                            input.value = response.available_quantity;
+                            alert('Quantity exceeds stock. Maximum available quantity is ' + response.available_quantity);
+                        }
                     }
                 },
                 error: function(xhr, status, error) {
                     var message;
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                    var availableQuantity;
+
+                    if (xhr.responseJSON) {
                         message = xhr.responseJSON.message;
+                        availableQuantity = xhr.responseJSON.available_quantity;
                     } else if (xhr.responseText) {
                         var response = JSON.parse(xhr.responseText);
                         message = response.message;
+                        availableQuantity = response.available_quantity;
                     } else {
                         message = "Unknown error occurred";
                     }
-                    console.log(message);
+
+                    if(input.value > availableQuantity) {
+                        input.value = availableQuantity;
+                    }
+                    
                     alert(message);
                 }
             });

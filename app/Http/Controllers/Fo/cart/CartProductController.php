@@ -227,12 +227,16 @@ class CartProductController extends Controller
         $dtl_order = $this->detail_repository->orderDtll($orderDetailId);
         //check stock dan harga
         $price = $dtl_order['product_data']['price'];
-        $price = $dtl_order['product_data']['stock'];
+        $price = \App\Models\ProductColor::where('product_id', $dtl_order['product_id'])->where('color_id', $dtl_order['color']['id'])->value('count');
         //masukkan price
 
         $order = true;
 
-        if ($quantity <= $dtl_order['product_data']['stock']) {
+        $cekjumlah = \App\Models\ProductColor::where('product_id', $dtl_order['product_id'])->where('color_id', str_replace("COL-", "", $dtl_order['color']['id']))->value('count');
+
+        // return response()->json(['success' => false, 'message' => $cekjumlah], 404);
+
+        if ($quantity <= $cekjumlah) {
             //add detail produk
             $add_price =  $quantity * $dtl_order['product_data']['price'];
             $update_dtl = [
@@ -262,7 +266,11 @@ class CartProductController extends Controller
                 'success' => true
             ]);
         } else {
-            return response()->json(['success' => false, 'message' => 'Order not found'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Kuantitas melebihi stock',
+                'available_quantity' => $cekjumlah // Tambahkan nilai ini untuk dikirim ke JavaScript
+            ], 404);
         }
     }
 }
