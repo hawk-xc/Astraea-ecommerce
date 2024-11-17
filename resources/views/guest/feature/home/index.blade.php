@@ -324,7 +324,8 @@
                     <button type="button" id="closeModalButton" class="close mb-3" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    {{-- <img src="{{ asset('storage/' . $data['discount_new']) }}" alt="Segera Daftar dan Dapatkan Discount"> --}}
+                    {{-- {{dd($data)}} --}}
+                    <img src="{{ asset('storage/' . $data['discount_new']) }}" alt="Segera Daftar dan Dapatkan Discount">
                 </div>
             </div>
         </div>
