@@ -16,7 +16,6 @@
     <div class="single-product mt-150 mb-150">
         <div class="container">
             <div class="row">
-
                 <div class="col-md-5">
                     <div class="single-product-img">
                         @if (isset($data['product']['images'][0]['name']))
@@ -143,7 +142,6 @@
                         {!! isset($data['avgrat'])
                             ? '<p class="star-ratingt"><span class="star full">&#9733;</span> ' . $data['avgrat'] . '  </p>'
                             : '' !!}
-                        {{-- @if ($data['product']['stock'] == 0) --}}
                         @if ($data['product_total_count'] == 0)
                             <div class="row d-flex mb-3">
                                 <a href="https://wa.me/+6285932966345?text=Hallo%20Astraea%20Leather%20Craft"
@@ -152,7 +150,8 @@
                                 </a>
                             </div>
                         @else
-                            <strong>Stok:</strong> {{ $data['product_total_count'] }}</p>
+                            <span id="stockCountSection" class="hidden">Tersedia <span id="stockCount">1</span></span>
+                        </p>
                             <div class="single-product-form" style="margin-left: 1rem;">
                                 <form action="{{ route('fo.cart-product.update', $data['product']['id']) }}"
                                     method="post">
@@ -168,7 +167,7 @@
                                             <option value="" disabled selected>pilih warna</option>
                                             @foreach ($data['product_colors'] as $color)
                                                 <option value="{{ $color['id'] }}" data-count="{{ $color['count'] }}">
-                                                    {{ $color['name'] }} tersedia {{ $color['count'] }}
+                                                    {{ $color['name'] }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -178,6 +177,8 @@
                                         // Ambil elemen color dan input quantity
                                         const colorSelect = document.getElementById('color');
                                         const quantityInput = document.querySelector('[name="quantity"]');
+                                        const stockCount = document.getElementById('stockCount');
+                                        const stockCountSection = document.getElementById('stockCountSection');
 
                                         // Event listener ketika ada perubahan pada pilihan warna
                                         colorSelect.addEventListener('change', function() {
@@ -193,6 +194,8 @@
                                                 const availableCount = selectedOption.getAttribute('data-count');
 
                                                 // Set atribut max pada input quantity sesuai dengan data-count
+                                                stockCount.textContent = availableCount;
+                                                stockCountSection.classList.remove('hidden');
                                                 quantityInput.setAttribute('max', availableCount);
 
                                                 // Jika value quantity lebih besar dari max, reset ke max
@@ -201,6 +204,7 @@
                                                 }
                                             } else {
                                                 // Jika tidak ada warna yang dipilih, set max ke 1
+                                                stockCount.textContent = '1';
                                                 quantityInput.setAttribute('max', 1);
                                             }
                                         });
