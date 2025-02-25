@@ -130,9 +130,12 @@ class ProductRepository implements ProductInterface
     {
         return Products::with('categories', 'images', 'subCategories', 'sku')
             ->select('id', 'name', 'price', 'weight', 'stock', 'subcategory_id', 'sku_id', 'category_id', 'b_layanan', 'description', 'slug', DB::raw('MIN(name) as image_path'))
+            ->leftJoin('product_colors', 'products.id', '=', 'product_colors.product_id')
+            ->selectRaw('(SELECT SUM(count) FROM product_colors WHERE product_colors.product_id = products.id) as total_count')
             ->groupBy('id', 'name', 'price', 'weight', 'category_id', 'subcategory_id', 'b_layanan', 'description', 'slug')
             ->where('category_id', $idCategory)
-            ->orderBy('stock', 'DESC')
+            // ->orderBy('stock', 'DESC')
+            ->orderByDesc('total_count')
             ->paginate(9);
     }
 

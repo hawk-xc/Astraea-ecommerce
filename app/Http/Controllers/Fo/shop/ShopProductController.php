@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use App\Models\BannerView as BannerModel;
 use App\Models\SubCategories;
+use Illuminate\Support\Facades\DB;
 
 class ShopProductController extends Controller
 {
@@ -141,13 +142,40 @@ class ShopProductController extends Controller
             $data['subcategories'] = SubCategories::select('name')->distinct()->get();
             $data['subcategoriesid'] = SubCategories::select('id')->distinct()->get();
 
-            $data['subcategoriesitem'] = SubCategories::where('name', 'like', '%' . $name . '%')->get();
+            $data['subcategoriesitem'] = SubCategories::where('name', 'like', '%' . $name . '%')
+            ->get();
 
             // dd($data['subcategoriesitem']);
             foreach ($data['subcategoriesitem'] as $productcategories) {
                 if ($productcategories !== null) {
                     // $data['products'][] = $productcategories->product()->get();
-                    foreach ($productcategories->product()->orderBy('stock', 'DESC')->get() as $productitem) {
+                    foreach (
+                        $productcategories->product()
+                        ->select(
+                            'products.id', 
+                            'products.name', 
+                            'products.slug', 
+                            'products.price', 
+                            'products.sku_id', 
+                            'products.stock', 
+                            'products.weight', 
+                            'products.b_layanan', 
+                            'products.description', 
+                            DB::raw('MIN(products.name) as image_path')
+                        )
+                        ->leftJoin('product_colors', 'products.id', '=', 'product_colors.product_id')
+                        ->selectRaw('(SELECT COALESCE(SUM(count), 0) FROM product_colors WHERE product_colors.product_id = products.id) as total_count')
+                        ->groupBy(
+                            'products.id', 
+                            'products.name', 
+                            'products.slug', 
+                            'products.price', 
+                            'products.weight', 
+                            'products.b_layanan', 
+                            'products.description'
+                        )
+                        ->orderBy('total_count', 'DESC')
+                        ->get() as $productitem) {
                         $data['products'][] = $productitem;
                     }
                 }
